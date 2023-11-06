@@ -1,6 +1,7 @@
 'use strict'
 
-const { REQUEST_HEADER_KEYS, API_VERSIONS } = require('../config/constants.config')
+const { REQUEST_HEADER_KEYS } = require('../config/constants.config')
+const API_VERSIONS = require('~/config/apiVersions')
 const ApiError = require('~/core/api.error')
 const { StatusCodes } = require('http-status-codes')
 

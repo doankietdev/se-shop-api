@@ -1,4 +1,4 @@
-const v1Router = require('~/api/v1/routes')
+'use strict'
 
 module.exports = {
   NODE_ENV_PROD: 'production',
@@ -21,9 +21,6 @@ module.exports = {
   PROD_DB_NAME_DEFAULT: 'PRODUCTION_DATABASE',
   PROD_DB_USERNAME_DEFAULT: 'root',
   PROD_DB_PASSWORD_DEFAULT: '123456',
-  API_VERSIONS: {
-    '1': v1Router
-  },
   REQUEST_HEADER_KEYS: {
     apiVersion: 'x-api-version'
   },
