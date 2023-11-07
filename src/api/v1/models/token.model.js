@@ -5,7 +5,6 @@ const {
 } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class Token extends Model {
-    // eslint-disable-next-line no-unused-vars
     static associate(models) {
       Token.belongsTo(models.User, {
         foreignKey: 'userId',

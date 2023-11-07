@@ -9,7 +9,7 @@ const { getRoleByName } = require('~/api/v1/repositories/role.repo')
 const { getUserStatusByName } = require('~/api/v1/repositories/user.status.repo')
 const { createUser, getUser, findOneUser } = require('~/api/v1/repositories/user.repo')
 const tokenRepo = require('~/api/v1/repositories/token.repo')
-const { createKeyPairRsa, createTokenPair, verifyToken } = require('~/api/v1/utils/auth.util')
+const { createKeyPairRsa, createTokenPair } = require('~/api/v1/utils/auth.util')
 
 const signUp = async ({
   genderId, lastName, firstName, phoneNumber,

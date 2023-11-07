@@ -2,7 +2,7 @@
 
 const { User, UserStatus, Role, Gender } = require('~/api/v1/models')
 const ApiError = require('~/core/api.error')
-const { StatusCodes, ReasonPhrases } = require('http-status-codes')
+const { StatusCodes } = require('http-status-codes')
 
 // const createUser = async ({ name }) => {
 //   const user = await User.create({ name })
@@ -64,10 +64,10 @@ const getUserByUsername = async ({ username }) => {
 
 module.exports = {
   // createGender,
-  getAllUsers,
-  getUserById,
-  getUserByUsername,
   // updateGenderById,
   // deleteGenderById,
   // deleteGenderByIds
+  getAllUsers,
+  getUserById,
+  getUserByUsername
 }
