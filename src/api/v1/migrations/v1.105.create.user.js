@@ -66,15 +66,15 @@ module.exports = {
         unique: true
       },
       password: {
-        type: Sequelize.STRING(40),
+        type: Sequelize.STRING(100),
         allowNull: false
       },
-      pubicKey: {
-        type: Sequelize.STRING(4096),
+      publicKey: {
+        type: Sequelize.STRING(800),
         allowNull: false
       },
       privateKey: {
-        type: Sequelize.STRING(4096),
+        type: Sequelize.STRING(3400),
         allowNull: false
       },
       createdAt: {
