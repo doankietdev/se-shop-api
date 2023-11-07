@@ -100,24 +100,7 @@ const signIn = async ({ username, password }) => {
   }
 }
 
-const checkSignedIn = async ({ userId, accessToken }) => {
-  const foundToken = tokenRepo.getTokenByAccessToken({ accessToken })
-  if (!foundToken) throw new ApiError(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED)
-
-  const foundUser = await getUser({ id: userId })
-  if (!foundUser) throw new ApiError(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED)
-
-  try {
-    const decoded = verifyToken({ token: accessToken, publicKey: foundUser.publicKey })
-    if (decoded.userId !== userId) throw new ApiError(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED)
-    return true
-  } catch (error) {
-    throw new ApiError(StatusCodes.UNAUTHORIZED, error.message)
-  }
-}
-
 module.exports = {
   signUp,
-  signIn,
-  checkSignedIn
+  signIn
 }

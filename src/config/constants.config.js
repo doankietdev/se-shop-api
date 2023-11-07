@@ -28,7 +28,8 @@ module.exports = {
   PROD_DB_USERNAME_DEFAULT: 'root',
   PROD_DB_PASSWORD_DEFAULT: '123456',
   REQUEST_HEADER_KEYS: {
-    apiVersion: 'x-api-version'
+    apiVersion: 'x-api-version',
+    userId: 'x-user-id'
   },
   WHITELIST_DOMAINS: []
 }
