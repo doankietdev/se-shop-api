@@ -2,6 +2,11 @@
 
 const express = require('express')
 const {
+  validateCreateRole,
+  validateUpdateRoleById,
+  validateDeleteRoleByIds
+} = require('~/api/v1/validations/role.validation')
+const {
   createRole,
   getAllRoles,
   getRoleById,
@@ -14,12 +19,12 @@ const router = express.Router()
 
 router.route('/')
   .get(getAllRoles)
-  .post(createRole)
-  .delete(deleteRoleByIds)
+  .post(validateCreateRole, createRole)
+  .delete(validateDeleteRoleByIds, deleteRoleByIds)
 
 router.route('/:id')
   .get(getRoleById)
-  .patch(updateRoleById)
+  .patch(validateUpdateRoleById, updateRoleById)
   .delete(deleteRoleById)
 
 module.exports = router

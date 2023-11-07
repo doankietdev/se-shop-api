@@ -2,6 +2,11 @@
 
 const express = require('express')
 const {
+  validateCreateGender,
+  validateUpdateGenderById,
+  validateDeleteGenderByIds
+} = require('~/api/v1/validations/gender.validation')
+const {
   createGender,
   getAllGenders,
   getGenderById,
@@ -14,12 +19,12 @@ const router = express.Router()
 
 router.route('/')
   .get(getAllGenders)
-  .post(createGender)
-  .delete(deleteGenderByIds)
+  .post(validateCreateGender, createGender)
+  .delete(validateDeleteGenderByIds, deleteGenderByIds)
 
 router.route('/:id')
   .get(getGenderById)
-  .patch(updateGenderById)
+  .patch(validateUpdateGenderById, updateGenderById)
   .delete(deleteGenderById)
 
 module.exports = router

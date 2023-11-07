@@ -2,6 +2,11 @@
 
 const express = require('express')
 const {
+  validateCreateUserStatus,
+  validateUpdateUserStatusById,
+  validateDeleteUserStatusByIds
+} = require('~/api/v1/validations/user.status.validation')
+const {
   createUserStatus,
   getAllUserStatuses,
   getUserStatusById,
@@ -14,12 +19,12 @@ const router = express.Router()
 
 router.route('/')
   .get(getAllUserStatuses)
-  .post(createUserStatus)
-  .delete(deleteGenderByIds)
+  .post(validateCreateUserStatus, createUserStatus)
+  .delete(validateDeleteUserStatusByIds, deleteGenderByIds)
 
 router.route('/:id')
   .get(getUserStatusById)
-  .patch(updateUserStatusById)
+  .patch(validateUpdateUserStatusById, updateUserStatusById)
   .delete(deleteUserStatusById)
 
 module.exports = router
