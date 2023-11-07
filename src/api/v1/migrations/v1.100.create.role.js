@@ -14,7 +14,7 @@ module.exports = {
         type: Sequelize.STRING(20),
         allowNull: false
       },
-      desciption: {
+      description: {
         type: Sequelize.STRING(100)
       },
       createdAt: {
