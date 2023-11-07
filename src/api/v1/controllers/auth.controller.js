@@ -44,7 +44,17 @@ const signIn = asyncHandling(async (req, res) => {
   }).send(res)
 })
 
+const signOut = asyncHandling(async (req, res) => {
+  res.clearCookie('accessToken')
+  res.clearCookie('refreshToken')
+
+  new SuccessResponse({
+    
+  }).send(res)
+})
+
 module.exports = {
   signUp,
-  signIn
+  signIn,
+  signOut
 }
