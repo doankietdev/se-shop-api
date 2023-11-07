@@ -16,7 +16,7 @@ const signUp = asyncHandling(async (req, res) => {
 
   new SuccessResponse({
     statusCode: StatusCodes.CREATED,
-    message: ReasonPhrases.CREATED,
+    message: 'Sign up successfully',
     metadata: await authService.signUp({
       genderId, lastName, firstName, phoneNumber,
       email, address, username, password
@@ -40,6 +40,7 @@ const signIn = asyncHandling(async (req, res) => {
   })
 
   new SuccessResponse({
+    message: 'Signed in successfully',
     metadata: result.user
   }).send(res)
 })
@@ -49,7 +50,7 @@ const signOut = asyncHandling(async (req, res) => {
   res.clearCookie('refreshToken')
 
   new SuccessResponse({
-    
+    message: 'Signed out successfully'
   }).send(res)
 })
 

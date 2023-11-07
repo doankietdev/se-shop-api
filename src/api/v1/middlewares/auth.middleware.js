@@ -10,9 +10,9 @@ const { verifyToken } = require('~/api/v1/utils/auth.util')
 
 const authenticate = asyncHandling(async (req, res, next) => {
   const userId = Number(req.headers[REQUEST_HEADER_KEYS.userId])
-  if (!userId) throw new ApiError(StatusCodes.UNAUTHORIZED, `${REQUEST_HEADER_KEYS.userId} misssing`)
+  if (!userId) throw new ApiError(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED)
   const { accessToken } = req.cookies
-  if (!accessToken) throw new ApiError(StatusCodes.UNAUTHORIZED, 'Access Token misssing')
+  if (!accessToken) throw new ApiError(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED)
   const foundToken = tokenRepo.getTokenByAccessToken({ accessToken })
   if (!foundToken) throw new ApiError(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED)
 
