@@ -4,6 +4,9 @@ const { StatusCodes, ReasonPhrases } = require('http-status-codes')
 const authService = require('~/api/v1/services/auth.service')
 const SuccessResponse = require('~/core/success.response')
 const asyncHandling = require('~/core/async.handling')
+const {
+  app: { cookieATMaxAge, cookieRTMaxAge }
+} = require('~/config/environment.config')
 
 const signUp = asyncHandling(async (req, res) => {
   const {
@@ -24,8 +27,20 @@ const signUp = asyncHandling(async (req, res) => {
 const signIn = asyncHandling(async (req, res) => {
   const { username, password } = req.body
 
+  const result = await authService.signIn({ username, password })
+
+  res.cookie('accessToken', result.accessToken, {
+    httpOnly: true,
+    secure: true,
+    maxAge: cookieATMaxAge
+  }).cookie('refreshToken', result.refreshToken, {
+    httpOnly: true,
+    secure: true,
+    maxAge: cookieRTMaxAge
+  })
+
   new SuccessResponse({
-    metadata: await authService.signIn({ username, password })
+    metadata: result.user
   }).send(res)
 })
 

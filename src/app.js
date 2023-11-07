@@ -1,6 +1,7 @@
 'use strict'
 
 const express = require('express')
+const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const { default: helmet } = require('helmet')
 const compression = require('compression')
@@ -15,6 +16,7 @@ const app = express()
 app.use(cors(corsOptions))
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
+app.use(cookieParser())
 app.use(helmet())
 app.use(compression())
 app.use(morgan('dev'))

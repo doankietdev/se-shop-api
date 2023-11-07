@@ -7,7 +7,7 @@ const { app: { saltRounds } } = require('~/config/environment.config')
 const ApiError = require('~/core/api.error')
 const { getRoleByName } = require('~/api/v1/repositories/role.repo')
 const { getUserStatusByName } = require('~/api/v1/repositories/user.status.repo')
-const { createUser, getUser, getUserByUsername, findOneUser } = require('~/api/v1/repositories/user.repo')
+const { createUser, getUser, findOneUser } = require('~/api/v1/repositories/user.repo')
 const tokenRepo = require('~/api/v1/repositories/token.repo')
 const { createKeyPairRsa, createTokenPair, verifyToken } = require('~/api/v1/utils/auth.util')
 
@@ -100,7 +100,24 @@ const signIn = async ({ username, password }) => {
   }
 }
 
+const checkSignedIn = async ({ userId, accessToken }) => {
+  const foundToken = tokenRepo.getTokenByAccessToken({ accessToken })
+  if (!foundToken) throw new ApiError(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED)
+
+  const foundUser = await getUser({ id: userId })
+  if (!foundUser) throw new ApiError(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED)
+
+  try {
+    const decoded = verifyToken({ token: accessToken, publicKey: foundUser.publicKey })
+    if (decoded.userId !== userId) throw new ApiError(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED)
+    return true
+  } catch (error) {
+    throw new ApiError(StatusCodes.UNAUTHORIZED, error.message)
+  }
+}
+
 module.exports = {
   signUp,
-  signIn
+  signIn,
+  checkSignedIn
 }
