@@ -100,7 +100,16 @@ const signIn = async ({ username, password }) => {
   }
 }
 
+const signOut = async ({ accessToken, refreshToken }) => {
+  const token = await tokenRepo.findOneToken({
+    where: { accessToken, refreshToken }
+  })
+  if (!token) throw new ApiError(StatusCodes.UNAUTHORIZED, StatusCodes.UNAUTHORIZED)
+  return await token.destroy()
+}
+
 module.exports = {
   signUp,
-  signIn
+  signIn,
+  signOut
 }

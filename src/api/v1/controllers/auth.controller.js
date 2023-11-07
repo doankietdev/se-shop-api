@@ -7,6 +7,7 @@ const asyncHandling = require('~/core/async.handling')
 const {
   app: { cookieATMaxAge, cookieRTMaxAge }
 } = require('~/config/environment.config')
+const ApiError = require('~/core/api.error')
 
 const signUp = asyncHandling(async (req, res) => {
   const {
@@ -46,8 +47,13 @@ const signIn = asyncHandling(async (req, res) => {
 })
 
 const signOut = asyncHandling(async (req, res) => {
+  const { accessToken, refreshToken } = req.cookies
+  if (!accessToken || !refreshToken) throw new ApiError(StatusCodes.BAD_REQUEST, 'Not signed in yet')
+
   res.clearCookie('accessToken')
   res.clearCookie('refreshToken')
+
+  await authService.signOut({ accessToken, refreshToken })
 
   new SuccessResponse({
     message: 'Signed out successfully'

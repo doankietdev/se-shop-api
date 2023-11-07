@@ -18,8 +18,13 @@ const getTokenByRefreshToken = async ({ refreshToken }) => {
   })
 }
 
+const findOneToken = async (query = {}) => {
+  return await Token.findOne(query)
+}
+
 module.exports = {
   createToken,
   getTokenByAccessToken,
-  getTokenByRefreshToken
+  getTokenByRefreshToken,
+  findOneToken
 }
