@@ -33,6 +33,23 @@ const validateSignUp = asyncHandling(async (req, res, next) => {
   }
 })
 
+const validateSignIn = asyncHandling(async (req, res, next) => {
+  const { username, password } = req.body
+
+  const userSchema = Joi.object({
+    username: Joi.string().required(),
+    password: Joi.string().required()
+  })
+
+  try {
+    await userSchema.validateAsync({ username, password }, { abortEarly: false })
+    next()
+  } catch (error) {
+    throw new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, error.message)
+  }
+})
+
 module.exports = {
-  validateSignUp
+  validateSignUp,
+  validateSignIn
 }

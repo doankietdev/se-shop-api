@@ -1,7 +1,7 @@
 'use strict'
 
 const express = require('express')
-const { validateSignUp } = require('~/api/v1/validations/auth.validation')
+const { validateSignUp, validateSignIn } = require('~/api/v1/validations/auth.validation')
 const {
   signUp,
   signIn
@@ -10,6 +10,6 @@ const {
 const router = express.Router()
 
 router.post('/sign-up', validateSignUp, signUp)
-router.post('/sign-in', signIn)
+router.post('/sign-in', validateSignIn, signIn)
 
 module.exports = router
