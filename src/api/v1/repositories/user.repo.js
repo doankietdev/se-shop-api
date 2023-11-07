@@ -15,6 +15,13 @@ const createUser = async ({
   return user
 }
 
+const getUser = async (payload = {}) => {
+  const user = await User.findOne({
+    where: payload
+  })
+  return user
+}
+
 const getUserByUsername = async ({ username }) => {
   const user = await User.findOne({
     where: { username }
@@ -24,5 +31,6 @@ const getUserByUsername = async ({ username }) => {
 
 module.exports = {
   createUser,
+  getUser,
   getUserByUsername
 }
