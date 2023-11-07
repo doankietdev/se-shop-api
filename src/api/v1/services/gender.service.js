@@ -6,7 +6,6 @@ const { StatusCodes, ReasonPhrases } = require('http-status-codes')
 
 const createGender = async ({ name }) => {
   const gender = await Gender.create({ name })
-
   if (!gender) throw new ApiError(StatusCodes.BAD_REQUEST, ReasonPhrases.BAD_REQUEST)
   return gender
 }
@@ -17,27 +16,21 @@ const getAllGenders = async () => {
 
 const getGenderById = async ({ id }) => {
   const gender = await Gender.findByPk(id)
-
-  if (!gender) throw new ApiError(StatusCodes.NOT_FOUND, ReasonPhrases.NOT_FOUND)
+  if (!gender) throw new ApiError(StatusCodes.NOT_FOUND, 'Item not found')
   return gender
 }
 
-const updateGenderById = async ({ id, newName }) => {
+const updateGenderById = async ({ id, name }) => {
   const gender = await Gender.findOne({
     where: { id }
   })
-
-  if (!gender) throw new ApiError(StatusCodes.BAD_REQUEST, ReasonPhrases.BAD_REQUEST)
-
-  gender.name = newName
-  return await gender.save()
+  if (!gender) throw new ApiError(StatusCodes.NOT_FOUND, 'Item not found')
+  return await gender.update({ name })
 }
 
 const deleteGenderById = async ({ id }) => {
   const gender = await Gender.findByPk(id)
-
-  if (!gender) throw new ApiError(StatusCodes.BAD_REQUEST, ReasonPhrases.BAD_REQUEST)
-
+  if (!gender) throw new ApiError(StatusCodes.NOT_FOUND, 'Item not found')
   const { dataValues } = await gender.destroy()
   if (!dataValues) throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR)
   return await getAllGenders()
@@ -49,7 +42,6 @@ const deleteGenderByIds = async ({ ids }) => {
   })
   const NO_ITEMS_DELETEDS = 0
   if (numberDeletedItems === NO_ITEMS_DELETEDS) throw new ApiError(StatusCodes.BAD_REQUEST, 'No items are deleted')
-
   return await getAllGenders()
 }
 

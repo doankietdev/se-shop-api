@@ -34,7 +34,7 @@ const updateUserStatusById = asyncHandling( async (req, res) => {
   const { name } = req.body
 
   new SuccessResponse({
-    metadata: await userStatusService.updateUserStatus({ id, newName: name })
+    metadata: await userStatusService.updateUserStatusById({ id, name })
   }).send(res)
 })
 

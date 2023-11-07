@@ -34,7 +34,7 @@ const updateGenderById = asyncHandling( async (req, res) => {
   const { name } = req.body
 
   new SuccessResponse({
-    metadata: await genderService.updateGenderById({ id, newName: name })
+    metadata: await genderService.updateGenderById({ id, name })
   }).send(res)
 })
 
