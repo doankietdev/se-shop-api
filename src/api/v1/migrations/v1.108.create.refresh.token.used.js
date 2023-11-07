@@ -5,7 +5,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('RefreshTokenUsed', {
       refreshTokenUsed: {
-        type: Sequelize.STRING(256),
+        type: Sequelize.STRING(830),
         allowNull: false,
         primaryKey: true
       },

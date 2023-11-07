@@ -26,8 +26,13 @@ const getUserByUsername = async ({ username }) => {
   })
 }
 
+const findOneUser = async({ query }) => {
+  return await User.findOne(query)
+}
+
 module.exports = {
   createUser,
   getUser,
-  getUserByUsername
+  getUserByUsername,
+  findOneUser
 }

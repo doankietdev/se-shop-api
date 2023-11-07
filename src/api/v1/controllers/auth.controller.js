@@ -21,6 +21,15 @@ const signUp = asyncHandling(async (req, res) => {
   }).send(res)
 })
 
+const signIn = asyncHandling(async (req, res) => {
+  const { username, password } = req.body
+
+  new SuccessResponse({
+    metadata: await authService.signIn({ username, password })
+  }).send(res)
+})
+
 module.exports = {
-  signUp
+  signUp,
+  signIn
 }

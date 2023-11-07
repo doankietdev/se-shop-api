@@ -3,11 +3,13 @@
 const express = require('express')
 const { validateSignUp } = require('~/api/v1/validations/auth.validation')
 const {
-  signUp
+  signUp,
+  signIn
 }= require('~/api/v1/controllers/auth.controller')
 
 const router = express.Router()
 
 router.post('/signup', validateSignUp, signUp)
+router.post('/signin', signIn)
 
 module.exports = router
