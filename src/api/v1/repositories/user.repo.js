@@ -7,26 +7,23 @@ const createUser = async ({
   imageUrl, phoneNumber, email, address,
   username, password, publicKey, privateKey
 }) => {
-  const user = await User.create({
+  return await User.create({
     roleId, userStatusId, genderId, lastName,
     firstName, imageUrl, phoneNumber, email, address,
     username, password, publicKey, privateKey
   })
-  return user
 }
 
 const getUser = async (payload = {}) => {
-  const user = await User.findOne({
+  return await User.findOne({
     where: payload
   })
-  return user
 }
 
 const getUserByUsername = async ({ username }) => {
-  const user = await User.findOne({
+  return await User.findOne({
     where: { username }
   })
-  return user
 }
 
 module.exports = {

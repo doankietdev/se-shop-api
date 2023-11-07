@@ -1,6 +1,6 @@
 'use strict'
 
-const { User } = require('~/api/v1/models')
+const { User, UserStatus, Role, Gender } = require('~/api/v1/models')
 const ApiError = require('~/core/api.error')
 const { StatusCodes, ReasonPhrases } = require('http-status-codes')
 
@@ -11,7 +11,16 @@ const { StatusCodes, ReasonPhrases } = require('http-status-codes')
 // }
 
 const getAllUsers = async () => {
-  return await User.findAll()
+  return await User.findAll({
+    attributes: {
+      exclude: ['userStatusId', 'roleId', 'genderId', 'password', 'publicKey', 'privateKey']
+    },
+    include: [
+      { model: UserStatus, as: 'status', attributes: ['id', 'name'] },
+      { model: Role, as: 'role', attributes: ['id', 'name'] },
+      { model: Gender, as: 'gender', attributes: ['id', 'name'] }
+    ]
+  })
 }
 
 const getUserById = async ({ id }) => {
