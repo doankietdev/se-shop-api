@@ -7,9 +7,10 @@ const { app: { saltRounds } } = require('~/config/environment.config')
 const ApiError = require('~/core/api.error')
 const { getRoleByName } = require('~/api/v1/repositories/role.repo')
 const { getUserStatusByName } = require('~/api/v1/repositories/user.status.repo')
-const { createUser, getUser, findOneUser } = require('~/api/v1/repositories/user.repo')
+const { createUser, getUser, findOneUser, getUserById } = require('~/api/v1/repositories/user.repo')
 const tokenRepo = require('~/api/v1/repositories/token.repo')
-const { createKeyPairRsa, createTokenPair } = require('~/api/v1/utils/auth.util')
+const refreshTokenUsedRepo = require('~/api/v1/repositories/refresh.token.used.repo')
+const { createKeyPairRsa, createTokenPair, verifyToken } = require('~/api/v1/utils/auth.util')
 
 const signUp = async ({
   genderId, lastName, firstName, phoneNumber,
@@ -100,6 +101,48 @@ const signIn = async ({ username, password }) => {
   }
 }
 
+const refreshToken = async ({ userId, refreshToken }) => {
+  const foundRefreshTokenUsed = await refreshTokenUsedRepo.getRefreshTokenUsed({ refreshToken })
+  if (foundRefreshTokenUsed) {
+    await tokenRepo.deleteAll()
+    throw new ApiError(StatusCodes.UNAUTHORIZED, 'Something unusual happened')
+  }
+
+  const foundUser = await getUserById({ id: userId })
+  if (!foundUser) throw new ApiError(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED)
+
+  try {
+    const decoded = verifyToken({ token: refreshToken, publicKey: foundUser.publicKey })
+    if (decoded.userId !== userId) throw new ApiError(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED)
+
+    const deletedToken = await tokenRepo.deleteTokenByRefreshToken({ refreshToken })
+    if (!deletedToken) throw new ApiError(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED)
+
+    await refreshTokenUsedRepo.createRefreshTokenUsed({
+      refreshTokenUsed: deletedToken.refreshToken,
+      userId: deletedToken.userId
+    })
+
+    const tokenPair = createTokenPair({
+      payload: { userId: foundUser.id, username: foundUser.username },
+      privateKey: foundUser.privateKey
+    })
+
+    const token = await tokenRepo.createToken({
+      accessToken: tokenPair.accessToken,
+      refreshToken: tokenPair.refreshToken,
+      userId
+    })
+
+    return {
+      accessToken: token.accessToken,
+      refreshToken: token.refreshToken
+    }
+  } catch (error) {
+    throw new ApiError(StatusCodes.UNAUTHORIZED, error.message)
+  }
+}
+
 const signOut = async ({ accessToken, refreshToken }) => {
   const token = await tokenRepo.findOneToken({
     where: { accessToken, refreshToken }
@@ -111,5 +154,6 @@ const signOut = async ({ accessToken, refreshToken }) => {
 module.exports = {
   signUp,
   signIn,
+  refreshToken,
   signOut
 }

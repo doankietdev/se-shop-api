@@ -1,6 +1,6 @@
 'use strict'
 
-const { StatusCodes } = require('http-status-codes')
+const { StatusCodes, ReasonPhrases } = require('http-status-codes')
 const authService = require('~/api/v1/services/auth.service')
 const SuccessResponse = require('~/core/success.response')
 const asyncHandling = require('~/core/async.handling')
@@ -8,6 +8,7 @@ const {
   app: { cookieATMaxAge, cookieRTMaxAge }
 } = require('~/config/environment.config')
 const ApiError = require('~/core/api.error')
+const { REQUEST_HEADER_KEYS } = require('~/config/constants.config')
 
 const signUp = asyncHandling(async (req, res) => {
   const {
@@ -46,6 +47,28 @@ const signIn = asyncHandling(async (req, res) => {
   }).send(res)
 })
 
+const refreshToken = asyncHandling(async (req, res) => {
+  const { refreshToken } = req.cookies
+  const userId = Number(req.headers[REQUEST_HEADER_KEYS.userId])
+  if (!refreshToken || !userId) throw new ApiError(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED)
+
+  const tokenPair = await authService.refreshToken({ userId, refreshToken })
+
+  res.cookie('accessToken', tokenPair.accessToken, {
+    httpOnly: true,
+    secure: true,
+    maxAge: cookieATMaxAge
+  }).cookie('refreshToken', tokenPair.refreshToken, {
+    httpOnly: true,
+    secure: true,
+    maxAge: cookieRTMaxAge
+  })
+
+  new SuccessResponse({
+    message: 'Refreshed tokens successfully'
+  }).send(res)
+})
+
 const signOut = asyncHandling(async (req, res) => {
   const { accessToken, refreshToken } = req.cookies
   if (!accessToken || !refreshToken) throw new ApiError(StatusCodes.BAD_REQUEST, 'Not signed in yet')
@@ -63,5 +86,6 @@ const signOut = asyncHandling(async (req, res) => {
 module.exports = {
   signUp,
   signIn,
+  refreshToken,
   signOut
 }

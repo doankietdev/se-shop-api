@@ -14,7 +14,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   RefreshTokenUsed.init({
-    refreshTokenUsed: DataTypes.STRING
+    refreshTokenUsed: {
+      type: DataTypes.STRING,
+      primaryKey: true
+    }
   }, {
     sequelize,
     modelName: 'RefreshTokenUsed',

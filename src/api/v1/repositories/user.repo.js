@@ -20,6 +20,10 @@ const getUser = async (payload = {}) => {
   })
 }
 
+const getUserById = async ({ id }) => {
+  return await User.findByPk(id)
+}
+
 const getUserByUsername = async ({ username }) => {
   return await User.findOne({
     where: { username }
@@ -33,6 +37,7 @@ const findOneUser = async({ query }) => {
 module.exports = {
   createUser,
   getUser,
+  getUserById,
   getUserByUsername,
   findOneUser
 }
