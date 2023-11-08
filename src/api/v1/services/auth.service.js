@@ -102,6 +102,7 @@ const signIn = async ({ username, password }) => {
 }
 
 const refreshToken = async ({ userId, refreshToken }) => {
+  // automatically detect illegally stolen refresh token
   const foundRefreshTokenUsed = await refreshTokenUsedRepo.getRefreshTokenUsed({ refreshToken })
   if (foundRefreshTokenUsed) {
     await tokenRepo.deleteAll()
