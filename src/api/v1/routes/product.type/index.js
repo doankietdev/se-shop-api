@@ -2,6 +2,11 @@
 
 const express = require('express')
 const {
+  validateCreateProductType,
+  validateUpdateProductTypeById,
+  validateDeleteProductTypeByIds
+} = require('~/api/v1/validations/product.type.validation')
+const {
   createProductType,
   getAllProductTypes,
   getProductTypeById,
@@ -17,12 +22,12 @@ const router = express.Router()
 
 router.route('/')
   .get(getAllProductTypes)
-  .post(createProductType)
-  .delete(deleteProductTypeByIds)
+  .post(validateCreateProductType, createProductType)
+  .delete(validateDeleteProductTypeByIds, deleteProductTypeByIds)
 
 router.route('/:id')
   .get(getProductTypeById)
-  .patch(updateProductTypeById)
+  .patch(validateUpdateProductTypeById, updateProductTypeById)
   .delete(deleteProductTypeById)
 
 module.exports = router

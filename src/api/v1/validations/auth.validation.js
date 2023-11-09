@@ -49,7 +49,40 @@ const validateSignIn = asyncHandling(async (req, res, next) => {
   }
 })
 
+const validateForgotPassword = asyncHandling(async (req, res, next) => {
+  const { email } = req.body
+
+  const infoSchema = Joi.object({
+    email: Joi.string().required().email()
+  })
+
+  try {
+    await infoSchema.validateAsync({ email }, { abortEarly: false })
+    next()
+  } catch (error) {
+    throw new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, error.message)
+  }
+})
+
+const validateResetPassword = asyncHandling(async (req, res, next) => {
+  const { password, resetToken } = req.body
+
+  const infoSchema = Joi.object({
+    password: Joi.string().required().min(6),
+    resetToken: Joi.string().required()
+  })
+
+  try {
+    await infoSchema.validateAsync({ password, resetToken }, { abortEarly: false })
+    next()
+  } catch (error) {
+    throw new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, error.message)
+  }
+})
+
 module.exports = {
   validateSignUp,
-  validateSignIn
+  validateSignIn,
+  validateForgotPassword,
+  validateResetPassword
 }

@@ -1,7 +1,12 @@
 'use strict'
 
 const express = require('express')
-const { validateSignUp, validateSignIn } = require('~/api/v1/validations/auth.validation')
+const {
+  validateSignUp,
+  validateSignIn,
+  validateForgotPassword,
+  validateResetPassword
+} = require('~/api/v1/validations/auth.validation')
 const {
   signUp,
   signIn,
@@ -17,7 +22,7 @@ router.post('/sign-up', validateSignUp, signUp)
 router.post('/sign-in', validateSignIn, signIn)
 router.post('/refresh-token', refreshToken)
 router.post('/sign-out', signOut)
-router.post('/forgot-password', forgotPassword)
-router.post('/reset-password', resetPassword)
+router.post('/forgot-password', validateForgotPassword, forgotPassword)
+router.post('/reset-password', validateResetPassword, resetPassword)
 
 module.exports = router
