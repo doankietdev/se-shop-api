@@ -83,9 +83,29 @@ const signOut = asyncHandling(async (req, res) => {
   }).send(res)
 })
 
+const forgotPassword = asyncHandling(async (req, res) => {
+  const { email } = req.body
+
+  new SuccessResponse({
+    message: `Sent mail to ${email}`,
+    metadata: await authService.forgotPassword({ email })
+  }).send(res)
+})
+
+const resetPassword = asyncHandling(async (req, res) => {
+  const { password, resetToken } = req.body
+
+  new SuccessResponse({
+    message: 'Reset password successfully',
+    metadata: await authService.resetPassword({ password, resetToken })
+  }).send(res)
+})
+
 module.exports = {
   signUp,
   signIn,
   refreshToken,
-  signOut
+  signOut,
+  forgotPassword,
+  resetPassword
 }

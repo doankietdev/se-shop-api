@@ -30,8 +30,21 @@ const getUserByUsername = async ({ username }) => {
   })
 }
 
-const findOneUser = async({ query }) => {
+const getUserByEmail = async ({ email }) => {
+  return await User.findOne({
+    where: { email }
+  })
+}
+
+const findOneUser = async(query) => {
   return await User.findOne(query)
+}
+
+const updateUserById = async (id, payload = {}) => {
+  const user = await getUserById({ id })
+  if (!user) return null
+
+  return await user.update(payload)
 }
 
 module.exports = {
@@ -39,5 +52,7 @@ module.exports = {
   getUser,
   getUserById,
   getUserByUsername,
-  findOneUser
+  getUserByEmail,
+  findOneUser,
+  updateUserById
 }

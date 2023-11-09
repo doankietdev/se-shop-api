@@ -6,7 +6,7 @@ const ApiError = require('~/core/api.error')
 const { StatusCodes } = require('http-status-codes')
 
 const redirectApiVersion = (req, res, next) => {
-  const apiVersion = req.headers[REQUEST_HEADER_KEYS.apiVersion]
+  const apiVersion = req.headers[REQUEST_HEADER_KEYS.apiVersion] || '1'
   if (!API_VERSIONS[apiVersion]) {
     next(new ApiError(StatusCodes.NOT_FOUND, 'API version mismatch'))
     return

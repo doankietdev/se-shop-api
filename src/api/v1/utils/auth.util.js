@@ -3,7 +3,7 @@
 const crypto = require('crypto')
 const jwt = require('jsonwebtoken')
 const {
-  app: { accessTokenExpires, refreshTokenExpires }
+  app: { accessTokenExpires, refreshTokenExpires, resetTokenExpires }
 } = require('~/config/environment.config')
 
 const createKeyPairRsa = () => {
@@ -38,8 +38,16 @@ const verifyToken = ({ token, publicKey }) => {
   return jwt.verify(token, publicKey)
 }
 
+const createResetToken = ({ payload, privateKey }) => {
+  return jwt.sign(payload, privateKey, {
+    algorithm: 'RS256',
+    expiresIn: resetTokenExpires
+  })
+}
+
 module.exports = {
   createKeyPairRsa,
   createTokenPair,
-  verifyToken
+  verifyToken,
+  createResetToken
 }

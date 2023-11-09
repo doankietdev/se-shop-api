@@ -3,14 +3,17 @@
 const { Op } = require('sequelize')
 const bcrypt = require('bcrypt')
 const { StatusCodes, ReasonPhrases } = require('http-status-codes')
-const { app: { saltRounds } } = require('~/config/environment.config')
+const { app: { saltRounds, protocol, host, port } } = require('~/config/environment.config')
 const ApiError = require('~/core/api.error')
+const { User } = require('~/api/v1/models')
 const { getRoleByName } = require('~/api/v1/repositories/role.repo')
 const { getUserStatusByName } = require('~/api/v1/repositories/user.status.repo')
-const { createUser, getUser, findOneUser, getUserById } = require('~/api/v1/repositories/user.repo')
+const { createUser, getUser, findOneUser, getUserById, getUserByEmail, updateUserById } = require('~/api/v1/repositories/user.repo')
 const tokenRepo = require('~/api/v1/repositories/token.repo')
 const refreshTokenUsedRepo = require('~/api/v1/repositories/refresh.token.used.repo')
-const { createKeyPairRsa, createTokenPair, verifyToken } = require('~/api/v1/utils/auth.util')
+const { createKeyPairRsa, createTokenPair, verifyToken, createResetToken } = require('~/api/v1/utils/auth.util')
+const resetTokenRepo = require('~/api/v1/repositories/reset.token.repo')
+const sendMail = require('~/api/v1/utils/send.mail')
 
 const signUp = async ({
   genderId, lastName, firstName, phoneNumber,
@@ -152,9 +155,105 @@ const signOut = async ({ accessToken, refreshToken }) => {
   return await token.destroy()
 }
 
+const forgotPassword = async ({ email }) => {
+  const foundUser = await getUserByEmail({ email })
+  if (!foundUser) throw new ApiError(StatusCodes.BAD_REQUEST, 'Invalid email')
+
+  const resetToken = createResetToken({
+    payload: { userId: foundUser.id, username: foundUser.username },
+    privateKey: foundUser.privateKey
+  })
+
+  await resetTokenRepo.createResetToken({
+    resetToken,
+    userId: foundUser.id
+  })
+
+  const serverDomain = `${protocol}://${host}:${port}`
+
+  const html = `
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Forgot password</title>
+        <style>
+          .my-btn {
+            background-color: #04aa6d;
+            border: none;
+            padding: 6px 12px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.4s;
+          }
+    
+          .my-btn:hover {
+            background-color: rgb(233, 50, 0);
+          }
+        </style>
+      </head>
+      <body>
+        <div class="message">
+          <span>Reset your password: </span>
+          <a
+            style="color: white;"
+            href="${serverDomain}/auth/reset-password?resetToken=${resetToken}"
+            class="my-btn"
+            >Click here!</a
+          >
+        </div>
+      </body>
+    </html>  
+  `
+
+  return await sendMail({
+    from: 'SE Shop <doananhkiet0506@gmail.com>',
+    email,
+    subject: 'Reset password',
+    html
+  })
+}
+
+const resetPassword = async ({ resetToken, password }) => {
+  const foundResetToken = await resetTokenRepo.getResetToken({
+    where: {
+      resetToken
+    },
+    include: [
+      { model: User, as: 'user', attributes: ['id', 'publicKey'] }
+    ]
+  })
+  if (!foundResetToken) throw new ApiError(StatusCodes.UNAUTHORIZED, 'Invalid reset token')
+  foundResetToken.destroy()
+
+  try {
+    const decoded = verifyToken({
+      token: resetToken,
+      publicKey: foundResetToken.user.publicKey
+    })
+    if (decoded.userId !== foundResetToken.user.id) throw new ApiError(StatusCodes.UNAUTHORIZED, 'Invalid reset token')
+
+    const passwordHash = await bcrypt.hash(password, saltRounds)
+    const updatedUser = await updateUserById(foundResetToken.userId, { password: passwordHash })
+    if (!updatedUser) throw new ApiError(StatusCodes.UNAUTHORIZED, 'Reset password failed')
+
+    return updatedUser
+  } catch (error) {
+    throw new ApiError(StatusCodes.UNAUTHORIZED, 'Invalid reset token')
+  }
+}
+
 module.exports = {
   signUp,
   signIn,
   refreshToken,
-  signOut
+  signOut,
+  forgotPassword,
+  resetPassword
 }
