@@ -15,14 +15,12 @@ const router = express.Router()
 
 // router.use(authenticate)
 
-router.route('/')
-  .get(getAllProducts)
-  .post(createProduct)
-  .delete(deleteProductByIds)
+router.get('/', getAllProducts)
+router.post('/', createProduct)
+router.delete('/', deleteProductByIds)
 
-router.route('/:id')
-  .get(getProductById)
-  .patch(updateProductById)
-  .delete(deleteProductById)
+router.get('/:id', getProductById)
+router.patch('/:id', updateProductById)
+router.delete('/:id', deleteProductById)
 
 module.exports = router

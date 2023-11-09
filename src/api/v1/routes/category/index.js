@@ -21,16 +21,14 @@ const router = express.Router()
 
 // router.use(authenticate)
 
-router.route('/')
-  .get(getAllCategories)
-  .post(validateCreateCategory, createCategory)
-  .delete(validateDeleteCategoryByIds, deleteCategoryByIds)
 
+router.get('/', getAllCategories)
+router.post('/', validateCreateCategory, createCategory)
+router.delete('/', validateDeleteCategoryByIds, deleteCategoryByIds)
+
+router.get('/:id', getCategoryById)
 router.get('/:id/get-products', getProductsByCategoryId)
-
-router.route('/:id')
-  .get(getCategoryById)
-  .patch(validateUpdateCategoryById, updateCategoryById)
-  .delete(deleteCategoryById)
+router.patch('/:id', validateUpdateCategoryById, updateCategoryById)
+router.delete('/:id', deleteCategoryById)
 
 module.exports = router

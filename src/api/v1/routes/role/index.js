@@ -20,14 +20,12 @@ const router = express.Router()
 
 // router.use(authenticate)
 
-router.route('/')
-  .get(getAllRoles)
-  .post(validateCreateRole, createRole)
-  .delete(validateDeleteRoleByIds, deleteRoleByIds)
+router.get('/', getAllRoles)
+router.post('/', validateCreateRole, createRole)
+router.delete('/', validateDeleteRoleByIds, deleteRoleByIds)
 
-router.route('/:id')
-  .get(getRoleById)
-  .patch(validateUpdateRoleById, updateRoleById)
-  .delete(deleteRoleById)
+router.get('/:id', getRoleById)
+router.patch('/:id', validateUpdateRoleById, updateRoleById)
+router.delete('/:id', deleteRoleById)
 
 module.exports = router

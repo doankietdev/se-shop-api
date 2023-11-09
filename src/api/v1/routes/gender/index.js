@@ -19,14 +19,13 @@ const router = express.Router()
 
 // router.use(authenticate)
 
-router.route('/')
-  .get(getAllGenders)
-  .post(validateCreateGender, createGender)
-  .delete(validateDeleteGenderByIds, deleteGenderByIds)
 
-router.route('/:id')
-  .get(getGenderById)
-  .patch(validateUpdateGenderById, updateGenderById)
-  .delete(deleteGenderById)
+router.get('/', getAllGenders)
+router.post('/', validateCreateGender, createGender)
+router.delete('/', validateDeleteGenderByIds, deleteGenderByIds)
+
+router.get('/:id', getGenderById)
+router.patch('/:id', validateUpdateGenderById, updateGenderById)
+router.delete('/:id', deleteGenderById)
 
 module.exports = router

@@ -10,7 +10,6 @@ const router = express.Router()
 
 // router.use(authenticate)
 
-router.route('/')
-  .get(getAllUsers)
+router.get('/', getAllUsers)
 
 module.exports = router

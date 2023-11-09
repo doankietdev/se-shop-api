@@ -20,14 +20,12 @@ const router = express.Router()
 
 // router.use(authenticate)
 
-router.route('/')
-  .get(getAllUserStatuses)
-  .post(validateCreateUserStatus, createUserStatus)
-  .delete(validateDeleteUserStatusByIds, deleteGenderByIds)
+router.get('/', getAllUserStatuses)
+router.post('/', validateCreateUserStatus, createUserStatus)
+router.delete('/', validateDeleteUserStatusByIds, deleteGenderByIds)
 
-router.route('/:id')
-  .get(getUserStatusById)
-  .patch(validateUpdateUserStatusById, updateUserStatusById)
-  .delete(deleteUserStatusById)
+router.get('/:id', getUserStatusById)
+router.patch('/:id', validateUpdateUserStatusById, updateUserStatusById)
+router.delete('/:id', deleteUserStatusById)
 
 module.exports = router
