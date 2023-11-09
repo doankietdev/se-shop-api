@@ -11,6 +11,8 @@ const { mysql } = require('./databases')
 const redirectApiVersion = require('./core/redirect.api.version')
 const errorHandlingMiddleware = require('./core/error.handling')
 const notFoundMiddleware = require('~/core/not.found.handling')
+const { nodeEnv } = require('~/config/environment.config')
+const { NODE_ENV_DEV } = require('~/config/constants.config')
 
 const app = express()
 
@@ -20,7 +22,9 @@ app.use(express.json())
 app.use(cookieParser())
 app.use(helmet())
 app.use(compression())
-app.use(morgan('dev'))
+if (nodeEnv === NODE_ENV_DEV) {
+  app.use(morgan('dev'))
+}
 
 mysql.getInstance()
 

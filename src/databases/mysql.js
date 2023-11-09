@@ -1,21 +1,26 @@
 'use strict'
 
 const { Sequelize } = require('sequelize')
-const { mysql } = require('~/config/environment.config')
+const { mysql, nodeEnv } = require('~/config/environment.config')
+const { NODE_ENV_DEV } = require('~/config/constants.config')
 
 let sequelize = null
 
 const connect = async () => {
+  const options = {
+    host: mysql.host,
+    port: mysql.port,
+    database: mysql.databaseName,
+    username: mysql.username,
+    password: mysql.password,
+    logging: true,
+    dialect: 'mysql'
+  }
+
+  if (nodeEnv !== NODE_ENV_DEV) options.logging = false
+
   try {
-    sequelize = new Sequelize({
-      host: mysql.host,
-      port: mysql.port,
-      database: mysql.databaseName,
-      username: mysql.username,
-      password: mysql.password,
-      logging: false,
-      dialect: 'mysql'
-    })
+    sequelize = new Sequelize(options)
     await sequelize.authenticate()
     // eslint-disable-next-line no-console
     console.log('Connected to MySQL successfully')
