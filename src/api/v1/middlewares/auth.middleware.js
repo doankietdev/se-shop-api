@@ -4,8 +4,8 @@ const { StatusCodes, ReasonPhrases } = require('http-status-codes')
 const ApiError = require('~/core/api.error')
 const asyncHandling = require('~/core/async.handling')
 const { REQUEST_HEADER_KEYS } = require('~/config/constants.config')
-const tokenRepo = require('~/api/v1/repositories/token.repo')
-const userRepo = require('~/api/v1/repositories/user.repo')
+const tokenRepo = require('~/api/v1/services/token.service')
+const userService = require('~/api/v1/services/user.service')
 const { verifyToken } = require('~/api/v1/utils/auth.util')
 
 const authenticate = asyncHandling(async (req, res, next) => {
@@ -17,7 +17,7 @@ const authenticate = asyncHandling(async (req, res, next) => {
   const foundToken = await tokenRepo.getTokenByAccessToken({ accessToken })
   if (!foundToken) throw new ApiError(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED)
 
-  const foundUser = await userRepo.getUser({ id: userId })
+  const foundUser = await userService.getUserById(userId)
   if (!foundUser) throw new ApiError(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED)
 
   try {

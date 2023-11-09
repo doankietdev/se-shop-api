@@ -14,6 +14,12 @@ const getAllUserStatuses = async () => {
   return await UserStatus.findAll()
 }
 
+const getUserStatusByName = async ({ name }) => {
+  return await UserStatus.findOne({
+    where: { name }
+  })
+}
+
 const getUserStatusById = async ({ id }) => {
   const userStatus = await UserStatus.findByPk(id)
   if (!userStatus) throw new ApiError(StatusCodes.NOT_FOUND, 'Item not found')
@@ -48,6 +54,7 @@ const deleteUserStatusByIds = async ({ ids }) => {
 module.exports = {
   createUserStatus,
   getAllUserStatuses,
+  getUserStatusByName,
   getUserStatusById,
   updateUserStatusById,
   deleteUserStatusById,

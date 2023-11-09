@@ -14,6 +14,12 @@ const getAllRoles = async () => {
   return await Role.findAll()
 }
 
+const getRoleByName = async ({ name }) => {
+  return await Role.findOne({
+    where: { name }
+  })
+}
+
 const getRoleById = async ({ id }) => {
   const role = await Role.findByPk(id)
   if (!role) throw new ApiError(StatusCodes.NOT_FOUND, 'Item not found')
@@ -48,6 +54,7 @@ const deleteRoleByIds = async ({ ids }) => {
 module.exports = {
   createRole,
   getAllRoles,
+  getRoleByName,
   getRoleById,
   updateRoleById,
   deleteRoleById,

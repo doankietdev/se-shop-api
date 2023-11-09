@@ -14,6 +14,12 @@ const getAllGenders = async () => {
   return await Gender.findAll()
 }
 
+const getGenderByName = async ({ name }) => {
+  return await Gender.findOne({
+    where: { name }
+  })
+}
+
 const getGenderById = async ({ id }) => {
   const gender = await Gender.findByPk(id)
   if (!gender) throw new ApiError(StatusCodes.NOT_FOUND, 'Item not found')
@@ -48,6 +54,7 @@ const deleteGenderByIds = async ({ ids }) => {
 module.exports = {
   createGender,
   getAllGenders,
+  getGenderByName,
   getGenderById,
   updateGenderById,
   deleteGenderById,

@@ -6,14 +6,14 @@ const { StatusCodes, ReasonPhrases } = require('http-status-codes')
 const { app: { saltRounds, protocol, host, port } } = require('~/config/environment.config')
 const ApiError = require('~/core/api.error')
 const { User } = require('~/api/v1/models')
-const cartService = require('~/api/v1/services/cart.service')
-const { getRoleByName } = require('~/api/v1/repositories/role.repo')
-const { getUserStatusByName } = require('~/api/v1/repositories/user.status.repo')
-const { createUser, getUser, findOneUser, getUserById, getUserByEmail, updateUserById } = require('~/api/v1/repositories/user.repo')
-const tokenRepo = require('~/api/v1/repositories/token.repo')
-const refreshTokenUsedRepo = require('~/api/v1/repositories/refresh.token.used.repo')
+const { createCart, getCartByUserId } = require('~/api/v1/services/cart.service')
+const { getRoleByName } = require('~/api/v1/services/role.service')
+const { getUserStatusByName } = require('~/api/v1/services/user.status.service')
+const { createUser, getUser, getUserById, getUserByEmail, updateUserById } = require('~/api/v1/services/user.service')
+const tokenService = require('~/api/v1/services/token.service')
+const refreshTokenUsedService = require('~/api/v1/services/refresh.token.used.sevice')
 const { createKeyPairRsa, createTokenPair, verifyToken, createResetToken } = require('~/api/v1/utils/auth.util')
-const resetTokenRepo = require('~/api/v1/repositories/reset.token.repo')
+const resetTokenService = require('~/api/v1/services/reset.token.service')
 const sendMail = require('~/api/v1/utils/send.mail')
 
 const signUp = async ({
@@ -21,11 +21,13 @@ const signUp = async ({
   email, address, username, password
 }) => {
   const foundUser = await getUser({
-    [Op.or]: [
-      { username },
-      { email },
-      { phoneNumber }
-    ]
+    where: {
+      [Op.or]: [
+        { username },
+        { email },
+        { phoneNumber }
+      ]
+    }
   })
 
   if (foundUser) {
@@ -63,7 +65,7 @@ const signUp = async ({
   })
   if (!newUser) throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR)
 
-  const newCart = await cartService.createCart({ userId: newUser.id })
+  const newCart = await createCart({ userId: newUser.id })
   if (!newCart) throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR)
 
   return {
@@ -79,7 +81,7 @@ const signUp = async ({
 }
 
 const signIn = async ({ username, password }) => {
-  const foundUser = await findOneUser({
+  const foundUser = await getUser({
     attributes: {
       exclude: ['roleId', 'userStatusId', 'createdAt', 'updatedAt']
     },
@@ -95,10 +97,10 @@ const signIn = async ({ username, password }) => {
     privateKey: foundUser.privateKey
   })
 
-  const token = await tokenRepo.createToken({ accessToken, refreshToken, userId: foundUser.id })
+  const token = await tokenService.createToken({ accessToken, refreshToken, userId: foundUser.id })
   if (!token) throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR)
 
-  const foundCart = await cartService.getCartByUserId(foundUser.id)
+  const foundCart = await getCartByUserId(foundUser.id)
   if (!foundCart) throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR)
 
   return {
@@ -116,9 +118,9 @@ const signIn = async ({ username, password }) => {
 
 const refreshToken = async ({ userId, refreshToken }) => {
   // automatically detect illegally stolen refresh token
-  const foundRefreshTokenUsed = await refreshTokenUsedRepo.getRefreshTokenUsed({ refreshToken })
+  const foundRefreshTokenUsed = await refreshTokenUsedService.getRefreshTokenUsed({ refreshToken })
   if (foundRefreshTokenUsed) {
-    await tokenRepo.deleteAll()
+    await tokenService.deleteAll()
     throw new ApiError(StatusCodes.UNAUTHORIZED, 'Something unusual happened')
   }
 
@@ -129,10 +131,10 @@ const refreshToken = async ({ userId, refreshToken }) => {
     const decoded = verifyToken({ token: refreshToken, publicKey: foundUser.publicKey })
     if (decoded.userId !== userId) throw new ApiError(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED)
 
-    const deletedToken = await tokenRepo.deleteTokenByRefreshToken({ refreshToken })
+    const deletedToken = await tokenService.deleteTokenByRefreshToken({ refreshToken })
     if (!deletedToken) throw new ApiError(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED)
 
-    await refreshTokenUsedRepo.createRefreshTokenUsed({
+    await refreshTokenUsedService.createRefreshTokenUsed({
       refreshTokenUsed: deletedToken.refreshToken,
       userId: deletedToken.userId
     })
@@ -142,7 +144,7 @@ const refreshToken = async ({ userId, refreshToken }) => {
       privateKey: foundUser.privateKey
     })
 
-    const token = await tokenRepo.createToken({
+    const token = await tokenService.createToken({
       accessToken: tokenPair.accessToken,
       refreshToken: tokenPair.refreshToken,
       userId
@@ -158,7 +160,7 @@ const refreshToken = async ({ userId, refreshToken }) => {
 }
 
 const signOut = async ({ accessToken, refreshToken }) => {
-  const token = await tokenRepo.findOneToken({
+  const token = await tokenService.findOneToken({
     where: { accessToken, refreshToken }
   })
   if (!token) throw new ApiError(StatusCodes.UNAUTHORIZED, StatusCodes.UNAUTHORIZED)
@@ -174,7 +176,7 @@ const forgotPassword = async ({ email }) => {
     privateKey: foundUser.privateKey
   })
 
-  await resetTokenRepo.createResetToken({
+  await resetTokenService.createResetToken({
     resetToken,
     userId: foundUser.id
   })
@@ -231,7 +233,7 @@ const forgotPassword = async ({ email }) => {
 }
 
 const resetPassword = async ({ resetToken, password }) => {
-  const foundResetToken = await resetTokenRepo.getResetToken({
+  const foundResetToken = await resetTokenService.getResetToken({
     where: {
       resetToken
     },
