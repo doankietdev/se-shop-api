@@ -1,5 +1,7 @@
 'use strict'
 
+const { Op } = require('sequelize')
+const _ = require('lodash')
 const { Category, Product } = require('~/api/v1/models')
 const ApiError = require('~/core/api.error')
 const { StatusCodes, ReasonPhrases } = require('http-status-codes')
@@ -14,18 +16,34 @@ const getAllCategories = async () => {
   return await Category.findAll()
 }
 
-const getProductsByCategoryId = async (categoryId) => {
-  return await Category.findOne({
-    where: { id: categoryId },
-    attributes: ['id', 'name'],
+const getProductsByCategoryId = async ({ categoryId, filter, selector, pagination, sorter }) => {
+  const unselectItems = ['createdAt', 'updatedAt', 'categoryId']
+  _.remove(selector, (select) => {
+    return unselectItems.includes(select)
+  })
+
+  const products = await Category.findOne({
+    where: {
+      id: categoryId,
+      ...filter
+    },
+    attributes: {
+      exclude: ['createdAt', 'updatedAt', 'slug']
+    },
     include: [
       {
         model: Product,
         as: 'products',
-        attributes: ['name', 'slug', 'description', 'imageUrl', 'price', 'stockQuantity']
+        attributes: selector || ['name', 'slug', 'description', 'imageUrl', 'price', 'stockQuantity'],
+        offset: pagination.skip,
+        limit: pagination.limit
       }
-    ]
+    ],
+    order: sorter
   })
+  if (!products) throw new ApiError(StatusCodes.NOT_FOUND, 'Not found products')
+
+  return products
 }
 
 const getCategoryById = async ({ id }) => {

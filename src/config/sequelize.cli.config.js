@@ -12,7 +12,8 @@ module.exports = {
     dialect: 'mysql',
     dialectOptions: {
       bigNumberStrings: true
-    }
+    },
+    logging: false
   },
   test: {
     username: mysql.username,
@@ -23,7 +24,8 @@ module.exports = {
     dialect: 'mysql',
     dialectOptions: {
       bigNumberStrings: true
-    }
+    },
+    logging: false
   },
   production: {
     username: mysql.username,
@@ -34,6 +36,7 @@ module.exports = {
     dialect: 'mysql',
     dialectOptions: {
       bigNumberStrings: true
-    }
+    },
+    logging: false
   }
 }
