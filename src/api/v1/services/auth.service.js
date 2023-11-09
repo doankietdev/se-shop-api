@@ -6,6 +6,7 @@ const { StatusCodes, ReasonPhrases } = require('http-status-codes')
 const { app: { saltRounds, protocol, host, port } } = require('~/config/environment.config')
 const ApiError = require('~/core/api.error')
 const { User } = require('~/api/v1/models')
+const cartService = require('~/api/v1/services/cart.service')
 const { getRoleByName } = require('~/api/v1/repositories/role.repo')
 const { getUserStatusByName } = require('~/api/v1/repositories/user.status.repo')
 const { createUser, getUser, findOneUser, getUserById, getUserByEmail, updateUserById } = require('~/api/v1/repositories/user.repo')
@@ -62,7 +63,11 @@ const signUp = async ({
   })
   if (!newUser) throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR)
 
+  const newCart = await cartService.createCart({ userId: newUser.id })
+  if (!newCart) throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR)
+
   return {
+    id: newUser.id,
     lastName: newUser.lastName,
     firstName: newUser.firstName,
     genderId: newUser.genderId,
@@ -93,12 +98,16 @@ const signIn = async ({ username, password }) => {
   const token = await tokenRepo.createToken({ accessToken, refreshToken, userId: foundUser.id })
   if (!token) throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR)
 
+  const foundCart = await cartService.getCartByUserId(foundUser.id)
+  if (!foundCart) throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR)
+
   return {
     user: {
       userId: foundUser.id,
       lastName: foundUser.lastName,
       firstName: foundUser.firstName,
-      username: foundUser.username
+      username: foundUser.username,
+      cartId: foundCart.id
     },
     accessToken: token.accessToken,
     refreshToken: token.refreshToken

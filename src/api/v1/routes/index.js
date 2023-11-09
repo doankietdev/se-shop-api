@@ -8,6 +8,7 @@ const userRouter = require('./user')
 const authRouter = require('./auth')
 const categoryRouter = require('./category')
 const productRouter = require('./product')
+const cartRouter = require('./cart')
 
 const router = express.Router()
 
@@ -18,5 +19,6 @@ router.use('/user-statuses', userStatusRouter)
 router.use('/users', userRouter)
 router.use('/categories', categoryRouter)
 router.use('/products', productRouter)
+router.use('/carts', cartRouter)
 
 module.exports = router
