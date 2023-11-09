@@ -4,19 +4,20 @@ const {
   Model
 } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
-  class ProductType extends Model {
+  class Category extends Model {
     // eslint-disable-next-line no-unused-vars
     static associate(models) {
 
     }
   }
-  ProductType.init({
+  Category.init({
     name: DataTypes.STRING,
+    slug: DataTypes.STRING,
     description: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'ProductType',
-    tableName: 'ProductType'
+    modelName: 'Category',
+    tableName: 'Category'
   })
-  return ProductType
+  return Category
 }

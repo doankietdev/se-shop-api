@@ -10,17 +10,21 @@ module.exports = {
         primaryKey: true,
         autoIncrement: true
       },
-      productTypeId: {
+      categoryId: {
         type: Sequelize.TINYINT,
         allowNull: false,
         references: {
-          model: 'ProductType',
+          model: 'Category',
           key: 'id'
         }
       },
       name: {
-        type: Sequelize.STRING(20),
+        type: Sequelize.STRING(100),
         allowNull: false
+      },
+      slug: {
+        type: Sequelize.STRING(150),
+        allowNull: true
       },
       description: {
         type: Sequelize.STRING(100)
@@ -29,6 +33,74 @@ module.exports = {
         type: Sequelize.STRING(200),
         allowNull: false
       },
+      displayDetails: {
+        type: Sequelize.STRING(255),
+        allowNull: true
+      },
+      operatingSystem: {
+        type: Sequelize.STRING(50),
+        allowNull: true
+      },
+      processor: {
+        type: Sequelize.STRING(50),
+        allowNull: true
+      },
+      ram: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        validate: {
+          isPositive: (value) => {
+            return value > 0
+          }
+        }
+      },
+      storage : {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        validate: {
+          isPositive: (value) => {
+            return value > 0
+          }
+        }
+      },
+      dimensions: {
+        type: Sequelize.STRING(50),
+        allowNull: true
+      },
+      weight : {
+        type: Sequelize.DECIMAL(5, 2),
+        allowNull: true,
+        validate: {
+          isPositive: (value) => {
+            return value > 0
+          }
+        }
+      },
+      batteryCapacity: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        validate: {
+          isPositive: (value) => {
+            return value > 0
+          }
+        }
+      },
+      frontCameraResolution: {
+        type: Sequelize.STRING(50),
+        allowNull: true
+      },
+      rearCameraResolution  : {
+        type: Sequelize.STRING(50),
+        allowNull: true
+      },
+      connectivity: {
+        type: Sequelize.STRING(255),
+        allowNull: true
+      },
+      color: {
+        type: Sequelize.STRING(50),
+        allowNull: true
+      },
       price: {
         type: Sequelize.BIGINT,
         allowNull: false,
@@ -36,6 +108,13 @@ module.exports = {
           isPositive: (value) => {
             return value > 0
           }
+        }
+      },
+      stockQuantity: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        validate: {
+          min: 0
         }
       },
       createdAt: {

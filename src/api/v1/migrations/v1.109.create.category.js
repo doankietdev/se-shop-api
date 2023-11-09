@@ -3,26 +3,23 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Inventory', {
+    await queryInterface.createTable('Category', {
       id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.TINYINT,
         allowNull: false,
-        primaryKey: true
+        primaryKey: true,
+        autoIncrement: true
       },
-      productId: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'Product',
-          key: 'id'
-        }
+      name: {
+        type: Sequelize.STRING(50),
+        allowNull: false
       },
-      quantity: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        validate: {
-          min: 0
-        }
+      slug: {
+        type: Sequelize.STRING(75),
+        allowNull: true
+      },
+      description: {
+        type: Sequelize.STRING(100)
       },
       createdAt: {
         type: 'TIMESTAMP',
@@ -38,6 +35,6 @@ module.exports = {
   },
   // eslint-disable-next-line no-unused-vars
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Inventory')
+    await queryInterface.dropTable('Category')
   }
 }

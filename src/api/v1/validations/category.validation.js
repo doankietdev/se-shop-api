@@ -5,34 +5,39 @@ const { StatusCodes } = require('http-status-codes')
 const ApiError = require('~/core/api.error')
 const asyncHandling = require('~/core/async.handling')
 
-const productTypeSchema = Joi.object({
-  name: Joi.string().required().max(20),
-  description: Joi.string().required().max(100)
+const categorySchema = Joi.object({
+  name: Joi.string().required().max(50),
+  description: Joi.string().max(100)
 })
 
-const validateCreateProductType = asyncHandling(async (req, res, next) => {
+const validateCreateCategory = asyncHandling(async (req, res, next) => {
+  const { name, description } = req.body
+
+  const categorySchema = Joi.object({
+    name: Joi.string().required().max(50),
+    description: Joi.string().max(100)
+  })
+
+  try {
+    await categorySchema.validateAsync({ name, description }, { abortEarly: false })
+    next()
+  } catch (error) {
+    throw new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, error.message)
+  }
+})
+
+const validateUpdateCategoryById = asyncHandling(async (req, res, next) => {
   const { name, description } = req.body
 
   try {
-    await productTypeSchema.validateAsync({ name, description }, { abortEarly: false })
+    await categorySchema.validateAsync({ name, description }, { abortEarly: false })
     next()
   } catch (error) {
     throw new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, error.message)
   }
 })
 
-const validateUpdateProductTypeById = asyncHandling(async (req, res, next) => {
-  const { name } = req.body
-
-  try {
-    await productTypeSchema.validateAsync({ name }, { abortEarly: false })
-    next()
-  } catch (error) {
-    throw new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, error.message)
-  }
-})
-
-const validateDeleteProductTypeByIds = asyncHandling(async (req, res, next) => {
+const validateDeleteCategoryByIds = asyncHandling(async (req, res, next) => {
   const { ids } = req.body
 
   const idsSchema = Joi.object({
@@ -48,7 +53,7 @@ const validateDeleteProductTypeByIds = asyncHandling(async (req, res, next) => {
 })
 
 module.exports = {
-  validateCreateProductType,
-  validateUpdateProductTypeById,
-  validateDeleteProductTypeByIds
+  validateCreateCategory,
+  validateUpdateCategoryById,
+  validateDeleteCategoryByIds
 }

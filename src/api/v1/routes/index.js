@@ -6,7 +6,7 @@ const genderRouter = require('./gender')
 const userStatusRouter = require('./user.status')
 const userRouter = require('./user')
 const authRouter = require('./auth')
-const productTypeRouter = require('./product.type')
+const categoryRouter = require('./category')
 
 const router = express.Router()
 
@@ -15,6 +15,6 @@ router.use('/roles', roleRouter)
 router.use('/genders', genderRouter)
 router.use('/user-statuses', userStatusRouter)
 router.use('/users', userRouter)
-router.use('/product-types', productTypeRouter)
+router.use('/categories', categoryRouter)
 
 module.exports = router
