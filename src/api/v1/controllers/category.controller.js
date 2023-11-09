@@ -21,6 +21,14 @@ const getAllCategories = asyncHandling(async (req, res) => {
   }).send(res)
 })
 
+const getProductsByCategoryId = asyncHandling(async (req, res) => {
+  const id = Number(req.params.id)
+
+  new SuccessResponse({
+    metadata: await categoryService.getProductsByCategoryId(id)
+  }).send(res)
+})
+
 const getCategoryById = asyncHandling(async (req, res) => {
   const { id } = req.params
 
@@ -32,7 +40,7 @@ const getCategoryById = asyncHandling(async (req, res) => {
 const updateCategoryById = asyncHandling( async (req, res) => {
   const id = Number(req.params.id)
   const { name, description } = req.body
-  
+
   new SuccessResponse({
     metadata: await categoryService.updateCategoryById({ id, name, description })
   }).send(res)
@@ -60,5 +68,6 @@ module.exports = {
   getCategoryById,
   updateCategoryById,
   deleteCategoryById,
-  deleteCategoryByIds
+  deleteCategoryByIds,
+  getProductsByCategoryId
 }

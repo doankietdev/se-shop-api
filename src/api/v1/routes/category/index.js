@@ -12,7 +12,8 @@ const {
   getCategoryById,
   updateCategoryById,
   deleteCategoryById,
-  deleteCategoryByIds
+  deleteCategoryByIds,
+  getProductsByCategoryId
 }= require('~/api/v1/controllers/category.controller')
 const { authenticate } = require('~/api/v1/middlewares/auth.middleware')
 
@@ -24,6 +25,8 @@ router.route('/')
   .get(getAllCategories)
   .post(validateCreateCategory, createCategory)
   .delete(validateDeleteCategoryByIds, deleteCategoryByIds)
+
+router.get('/:id/get-products', getProductsByCategoryId)
 
 router.route('/:id')
   .get(getCategoryById)

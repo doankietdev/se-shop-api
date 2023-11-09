@@ -1,6 +1,6 @@
 'use strict'
 
-const { Product } = require('~/api/v1/models')
+const { Product, Category } = require('~/api/v1/models')
 const ApiError = require('~/core/api.error')
 const { StatusCodes, ReasonPhrases } = require('http-status-codes')
 
@@ -11,7 +11,14 @@ const createProduct = async (reqBody = {}) => {
 }
 
 const getAllProducts = async () => {
-  return await Product.findAll()
+  return await Product.findAll({
+    attributes: {
+      exclude: ['categoryId']
+    },
+    include: [
+      { model: Category, as: 'category', attributes: ['id', 'name'] }
+    ]
+  })
 }
 
 const getProductById = async (id) => {

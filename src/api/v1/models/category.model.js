@@ -9,7 +9,11 @@ module.exports = (sequelize, DataTypes) => {
   class Category extends Model {
     // eslint-disable-next-line no-unused-vars
     static associate(models) {
-
+      Category.hasMany(models.Product, {
+        foreignKey: 'categoryId',
+        sourceKey: 'id',
+        as: 'products'
+      })
     }
   }
   Category.init({

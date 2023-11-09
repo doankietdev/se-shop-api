@@ -1,6 +1,6 @@
 'use strict'
 
-const { Category } = require('~/api/v1/models')
+const { Category, Product } = require('~/api/v1/models')
 const ApiError = require('~/core/api.error')
 const { StatusCodes, ReasonPhrases } = require('http-status-codes')
 
@@ -12,6 +12,20 @@ const createCategory = async ({ name, description }) => {
 
 const getAllCategories = async () => {
   return await Category.findAll()
+}
+
+const getProductsByCategoryId = async (categoryId) => {
+  return await Category.findOne({
+    where: { id: categoryId },
+    attributes: ['id', 'name'],
+    include: [
+      {
+        model: Product,
+        as: 'products',
+        attributes: ['name', 'slug', 'description', 'imageUrl', 'price', 'stockQuantity']
+      }
+    ]
+  })
 }
 
 const getCategoryById = async ({ id }) => {
@@ -51,5 +65,6 @@ module.exports = {
   getCategoryById,
   updateCategoryById,
   deleteCategoryById,
-  deleteCategoryByIds
+  deleteCategoryByIds,
+  getProductsByCategoryId
 }
