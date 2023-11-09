@@ -32,14 +32,14 @@ const getCategoryById = asyncHandling(async (req, res) => {
 const updateCategoryById = asyncHandling( async (req, res) => {
   const id = Number(req.params.id)
   const { name, description } = req.body
-
+  
   new SuccessResponse({
     metadata: await categoryService.updateCategoryById({ id, name, description })
   }).send(res)
 })
 
 const deleteCategoryById = asyncHandling(async (req, res) => {
-  const { id } = Number(req.params)
+  const { id } = Number(req.params.id)
 
   new SuccessResponse({
     metadata: await categoryService.deleteCategoryById({ id })
