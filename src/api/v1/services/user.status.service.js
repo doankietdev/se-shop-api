@@ -1,6 +1,6 @@
 'use strict'
 
-const { UserStatus } = require('~/api/v1/models')
+const UserStatus = require('~/api/v1/models/user.status.model')
 const ApiError = require('~/core/api.error')
 const { StatusCodes, ReasonPhrases } = require('http-status-codes')
 

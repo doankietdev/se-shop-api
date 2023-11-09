@@ -1,6 +1,6 @@
 'use strict'
 
-const { UserStatus } = require('~/api/v1/models')
+const UserStatus = require('~/api/v1/models/user.status.model')
 
 const getUserStatusByName = async ({ name }) => {
   return await UserStatus.findOne({

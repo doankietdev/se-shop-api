@@ -3,18 +3,19 @@
 const { Sequelize } = require('sequelize')
 const { mysql } = require('~/config/environment.config')
 
-const sequelize = new Sequelize({
-  host: mysql.host,
-  port: mysql.port,
-  database: mysql.databaseName,
-  username: mysql.username,
-  password: mysql.password,
-  logging: false,
-  dialect: 'mysql'
-})
+let sequelize = null
 
 const connect = async () => {
   try {
+    sequelize = new Sequelize({
+      host: mysql.host,
+      port: mysql.port,
+      database: mysql.databaseName,
+      username: mysql.username,
+      password: mysql.password,
+      logging: false,
+      dialect: 'mysql'
+    })
     await sequelize.authenticate()
     // eslint-disable-next-line no-console
     console.log('Connected to MySQL successfully')
@@ -24,6 +25,11 @@ const connect = async () => {
   }
 }
 
+const getInstance = () => {
+  if (!sequelize) connect()
+  return sequelize
+}
+
 module.exports = {
-  connect
+  getInstance
 }

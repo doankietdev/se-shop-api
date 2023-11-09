@@ -1,6 +1,6 @@
 'use strict'
 
-const { User } = require('~/api/v1/models')
+const User = require('~/api/v1/models/user.model')
 
 const createUser = async ({
   roleId, userStatusId, genderId, lastName, firstName,

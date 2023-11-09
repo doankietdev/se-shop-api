@@ -1,6 +1,6 @@
 'use strict'
 
-const { Role } = require('~/api/v1/models')
+const Role = require('~/api/v1/models/role.model')
 const ApiError = require('~/core/api.error')
 const { StatusCodes, ReasonPhrases } = require('http-status-codes')
 

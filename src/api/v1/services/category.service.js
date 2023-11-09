@@ -1,8 +1,8 @@
 'use strict'
 
-const { Op } = require('sequelize')
 const _ = require('lodash')
-const { Category, Product } = require('~/api/v1/models')
+const Category = require('~/api/v1/models/category.model')
+const Product = require('~/api/v1/models/product.model')
 const ApiError = require('~/core/api.error')
 const { StatusCodes, ReasonPhrases } = require('http-status-codes')
 

@@ -22,7 +22,7 @@ app.use(helmet())
 app.use(compression())
 app.use(morgan('dev'))
 
-mysql.connect()
+mysql.getInstance()
 
 app.use('/api', redirectApiVersion)
 app.use('/', notFoundMiddleware)

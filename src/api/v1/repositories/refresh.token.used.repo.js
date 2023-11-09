@@ -1,6 +1,6 @@
 'use strict'
 
-const { RefreshTokenUsed } = require('~/api/v1/models')
+const RefreshTokenUsed = require('~/api/v1/models/refresh.token.used.model')
 
 const createRefreshTokenUsed = async ({ refreshTokenUsed, userId }) => {
   return await RefreshTokenUsed.create({ refreshTokenUsed, userId })
