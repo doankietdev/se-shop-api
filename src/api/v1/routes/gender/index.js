@@ -17,7 +17,7 @@ const {
 const { authenticate } = require('~/api/v1/middlewares/auth.middleware')
 const router = express.Router()
 
-router.use(authenticate)
+// router.use(authenticate)
 
 router.route('/')
   .get(getAllGenders)

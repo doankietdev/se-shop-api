@@ -3,6 +3,8 @@
 const {
   Model
 } = require('sequelize')
+const slugify = require('~/api/v1/utils/slugify')
+
 module.exports = (sequelize, DataTypes) => {
   class Category extends Model {
     // eslint-disable-next-line no-unused-vars
@@ -17,7 +19,14 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Category',
-    tableName: 'Category'
+    tableName: 'Category',
+    hooks: {
+      beforeValidate: (category) => {
+        if (category.name) {
+          category.slug = slugify(category.name + '-' +Date.now())
+        }
+      }
+    }
   })
   return Category
 }
