@@ -95,6 +95,7 @@ const signIn = async ({ username, password }) => {
 
   return {
     user: {
+      userId: foundUser.id,
       lastName: foundUser.lastName,
       firstName: foundUser.firstName,
       username: foundUser.username
