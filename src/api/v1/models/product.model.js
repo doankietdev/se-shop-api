@@ -4,16 +4,8 @@ const { Model, DataTypes } = require('sequelize')
 const { mysql } = require('~/databases')
 const slugify = require('~/api/v1/utils/slugify')
 
-class Product extends Model {
-  // eslint-disable-next-line no-unused-vars
-  static associate(models) {
-    Product.belongsTo(models.Category, {
-      foreignKey: 'categoryId',
-      targetKey: 'id',
-      as: 'category'
-    })
-  }
-}
+class Product extends Model {}
+
 Product.init({
   name: DataTypes.STRING,
   slug: DataTypes.STRING,

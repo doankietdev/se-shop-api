@@ -3,15 +3,8 @@
 const { Model, DataTypes } = require('sequelize')
 const { mysql } = require('~/databases')
 
-class RefreshToken extends Model {
-  static associate(models) {
-    RefreshToken.belongsTo(models.User, {
-      foreignKey: 'userId',
-      targetKey: 'id',
-      as: 'user'
-    })
-  }
-}
+class RefreshToken extends Model {}
+
 RefreshToken.init({
   refreshToken: DataTypes.STRING
 }, {

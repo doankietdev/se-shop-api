@@ -1,8 +1,6 @@
 'use strict'
 
-const Cart = require('~/api/v1/models/cart.model')
-const CartDetail = require('~/api/v1/models/cart.detail.model')
-const Product = require('~/api/v1/models/product.model')
+const { Cart, CartDetail, Product } = require('~/api/v1/models')
 const cartDetailService = require('~/api/v1/services/cart.detail.service')
 const ApiError = require('../../../../build/src/core/api.error')
 const { StatusCodes, ReasonPhrases } = require('http-status-codes')

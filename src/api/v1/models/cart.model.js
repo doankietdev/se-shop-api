@@ -3,21 +3,8 @@
 const { Model } = require('sequelize')
 const { mysql } = require('~/databases')
 
-class Cart extends Model {
-  static associate(models) {
-    Cart.belongsTo(models.User, {
-      foreignKey: 'userId',
-      targetKey: 'id',
-      as: 'user'
-    })
+class Cart extends Model {}
 
-    Cart.hasMany(models.CartDetail, {
-      foreignKey: 'cartId',
-      sourceKey: 'id',
-      as: 'products'
-    })
-  }
-}
 Cart.init({
 }, {
   sequelize: mysql.getInstance(),

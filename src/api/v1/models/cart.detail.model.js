@@ -3,21 +3,8 @@
 const { Model, DataTypes } = require('sequelize')
 const { mysql } = require('~/databases')
 
-class CartDetail extends Model {
-  static associate(models) {
-    CartDetail.belongsTo(models.Cart, {
-      foreignKey: 'cartId',
-      targetKey: 'id',
-      as: 'cart'
-    })
+class CartDetail extends Model {}
 
-    CartDetail.belongsTo(models.Product, {
-      foreignKey: 'productId',
-      targetKey: 'id',
-      as: 'product'
-    })
-  }
-}
 CartDetail.init({
   cartId: {
     type: DataTypes.INTEGER,

@@ -3,17 +3,17 @@
 const { Model, DataTypes } = require('sequelize')
 const { mysql } = require('~/databases')
 
-class ResetToken extends Model {}
+class CorsDomain extends Model {}
 
-ResetToken.init({
-  resetToken: {
+CorsDomain.init({
+  domain: {
     type: DataTypes.STRING,
     primaryKey: true
   }
 }, {
   sequelize: mysql.getInstance(),
-  modelName: 'ResetToken',
-  tableName: 'ResetToken'
+  modelName: 'CorsDomain',
+  tableName: 'CorsDomain'
 })
 
-module.exports = ResetToken
+module.exports = CorsDomain

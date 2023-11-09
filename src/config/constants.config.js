@@ -30,6 +30,5 @@ module.exports = {
   REQUEST_HEADER_KEYS: {
     apiVersion: 'x-api-version',
     userId: 'x-user-id'
-  },
-  WHITELIST_DOMAINS: []
+  }
 }

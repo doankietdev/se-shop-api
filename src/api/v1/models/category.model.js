@@ -2,18 +2,11 @@
 
 const { Model, DataTypes } = require('sequelize')
 const { mysql } = require('~/databases')
+const Product = require('./product.model')
 const slugify = require('~/api/v1/utils/slugify')
 
-class Category extends Model {
-  // eslint-disable-next-line no-unused-vars
-  static associate(models) {
-    Category.hasMany(models.Product, {
-      foreignKey: 'categoryId',
-      sourceKey: 'id',
-      as: 'products'
-    })
-  }
-}
+class Category extends Model {}
+
 Category.init({
   name: DataTypes.STRING,
   slug: DataTypes.STRING,
@@ -29,6 +22,12 @@ Category.init({
       }
     }
   }
+})
+
+Category.hasMany(Product, {
+  foreignKey: 'categoryId',
+  sourceKey: 'id',
+  as: 'products'
 })
 
 module.exports = Category

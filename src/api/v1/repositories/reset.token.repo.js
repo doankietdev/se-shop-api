@@ -1,6 +1,6 @@
 'use strict'
 
-const ResetToken = require('~/api/v1/models/reset.token.model')
+const { ResetToken } = require('~/api/v1/models')
 
 const createResetToken = async ({ resetToken, userId }) => {
   return await ResetToken.create({ resetToken, userId })
