@@ -34,7 +34,9 @@ const getAllUsers = async () => {
 }
 
 const getUserById = async (id) => {
-  const user = await User.findByPk(id)
+  const user = await User.findByPk(id, {
+    raw: true
+  })
   if (!user) throw new ApiError(StatusCodes.NOT_FOUND, 'Item not found')
   return user
 }

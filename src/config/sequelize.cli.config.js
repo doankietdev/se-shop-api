@@ -11,7 +11,8 @@ module.exports = {
     port: mysql.port,
     dialect: 'mysql',
     dialectOptions: {
-      bigNumberStrings: true
+      charset: 'utf8',
+      collate: 'utf8_general_ci'
     },
     logging: false
   },

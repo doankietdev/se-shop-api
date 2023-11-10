@@ -38,13 +38,6 @@ module.exports = {
         type: Sequelize.STRING(100),
         allowNull: false
       },
-      feeShip: {
-        type: Sequelize.BIGINT,
-        allowNull: false,
-        validate: {
-          min: 0
-        }
-      },
       createdAt: {
         type: 'TIMESTAMP',
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),

@@ -14,6 +14,10 @@ const connect = async () => {
     username: mysql.username,
     password: mysql.password,
     logging: true,
+    dialectOptions: {
+      charset: 'utf8',
+      collate: 'utf8_general_ci'
+    },
     dialect: 'mysql'
   }
 

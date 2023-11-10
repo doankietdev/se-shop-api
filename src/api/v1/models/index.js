@@ -13,6 +13,10 @@ const Category = require('./category.model')
 const Product = require('./product.model')
 const Cart = require('./cart.model')
 const CartDetail = require('./cart.detail.model')
+const PaymentForm = require('./payment.form.model')
+const OrderStatus = require('./order.status.model')
+const Order = require('./order.model')
+const OrderDetail = require('./order.detail.model')
 
 User.belongsTo(UserStatus, {
   foreignKey: 'userStatusId',
@@ -84,6 +88,38 @@ CartDetail.belongsTo(Product, {
   as: 'product'
 })
 
+Order.belongsTo(OrderStatus, {
+  foreignKey: 'orderStatusId',
+  targetKey: 'id',
+  as: 'orderStatus'
+})
+Order.belongsTo(PaymentForm, {
+  foreignKey: 'paymentFormId',
+  targetKey: 'id',
+  as: 'paymentForm'
+})
+Order.belongsTo(User, {
+  foreignKey: 'userId',
+  targetKey: 'id',
+  as: 'user'
+})
+Order.hasMany(OrderDetail, {
+  foreignKey: 'orderId',
+  sourceKey: 'id',
+  as: 'products'
+})
+
+OrderDetail.belongsTo(Order, {
+  foreignKey: 'orderId',
+  targetKey: 'id',
+  as: 'order'
+})
+OrderDetail.belongsTo(Product, {
+  foreignKey: 'productId',
+  targetKey: 'id',
+  as: 'product'
+})
+
 module.exports = {
   Role,
   Permission,
@@ -97,5 +133,9 @@ module.exports = {
   Category,
   Product,
   Cart,
-  CartDetail
+  CartDetail,
+  PaymentForm,
+  OrderStatus,
+  Order,
+  OrderDetail
 }

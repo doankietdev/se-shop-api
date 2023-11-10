@@ -113,7 +113,7 @@ const refreshToken = async ({ userId, refreshToken }) => {
     throw new ApiError(StatusCodes.UNAUTHORIZED, 'Something unusual happened')
   }
 
-  const foundUser = await userService.getUserById({ id: userId })
+  const foundUser = await userService.getUserById(userId)
   if (!foundUser) throw new ApiError(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED)
 
   try {

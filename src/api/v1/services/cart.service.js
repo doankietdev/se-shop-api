@@ -2,7 +2,7 @@
 
 const { Cart, CartDetail, Product } = require('~/api/v1/models')
 const { getProductById } = require('~/api/v1/repositories/product.repo')
-const { getCartByCartIdUserId } = require('~/api/v1/repositories/cart.repo')
+const { getFullCart } = require('~/api/v1/repositories/cart.repo')
 const { getCartByCartIdProductId } = require('~/api/v1/repositories/cart.detail.repo')
 const ApiError = require('~/core/api.error')
 const { StatusCodes, ReasonPhrases } = require('http-status-codes')
@@ -47,7 +47,7 @@ const getFullCartByUserId = async (userId) => {
         include: [{
           model: Product,
           as: 'product',
-          attributes: ['name', 'description', 'imageUrl', 'price']
+          attributes: ['id', 'name', 'description', 'imageUrl', 'price']
         }]
       }
     ]
@@ -68,7 +68,7 @@ const getFullCartById = async (id) => {
         include: [{
           model: Product,
           as: 'product',
-          attributes: ['name', 'description', 'imageUrl', 'price']
+          attributes: ['id', 'name', 'description', 'imageUrl', 'price']
         }]
       }
     ]
@@ -78,7 +78,7 @@ const getFullCartById = async (id) => {
 }
 
 const addProductToCart = async ({ userId, cartId, productId, quantity }) => {
-  const foundCart = await getCartByCartIdUserId({ cartId, userId })
+  const foundCart = await getFullCart({ cartId, userId })
   if (!foundCart) throw new ApiError(StatusCodes.BAD_REQUEST, ReasonPhrases.BAD_REQUEST)
 
   const foundProduct = await getProductById(productId)
@@ -104,7 +104,7 @@ const addProductToCart = async ({ userId, cartId, productId, quantity }) => {
 }
 
 const reduceQuantityProduct = async ({ userId, cartId, productId, quantity }) => {
-  const foundCart = await getCartByCartIdUserId({ cartId, userId })
+  const foundCart = await getFullCart({ cartId, userId })
   if (!foundCart) throw new ApiError(StatusCodes.BAD_REQUEST, ReasonPhrases.BAD_REQUEST)
 
   const foundProduct = await getProductById(productId)

@@ -8,6 +8,13 @@ const getProductById = async (id) => {
   })
 }
 
+const getProductsByIds = async (ids = []) => {
+  return await Product.findAll({
+    where: { id: ids }
+  })
+}
+
 module.exports = {
-  getProductById
+  getProductById,
+  getProductsByIds
 }
