@@ -1,9 +1,8 @@
 'use strict'
 
 const { Cart, CartDetail, Product } = require('~/api/v1/models')
-const cartDetailService = require('~/api/v1/services/cart.detail.service')
 const ApiError = require('~/core/api.error')
-const { StatusCodes, ReasonPhrases } = require('http-status-codes')
+const { StatusCodes } = require('http-status-codes')
 
 const createCart = async ({ userId }) => {
   return await Cart.create({ userId })
@@ -73,11 +72,32 @@ const getFullCartById = async (id) => {
   return fullCart
 }
 
-const addProductToCart = async (reqBody = {}) => {
-  const newCartDetail = await cartDetailService.createCartDetail(reqBody)
-  if (!newCartDetail) throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR)
+const addProductToCart = async ({ userId, cartId, productId, quantity }) => {
+  const foundCart = await Cart.findOne({
+    where: { userId, id: cartId }
+  })
+  if (!foundCart) throw new ApiError(StatusCodes.BAD_REQUEST, 'No carts found')
 
-  const fullCart = await getFullCartById(newCartDetail.cartId)
+  const foundProduct = await Product.findOne({
+    where: { id: productId }
+  })
+  if (!foundProduct) throw new ApiError(StatusCodes.BAD_REQUEST, 'No products found')
+
+  const foundCartDetail = await CartDetail.findOne({
+    where: { cartId, productId }
+  })
+
+  if (foundCartDetail) {
+    const isExceedStockQuantity = foundProduct.stockQuantity < (quantity + foundCartDetail.quantity)
+    if (isExceedStockQuantity) throw new ApiError(StatusCodes.BAD_REQUEST, 'Quantity in stock is not enough')
+    await foundCartDetail.update({ quantity: foundCartDetail.quantity + quantity })
+  } else {
+    const isExceedStockQuantity = foundProduct.stockQuantity < quantity
+    if (isExceedStockQuantity) throw new ApiError(StatusCodes.BAD_REQUEST, 'Quantity in stock is not enough')
+    await CartDetail.create({ cartId, productId, quantity })
+  }
+
+  const fullCart = await getFullCartById(cartId)
   return {
     cartId: fullCart.id,
     products: fullCart.products

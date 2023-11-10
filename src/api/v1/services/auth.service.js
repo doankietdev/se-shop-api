@@ -6,7 +6,7 @@ const { StatusCodes, ReasonPhrases } = require('http-status-codes')
 const { app: { saltRounds, protocol, host, port } } = require('~/config/environment.config')
 const ApiError = require('~/core/api.error')
 const { User } = require('~/api/v1/models')
-const { createCart, getCartByUserId } = require('~/api/v1/services/cart.service')
+const { createCart, getFullCartByUserId } = require('~/api/v1/services/cart.service')
 const { getRoleByName } = require('~/api/v1/services/role.service')
 const { getUserStatusByName } = require('~/api/v1/services/user.status.service')
 const { createUser, getUser, getUserById, getUserByEmail, updateUserById } = require('~/api/v1/services/user.service')
@@ -100,16 +100,16 @@ const signIn = async ({ username, password }) => {
   const token = await tokenService.createToken({ accessToken, refreshToken, userId: foundUser.id })
   if (!token) throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR)
 
-  const foundCart = await getCartByUserId(foundUser.id)
-  if (!foundCart) throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR)
+  const foundFullCart = await getFullCartByUserId(foundUser.id)
+  if (!foundFullCart) throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR)
 
   return {
     user: {
-      userId: foundUser.id,
+      id: foundUser.id,
       lastName: foundUser.lastName,
       firstName: foundUser.firstName,
       username: foundUser.username,
-      cartId: foundCart.id
+      cart: foundFullCart
     },
     accessToken: token.accessToken,
     refreshToken: token.refreshToken

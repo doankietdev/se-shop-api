@@ -23,7 +23,7 @@ const getAllProducts = async () => {
 
 const getProductById = async (id) => {
   const product = await Product.findByPk(id)
-  if (!product) throw new ApiError(StatusCodes.NOT_FOUND, 'Item not found')
+  if (!product) throw new ApiError(StatusCodes.NOT_FOUND, 'No products found')
   return product
 }
 
@@ -31,13 +31,13 @@ const updateProductById = async (id, reqBody = {}) => {
   const product = await Product.findOne({
     where: { id }
   })
-  if (!product) throw new ApiError(StatusCodes.NOT_FOUND, 'Item not found')
+  if (!product) throw new ApiError(StatusCodes.NOT_FOUND, 'No products found')
   return await product.update(reqBody)
 }
 
 const deleteProductById = async (id) => {
   const product = await Product.findByPk(id)
-  if (!product) throw new ApiError(StatusCodes.NOT_FOUND, 'Item not found')
+  if (!product) throw new ApiError(StatusCodes.NOT_FOUND, 'No products found')
   const { dataValues } = await product.destroy()
   if (!dataValues) throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR)
   return await getAllProducts()
