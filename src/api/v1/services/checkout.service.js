@@ -53,6 +53,9 @@ const order = async ({ userId, shipAddress, paymentFormId, orderProducts = [] })
         price: foundProduct.price
       })
 
+      // reduce inventory when ordering
+      foundProduct.update({ stockQuantity: foundProduct.stockQuantity - orderProduct.quantity })
+
       return {
         quantity: newOrderDetail.quantity,
         product: {
