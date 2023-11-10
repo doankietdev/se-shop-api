@@ -1,9 +1,15 @@
 'use strict'
 
 const { Token } = require('~/api/v1/models')
+const ApiError = require('../../../../build/src/core/api.error')
+const { StatusCodes, ReasonPhrases } = require('http-status-codes')
 
 const createToken = async ({ accessToken, refreshToken, userId }) => {
-  return await Token.create({ accessToken, refreshToken, userId })
+  try {
+    return await Token.create({ accessToken, refreshToken, userId })
+  } catch (error) {
+    throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR)
+  }
 }
 
 const getTokenByAccessToken = async ({ accessToken }) => {

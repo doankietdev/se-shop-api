@@ -5,9 +5,11 @@ const ApiError = require('~/core/api.error')
 const { StatusCodes, ReasonPhrases } = require('http-status-codes')
 
 const createGender = async ({ name }) => {
-  const gender = await Gender.create({ name })
-  if (!gender) throw new ApiError(StatusCodes.BAD_REQUEST, ReasonPhrases.BAD_REQUEST)
-  return gender
+  try {
+    return await Gender.create({ name })
+  } catch (error) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, ReasonPhrases.BAD_REQUEST)
+  }
 }
 
 const getAllGenders = async () => {

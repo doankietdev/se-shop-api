@@ -6,9 +6,11 @@ const ApiError = require('~/core/api.error')
 const { StatusCodes, ReasonPhrases } = require('http-status-codes')
 
 const createCategory = async ({ name, description }) => {
-  const category = await Category.create({ name, description })
-  if (!category) throw new ApiError(StatusCodes.BAD_REQUEST, ReasonPhrases.BAD_REQUEST)
-  return category
+  try {
+    return await Category.create({ name, description })
+  } catch (error) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, ReasonPhrases.BAD_REQUEST)
+  }
 }
 
 const getAllCategories = async () => {

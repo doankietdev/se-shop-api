@@ -5,9 +5,11 @@ const ApiError = require('~/core/api.error')
 const { StatusCodes, ReasonPhrases } = require('http-status-codes')
 
 const createProduct = async (reqBody = {}) => {
-  const product = await Product.create(reqBody)
-  if (!product) throw new ApiError(StatusCodes.BAD_REQUEST, ReasonPhrases.BAD_REQUEST)
-  return product
+  try {
+    return await Product.create(reqBody)
+  } catch (error) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, ReasonPhrases.BAD_REQUEST)
+  }
 }
 
 const getAllProducts = async () => {

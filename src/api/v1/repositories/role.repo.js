@@ -1,0 +1,18 @@
+'use strict'
+
+const { Role } = require('~/api/v1/models')
+
+const getAllRoles = async () => {
+  return await Role.findAll()
+}
+
+const getRoleByName = async (name) => {
+  return await Role.findOne({
+    where: { name }
+  })
+}
+
+module.exports = {
+  getAllRoles,
+  getRoleByName
+}

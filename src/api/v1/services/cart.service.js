@@ -1,11 +1,18 @@
 'use strict'
 
 const { Cart, CartDetail, Product } = require('~/api/v1/models')
+const { getProductById } = require('~/api/v1/repositories/product.repo')
+const { getCartByCartIdUserId } = require('~/api/v1/repositories/cart.repo')
+const { getCartByCartIdProductId } = require('~/api/v1/repositories/cart.detail.repo')
 const ApiError = require('~/core/api.error')
-const { StatusCodes } = require('http-status-codes')
+const { StatusCodes, ReasonPhrases } = require('http-status-codes')
 
 const createCart = async ({ userId }) => {
-  return await Cart.create({ userId })
+  try {
+    return await Cart.create({ userId })
+  } catch (error) {
+    throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR)
+  }
 }
 
 const getAllFullCarts = async () => {
@@ -73,19 +80,13 @@ const getFullCartById = async (id) => {
 }
 
 const addProductToCart = async ({ userId, cartId, productId, quantity }) => {
-  const foundCart = await Cart.findOne({
-    where: { userId, id: cartId }
-  })
+  const foundCart = await getCartByCartIdUserId({ cartId, userId })
   if (!foundCart) throw new ApiError(StatusCodes.BAD_REQUEST, 'No carts found')
 
-  const foundProduct = await Product.findOne({
-    where: { id: productId }
-  })
+  const foundProduct = await getProductById(productId)
   if (!foundProduct) throw new ApiError(StatusCodes.BAD_REQUEST, 'No products found')
 
-  const foundCartDetail = await CartDetail.findOne({
-    where: { cartId, productId }
-  })
+  const foundCartDetail = await getCartByCartIdProductId({ cartId, productId })
 
   if (foundCartDetail) {
     const isExceedStockQuantity = foundProduct.stockQuantity < (quantity + foundCartDetail.quantity)

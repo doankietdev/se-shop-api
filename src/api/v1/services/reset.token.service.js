@@ -1,9 +1,15 @@
 'use strict'
 
 const { ResetToken } = require('~/api/v1/models')
+const ApiError = require('../../../../build/src/core/api.error')
+const { StatusCodes, ReasonPhrases } = require('http-status-codes')
 
 const createResetToken = async ({ resetToken, userId }) => {
-  return await ResetToken.create({ resetToken, userId })
+  try {
+    return await ResetToken.create({ resetToken, userId })
+  } catch (error) {
+    throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR)
+  }
 }
 
 const getResetToken = async (query = {}) => {

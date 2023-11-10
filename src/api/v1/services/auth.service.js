@@ -2,25 +2,26 @@
 
 const { Op } = require('sequelize')
 const bcrypt = require('bcrypt')
-const { StatusCodes, ReasonPhrases } = require('http-status-codes')
 const { app: { saltRounds, protocol, host, port } } = require('~/config/environment.config')
 const ApiError = require('~/core/api.error')
-const { User } = require('~/api/v1/models')
-const { createCart, getFullCartByUserId } = require('~/api/v1/services/cart.service')
-const { getRoleByName } = require('~/api/v1/services/role.service')
-const { getUserStatusByName } = require('~/api/v1/services/user.status.service')
-const { createUser, getUser, getUserById, getUserByEmail, updateUserById } = require('~/api/v1/services/user.service')
+const { StatusCodes, ReasonPhrases } = require('http-status-codes')
+const cartService = require('~/api/v1/services/cart.service')
+const userService = require('~/api/v1/services/user.service')
 const tokenService = require('~/api/v1/services/token.service')
 const refreshTokenUsedService = require('~/api/v1/services/refresh.token.used.sevice')
-const { createKeyPairRsa, createTokenPair, verifyToken, createResetToken } = require('~/api/v1/utils/auth.util')
 const resetTokenService = require('~/api/v1/services/reset.token.service')
+const roleRepo = require('~/api/v1/repositories/role.repo')
+const userRepo = require('~/api/v1/repositories/user.repo')
+const userStatusRepo = require('~/api/v1/repositories/user.status.repo')
+const resetTokenRepo = require('~/api/v1/repositories/reset.token.repo')
 const sendMail = require('~/api/v1/utils/send.mail')
+const { createKeyPairRsa, createTokenPair, verifyToken, createResetToken } = require('~/api/v1/utils/auth.util')
 
 const signUp = async ({
   genderId, lastName, firstName, phoneNumber,
   email, address, username, password
 }) => {
-  const foundUser = await getUser({
+  const foundUser = await userRepo.getUser({
     where: {
       [Op.or]: [
         { username },
@@ -41,15 +42,15 @@ const signUp = async ({
     if (isExist) throw new ApiError(StatusCodes.BAD_REQUEST, 'Phone number has been used')
   }
 
-  const customerRole = await getRoleByName({ name: 'Customer' })
+  const customerRole = await roleRepo.getRoleByName('Customer')
   if (!customerRole) throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR)
-  const activeStatus = await getUserStatusByName({ name: 'Active' })
+  const activeStatus = await userStatusRepo.getUserStatusByName('Active')
   if (!activeStatus) throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR)
 
   const passwordHash = await bcrypt.hash(password, saltRounds)
   const { publicKey, privateKey } = createKeyPairRsa()
 
-  const newUser = await createUser({
+  const newUser = await userService.createUser({
     roleId: customerRole.id,
     userStatusId: activeStatus.id,
     genderId,
@@ -63,25 +64,14 @@ const signUp = async ({
     publicKey,
     privateKey
   })
-  if (!newUser) throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR)
 
-  const newCart = await createCart({ userId: newUser.id })
-  if (!newCart) throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR)
+  await cartService.createCart({ userId: newUser.id })
 
-  return {
-    id: newUser.id,
-    lastName: newUser.lastName,
-    firstName: newUser.firstName,
-    genderId: newUser.genderId,
-    phoneNumber: newUser.phoneNumber,
-    email: newUser.email,
-    address: newUser.address,
-    username: newUser.username
-  }
+  return {}
 }
 
 const signIn = async ({ username, password }) => {
-  const foundUser = await getUser({
+  const foundUser = await userRepo.getUser({
     attributes: {
       exclude: ['roleId', 'userStatusId', 'createdAt', 'updatedAt']
     },
@@ -98,9 +88,8 @@ const signIn = async ({ username, password }) => {
   })
 
   const token = await tokenService.createToken({ accessToken, refreshToken, userId: foundUser.id })
-  if (!token) throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR)
 
-  const foundFullCart = await getFullCartByUserId(foundUser.id)
+  const foundFullCart = await cartService.getFullCartByUserId(foundUser.id)
   if (!foundFullCart) throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR)
 
   return {
@@ -124,7 +113,7 @@ const refreshToken = async ({ userId, refreshToken }) => {
     throw new ApiError(StatusCodes.UNAUTHORIZED, 'Something unusual happened')
   }
 
-  const foundUser = await getUserById({ id: userId })
+  const foundUser = await userService.getUserById({ id: userId })
   if (!foundUser) throw new ApiError(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED)
 
   try {
@@ -168,7 +157,7 @@ const signOut = async ({ accessToken, refreshToken }) => {
 }
 
 const forgotPassword = async ({ email }) => {
-  const foundUser = await getUserByEmail({ email })
+  const foundUser = await userService.getUserByEmail({ email })
   if (!foundUser) throw new ApiError(StatusCodes.BAD_REQUEST, 'Invalid email')
 
   const resetToken = createResetToken({
@@ -233,14 +222,7 @@ const forgotPassword = async ({ email }) => {
 }
 
 const resetPassword = async ({ resetToken, password }) => {
-  const foundResetToken = await resetTokenService.getResetToken({
-    where: {
-      resetToken
-    },
-    include: [
-      { model: User, as: 'user', attributes: ['id', 'publicKey'] }
-    ]
-  })
+  const foundResetToken = await resetTokenRepo.getFullResetToken(resetToken)
   if (!foundResetToken) throw new ApiError(StatusCodes.UNAUTHORIZED, 'Invalid reset token')
   foundResetToken.destroy()
 
@@ -252,7 +234,7 @@ const resetPassword = async ({ resetToken, password }) => {
     if (decoded.userId !== foundResetToken.user.id) throw new ApiError(StatusCodes.UNAUTHORIZED, 'Invalid reset token')
 
     const passwordHash = await bcrypt.hash(password, saltRounds)
-    const updatedUser = await updateUserById(foundResetToken.userId, { password: passwordHash })
+    const updatedUser = await userService.updateUserById(foundResetToken.userId, { password: passwordHash })
     if (!updatedUser) throw new ApiError(StatusCodes.UNAUTHORIZED, 'Reset password failed')
 
     return updatedUser

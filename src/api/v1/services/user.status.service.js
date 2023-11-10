@@ -5,19 +5,15 @@ const ApiError = require('~/core/api.error')
 const { StatusCodes, ReasonPhrases } = require('http-status-codes')
 
 const createUserStatus = async ({ name }) => {
-  const userStatus = await UserStatus.create({ name })
-  if (!userStatus) throw new ApiError(StatusCodes.BAD_REQUEST, ReasonPhrases.BAD_REQUEST)
-  return userStatus
+  try {
+    return await UserStatus.create({ name })
+  } catch (error) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, ReasonPhrases.BAD_REQUEST)
+  }
 }
 
 const getAllUserStatuses = async () => {
   return await UserStatus.findAll()
-}
-
-const getUserStatusByName = async ({ name }) => {
-  return await UserStatus.findOne({
-    where: { name }
-  })
 }
 
 const getUserStatusById = async ({ id }) => {
@@ -54,7 +50,6 @@ const deleteUserStatusByIds = async ({ ids }) => {
 module.exports = {
   createUserStatus,
   getAllUserStatuses,
-  getUserStatusByName,
   getUserStatusById,
   updateUserStatusById,
   deleteUserStatusById,

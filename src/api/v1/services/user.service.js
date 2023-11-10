@@ -2,18 +2,22 @@
 
 const { User, UserStatus, Role, Gender } = require('~/api/v1/models')
 const ApiError = require('~/core/api.error')
-const { StatusCodes } = require('http-status-codes')
+const { StatusCodes, ReasonPhrases } = require('http-status-codes')
 
 const createUser = async ({
   roleId, userStatusId, genderId, lastName, firstName,
   imageUrl, phoneNumber, email, address,
   username, password, publicKey, privateKey
 }) => {
-  return await User.create({
-    roleId, userStatusId, genderId, lastName,
-    firstName, imageUrl, phoneNumber, email, address,
-    username, password, publicKey, privateKey
-  })
+  try {
+    return await User.create({
+      roleId, userStatusId, genderId, lastName,
+      firstName, imageUrl, phoneNumber, email, address,
+      username, password, publicKey, privateKey
+    })
+  } catch (error) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, ReasonPhrases.BAD_REQUEST)
+  }
 }
 
 const getAllUsers = async () => {
@@ -49,10 +53,6 @@ const getUserByEmail = async ({ email }) => {
   })
 }
 
-const getUser = async (query = {}) => {
-  return await User.findOne(query)
-}
-
 const updateUserById = async (id, payload = {}) => {
   const user = await getUserById({ id })
   if (!user) return null
@@ -62,7 +62,6 @@ const updateUserById = async (id, payload = {}) => {
 
 module.exports = {
   createUser,
-  getUser,
   getUserById,
   getUserByUsername,
   getUserByEmail,
