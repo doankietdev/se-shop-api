@@ -79,10 +79,10 @@ const getFullCartById = async (id) => {
 
 const addProductToCart = async ({ userId, cartId, productId, quantity }) => {
   const foundCart = await getCartByCartIdUserId({ cartId, userId })
-  if (!foundCart) throw new ApiError(StatusCodes.BAD_REQUEST, 'No carts found')
+  if (!foundCart) throw new ApiError(StatusCodes.BAD_REQUEST, ReasonPhrases.BAD_REQUEST)
 
   const foundProduct = await getProductById(productId)
-  if (!foundProduct) throw new ApiError(StatusCodes.BAD_REQUEST, 'No products found')
+  if (!foundProduct) throw new ApiError(StatusCodes.BAD_REQUEST, ReasonPhrases.BAD_REQUEST)
 
   const foundCartDetail = await getCartByCartIdProductId({ cartId, productId })
 
@@ -98,7 +98,29 @@ const addProductToCart = async ({ userId, cartId, productId, quantity }) => {
 
   const fullCart = await getFullCartById(cartId)
   return {
-    cartId: fullCart.id,
+    id: fullCart.id,
+    products: fullCart.products
+  }
+}
+
+const reduceQuantityProduct = async ({ userId, cartId, productId, quantity }) => {
+  const foundCart = await getCartByCartIdUserId({ cartId, userId })
+  if (!foundCart) throw new ApiError(StatusCodes.BAD_REQUEST, ReasonPhrases.BAD_REQUEST)
+
+  const foundProduct = await getProductById(productId)
+  if (!foundProduct) throw new ApiError(StatusCodes.BAD_REQUEST, ReasonPhrases.BAD_REQUEST)
+
+  const foundCartDetail = await getCartByCartIdProductId({ cartId, productId })
+  if (!foundCartDetail) throw new ApiError(StatusCodes.BAD_REQUEST, ReasonPhrases.BAD_REQUEST)
+
+  const isExceedReductionQuantity = foundCartDetail.quantity < quantity
+  if (isExceedReductionQuantity) throw new ApiError(StatusCodes.BAD_REQUEST, 'Exceeded reduction quantity')
+
+  await foundCartDetail.update({ quantity: foundCartDetail.quantity - quantity })
+
+  const fullCart = await getFullCartById(cartId)
+  return {
+    id: fullCart.id,
     products: fullCart.products
   }
 }
@@ -108,5 +130,6 @@ module.exports = {
   getFullCartById,
   getFullCartByUserId,
   getAllFullCarts,
-  addProductToCart
+  addProductToCart,
+  reduceQuantityProduct
 }
