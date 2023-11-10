@@ -1,6 +1,5 @@
 'use strict'
 
-const { StatusCodes, ReasonPhrases } = require('http-status-codes')
 const SuccessResponse = require('~/core/success.response')
 const checkOutService = require('~/api/v1/services/checkout.service')
 const asyncHandling = require('~/core/async.handling')
