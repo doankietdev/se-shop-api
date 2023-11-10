@@ -50,6 +50,8 @@ module.exports = {
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
         allowNull: false
       }
+    }, {
+      charset: 'utf8'
     })
   },
   // eslint-disable-next-line no-unused-vars
