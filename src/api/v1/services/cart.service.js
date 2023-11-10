@@ -2,7 +2,7 @@
 
 const { Cart, CartDetail, Product } = require('~/api/v1/models')
 const cartDetailService = require('~/api/v1/services/cart.detail.service')
-const ApiError = require('../../../../build/src/core/api.error')
+const ApiError = require('~/core/api.error')
 const { StatusCodes, ReasonPhrases } = require('http-status-codes')
 
 const createCart = async ({ userId }) => {
