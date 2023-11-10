@@ -38,7 +38,7 @@ const getAllFullCarts = async () => {
 const getFullCartByUserId = async (userId) => {
   const fullCart = await Cart.findOne({
     where: { userId },
-    attributes: ['id', 'userId'],
+    attributes: ['id'],
     include: [
       {
         model: CartDetail,
@@ -52,8 +52,7 @@ const getFullCartByUserId = async (userId) => {
       }
     ]
   })
-
-  if (!fullCart) throw new ApiError(StatusCodes.NOT_FOUND, 'Not found cart')
+  if (!fullCart) throw new ApiError(StatusCodes.NOT_FOUND, 'No carts found')
   return fullCart
 }
 
@@ -74,7 +73,6 @@ const getFullCartById = async (id) => {
       }
     ]
   })
-
   if (!fullCart) throw new ApiError(StatusCodes.NOT_FOUND, 'Not found cart')
   return fullCart
 }

@@ -15,6 +15,15 @@ const addProductToCart = asyncHandling(async (req, res) => {
   }).send(res)
 })
 
+const getFullCartByUserId = asyncHandling(async (req, res) => {
+  const { id } = req.user
+
+  new SuccessResponse({
+    metadata: await cartService.getFullCartByUserId(id)
+  }).send(res)
+})
+
 module.exports = {
-  addProductToCart
+  addProductToCart,
+  getFullCartByUserId
 }
