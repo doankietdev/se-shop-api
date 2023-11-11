@@ -1,12 +1,13 @@
 'use strict'
 
 const { StatusCodes } = require('http-status-codes')
+const ApiError = require('~/core/api.error')
 const productRepo = require('~/api/v1/repositories/product.repo')
 const checkoutRepo = require('~/api/v1/repositories/checkout.repo')
 const orderStatusRepo = require('~/api/v1/repositories/order.status.repo')
 const orderRepo = require('~/api/v1/repositories/order.repo')
 const orderDetailRepo = require('~/api/v1/repositories/order.detail.repo')
-const ApiError = require('~/core/api.error')
+const { OrderStatus } = require('~/api/v1/models')
 
 const review = async ({ orderProducts = [] }) => {
   const checkedProducts = await checkoutRepo.checkProductsAvailable(orderProducts)
@@ -82,8 +83,30 @@ const getAllOrders = async ({ userId, orderStatusName, paymentFormName }) => {
   return await orderRepo.getAllOrders({ userId, orderStatusName, paymentFormName })
 }
 
+const cancelOrder = async ({ userId, orderId }) => {
+  const fullOrder = await orderRepo.getOrderWithQuery({
+    where: { userId, id: orderId },
+    include: [
+      {
+        model: OrderStatus,
+        as: 'orderStatus',
+        attributes: ['name']
+      }
+    ]
+  })
+  if (!fullOrder) throw new ApiError(StatusCodes.BAD_REQUEST, 'Order not found')
+  const isCancelled = fullOrder.orderStatus.name === 'Pending'
+  if (!isCancelled) throw new ApiError(StatusCodes.BAD_REQUEST, 'Cannot cannel')
+
+  await orderDetailRepo.deleteOrderDetailByOrderId(fullOrder.id)
+  await orderRepo.deleteOrder({ userId, orderId })
+
+  return {}
+}
+
 module.exports = {
   review,
   order,
-  getAllOrders
+  getAllOrders,
+  cancelOrder
 }

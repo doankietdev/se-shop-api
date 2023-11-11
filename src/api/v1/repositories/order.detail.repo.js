@@ -11,6 +11,13 @@ const createOrderDetail = async ({ quantity, price, orderId, productId }) => {
   })
 }
 
+const deleteOrderDetailByOrderId = async (orderId) => {
+  return await OrderDetail.destroy({
+    where: { orderId }
+  })
+}
+
 module.exports = {
-  createOrderDetail
+  createOrderDetail,
+  deleteOrderDetailByOrderId
 }
