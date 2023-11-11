@@ -1,18 +1,14 @@
 'use strict'
 
-const { StatusCodes, ReasonPhrases } = require('http-status-codes')
+const { StatusCodes } = require('http-status-codes')
 const productRepo = require('~/api/v1/repositories/product.repo')
-const cartRepo = require('~/api/v1/repositories/cart.repo')
 const checkoutRepo = require('~/api/v1/repositories/checkout.repo')
 const orderStatusRepo = require('~/api/v1/repositories/order.status.repo')
 const orderRepo = require('~/api/v1/repositories/order.repo')
 const orderDetailRepo = require('~/api/v1/repositories/order.detail.repo')
 const ApiError = require('~/core/api.error')
 
-const review = async ({ userId, cartId, orderProducts = [] }) => {
-  const foundCart = await cartRepo.getFullCart({ cartId, userId })
-  if (!foundCart) throw new ApiError(StatusCodes.BAD_REQUEST, ReasonPhrases.BAD_REQUEST)
-
+const review = async ({ orderProducts = [] }) => {
   const checkedProducts = await checkoutRepo.checkProductsAvailable(orderProducts)
   if (checkedProducts.includes(undefined)) throw new ApiError(StatusCodes.BAD_REQUEST, 'Order wrong')
 
@@ -24,7 +20,6 @@ const review = async ({ userId, cartId, orderProducts = [] }) => {
   if (fullOrderProducts.includes(undefined)) throw new ApiError(StatusCodes.BAD_REQUEST, 'Order wrong')
 
   return {
-    cartId,
     products:  fullOrderProducts,
     totalOrder
   }
@@ -81,7 +76,12 @@ const order = async ({ userId, shipAddress, paymentFormId, orderProducts = [] })
   }
 }
 
+const getAllOrders = async ({ userId, orderStatusName }) => {
+  return await orderRepo.getAllOrders({ userId, orderStatusName })
+}
+
 module.exports = {
   review,
-  order
+  order,
+  getAllOrders
 }

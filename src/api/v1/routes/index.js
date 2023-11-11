@@ -10,6 +10,7 @@ const categoryRouter = require('./category')
 const productRouter = require('./product')
 const cartRouter = require('./cart')
 const checkoutRouter = require('./checkout')
+const orderRouter = require('./order')
 
 const router = express.Router()
 
@@ -22,5 +23,6 @@ router.use('/categories', categoryRouter)
 router.use('/products', productRouter)
 router.use('/carts', cartRouter)
 router.use('/checkout', checkoutRouter)
+router.use('/orders', orderRouter)
 
 module.exports = router
