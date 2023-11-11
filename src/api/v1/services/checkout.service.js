@@ -25,13 +25,14 @@ const review = async ({ orderProducts = [] }) => {
   }
 }
 
-const order = async ({ userId, shipAddress, paymentFormId, orderProducts = [] }) => {
+const order = async ({ userId, shipAddress, phoneNumber, paymentFormId, orderProducts = [] }) => {
   const checkedProducts = await checkoutRepo.checkProductsAvailable(orderProducts)
   if (checkedProducts.includes(undefined)) throw new ApiError(StatusCodes.BAD_REQUEST, 'Order wrong')
 
   try {
     const newOrder = await orderRepo.createOrder({
       shipAddress,
+      phoneNumber,
       userId,
       paymentFormId,
       orderStatusId: 1
@@ -68,6 +69,7 @@ const order = async ({ userId, shipAddress, paymentFormId, orderProducts = [] })
     return {
       orderId: newOrder.id,
       shipAddress: newOrder.shipAddress,
+      phoneNumber: newOrder.phoneNumber,
       orderStatus: foundOrderStatus.name,
       products: fullOrderProducts
     }
@@ -76,8 +78,8 @@ const order = async ({ userId, shipAddress, paymentFormId, orderProducts = [] })
   }
 }
 
-const getAllOrders = async ({ userId, orderStatusName }) => {
-  return await orderRepo.getAllOrders({ userId, orderStatusName })
+const getAllOrders = async ({ userId, orderStatusName, paymentFormName }) => {
+  return await orderRepo.getAllOrders({ userId, orderStatusName, paymentFormName })
 }
 
 module.exports = {

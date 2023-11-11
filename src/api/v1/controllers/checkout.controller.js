@@ -14,19 +14,19 @@ const review = asyncHandling(async (req, res) => {
 
 const order = asyncHandling(async (req, res) => {
   const { id } = req.user
-  const { shipAddress, paymentFormId, orderProducts } = req.body
+  const { shipAddress, phoneNumber, paymentFormId, orderProducts } = req.body
 
   new SuccessResponse({
-    metadata: await checkoutService.order({ userId: id, shipAddress, paymentFormId, orderProducts })
+    metadata: await checkoutService.order({ userId: id, shipAddress, phoneNumber, paymentFormId, orderProducts })
   }).send(res)
 })
 
 const getAllOrders = asyncHandling(async (req, res) => {
   const { id } = req.user
-  const { status } = req.query
+  const { status, paymentForm } = req.query
 
   new SuccessResponse({
-    metadata: await checkoutService.getAllOrders({ userId: id, orderStatusName: status })
+    metadata: await checkoutService.getAllOrders({ userId: id, orderStatusName: status, paymentFormName: paymentForm })
   }).send(res)
 })
 

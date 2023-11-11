@@ -8,7 +8,6 @@ class Product extends Model {}
 
 Product.init({
   name: DataTypes.STRING,
-  slug: DataTypes.STRING,
   description: DataTypes.STRING,
   imageUrl: DataTypes.STRING,
   displayDetails: DataTypes.STRING,
@@ -28,14 +27,7 @@ Product.init({
 }, {
   sequelize: mysql.getInstance(),
   modelName: 'Product',
-  tableName: 'Product',
-  hooks: {
-    beforeValidate: (product) => {
-      if (product.name) {
-        product.slug = slugify(product.name + '-' +Date.now())
-      }
-    }
-  }
+  tableName: 'Product'
 })
 
 module.exports = Product

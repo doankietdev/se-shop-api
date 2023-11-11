@@ -14,11 +14,6 @@ module.exports = {
         type: Sequelize.STRING(50),
         allowNull: false
       },
-      slug: {
-        type: Sequelize.STRING(75),
-        allowNull: false,
-        unique: true
-      },
       description: {
         type: Sequelize.STRING(100)
       },

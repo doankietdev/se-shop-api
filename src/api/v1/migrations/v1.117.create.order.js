@@ -36,7 +36,11 @@ module.exports = {
       },
       shipAddress: {
         type: Sequelize.STRING(100),
-        allowNull: false
+        allowNull: true
+      },
+      phoneNumber: {
+        type: Sequelize.STRING(11),
+        allowNull: true
       },
       createdAt: {
         type: 'TIMESTAMP',

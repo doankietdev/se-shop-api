@@ -1,17 +1,21 @@
 'use strict'
 
 const { Order, OrderStatus, PaymentForm } = require('~/api/v1/models')
+const { Op } = require('sequelize')
 
-const createOrder = async ({ shipAddress, userId, paymentFormId, orderStatusId }) => {
+const createOrder = async ({ shipAddress, phoneNumber, userId, paymentFormId, orderStatusId }) => {
   return await Order.create({
     shipAddress,
+    phoneNumber,
     userId,
     paymentFormId,
     orderStatusId
+  }, {
+    raw: true
   })
 }
 
-const getAllOrders = async ({ userId, orderStatusName }) => {
+const getAllOrders = async ({ userId, orderStatusName, paymentFormName }) => {
   return await Order.findAll({
     where: { userId },
     attributes: {
@@ -22,12 +26,13 @@ const getAllOrders = async ({ userId, orderStatusName }) => {
         model: OrderStatus,
         as: 'orderStatus',
         attributes: ['id', 'name'],
-        where: { name: orderStatusName }
+        where: orderStatusName ? { name: { [Op.regexp]: `^${orderStatusName}$` } } : null
       },
       {
         model: PaymentForm,
         as: 'paymentForm',
-        attributes: ['id', 'name']
+        attributes: ['id', 'name'],
+        where: paymentFormName ? { name: { [Op.regexp]: `^${paymentFormName}$` } } : null
       }
     ],
     raw: true,

@@ -6,7 +6,8 @@ const { mysql } = require('~/databases')
 class Order extends Model {}
 
 Order.init({
-  shipAddress: DataTypes.STRING
+  shipAddress: DataTypes.STRING,
+  phoneNumber: DataTypes.STRING
 }, {
   sequelize: mysql.getInstance(),
   modelName: 'Order',
