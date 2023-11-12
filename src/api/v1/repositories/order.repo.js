@@ -48,9 +48,7 @@ const getAllOrders = async ({ userId, orderStatusName, paymentFormName }) => {
           }
         ]
       }
-    ],
-    raw: true,
-    nest: true
+    ]
   })
 }
 

@@ -32,7 +32,7 @@ const getAllOrders = asyncHandling(async (req, res) => {
 
 const cancelOrder = asyncHandling(async (req, res) => {
   const { id } = req.user
-  const { orderId } = req.body
+  const { orderId } = req.params
 
   new SuccessResponse({
     message: 'Cancel order successfully',
@@ -40,9 +40,20 @@ const cancelOrder = asyncHandling(async (req, res) => {
   }).send(res)
 })
 
+const getOrder = asyncHandling(async (req, res) => {
+  const { id } = req.user
+  const { orderId } = req.params
+
+  new SuccessResponse({
+    message: 'Cancel order successfully',
+    metadata: await checkoutService.getOrder({ userId: id, orderId })
+  }).send(res)
+})
+
 module.exports = {
   review,
   order,
   getAllOrders,
-  cancelOrder
+  cancelOrder,
+  getOrder
 }

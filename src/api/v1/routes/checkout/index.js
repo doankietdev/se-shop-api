@@ -5,7 +5,8 @@ const {
   review,
   order,
   getAllOrders,
-  cancelOrder
+  cancelOrder,
+  getOrder
 } = require('~/api/v1/controllers/checkout.controller')
 const { authenticate } = require('~/api/v1/middlewares/auth.middleware')
 
@@ -14,8 +15,9 @@ const router = express.Router()
 router.use(authenticate)
 
 router.get('/get-all-orders', getAllOrders)
+router.get('/get-order/:orderId', getOrder)
 router.post('/review', review)
 router.post('/order', order)
-router.post('/cancel-order', cancelOrder)
+router.post('/cancel-order/:orderId', cancelOrder)
 
 module.exports = router

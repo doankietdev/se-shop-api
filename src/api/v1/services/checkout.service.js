@@ -7,7 +7,7 @@ const checkoutRepo = require('~/api/v1/repositories/checkout.repo')
 const orderStatusRepo = require('~/api/v1/repositories/order.status.repo')
 const orderRepo = require('~/api/v1/repositories/order.repo')
 const orderDetailRepo = require('~/api/v1/repositories/order.detail.repo')
-const { OrderStatus } = require('~/api/v1/models')
+const { OrderStatus, OrderDetail, Product, PaymentForm } = require('~/api/v1/models')
 
 const review = async ({ orderProducts = [] }) => {
   const checkedProducts = await checkoutRepo.checkProductsAvailable(orderProducts)
@@ -104,9 +104,47 @@ const cancelOrder = async ({ userId, orderId }) => {
   return {}
 }
 
+const getOrder = async ({ userId, orderId }) => {
+  const fullOrder = await orderRepo.getOrderWithQuery({
+    where: { userId, id: orderId },
+    attributes: {
+      exclude: ['orderStatusId', 'paymentFormId', 'userId']
+    },
+    include: [
+      {
+        model: PaymentForm,
+        as: 'paymentForm',
+        attributes: ['id', 'name']
+      },
+      {
+        model: OrderStatus,
+        as: 'orderStatus',
+        attributes: ['id', 'name']
+      },
+      {
+        model: OrderDetail,
+        as: 'products',
+        attributes: {
+          exclude: ['orderId', 'productId', 'createdAt', 'updatedAt']
+        },
+        include: [
+          {
+            model: Product,
+            as: 'product',
+            attributes: ['id', 'name', 'description', 'imageUrl']
+          }
+        ]
+      }
+    ]
+  })
+  if (!fullOrder) throw new ApiError(StatusCodes.BAD_REQUEST, 'Order not found')
+  return fullOrder
+}
+
 module.exports = {
   review,
   order,
   getAllOrders,
-  cancelOrder
+  cancelOrder,
+  getOrder
 }
