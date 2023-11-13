@@ -8,6 +8,13 @@ const getOrderStatusById = async (id) => {
   })
 }
 
+const getOrderStatusByName = async (name) => {
+  return await OrderStatus.findOne({
+    where: { name }
+  })
+}
+
 module.exports = {
-  getOrderStatusById
+  getOrderStatusById,
+  getOrderStatusByName
 }

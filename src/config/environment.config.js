@@ -47,7 +47,14 @@ const {
   COOKIE_RT_MAX_AGE,
   EMAIL_NAME,
   EMAIL_APP_PASSWORD,
-  RESET_TOKEN_EXPIRES
+  RESET_TOKEN_EXPIRES,
+  VNP_TMNCODE,
+  VNP_HASHSECRET,
+  VNP_URL,
+  VNP_API,
+  VNP_RETURNURL,
+  PAY_SUCCESS_URL,
+  PAY_FAIL_URL
 } = process.env
 
 const development = {
@@ -63,7 +70,9 @@ const development = {
     cookieRTMaxAge: COOKIE_RT_MAX_AGE || DEV_COOKIE_RT_MAX_AGE_DEFAULT,
     emailName: EMAIL_NAME || '',
     emailAppPassword: EMAIL_APP_PASSWORD || '',
-    resetTokenExpires: RESET_TOKEN_EXPIRES || '10m'
+    resetTokenExpires: RESET_TOKEN_EXPIRES || '10m',
+    paySuccessUrl: PAY_SUCCESS_URL || '',
+    payFailUrl: PAY_FAIL_URL || ''
   },
   mysql: {
     host: MYSQL_HOST || DEV_DB_HOST_DEFAULT,
@@ -71,6 +80,15 @@ const development = {
     databaseName: MYSQL_DATABASE_NAME || DEV_DB_NAME_DEFAULT,
     username: MYSQL_USERNAME || DEV_DB_USERNAME_DEFAULT,
     password: MYSQL_PASSWORD || DEV_DB_PASSWORD_DEFAULT
+  },
+  payments: {
+    vnpay: {
+      tmnCode: VNP_TMNCODE,
+      hashSecret: VNP_HASHSECRET,
+      url: VNP_URL,
+      api: VNP_API,
+      returnUrl: VNP_RETURNURL
+    }
   }
 }
 
@@ -87,7 +105,9 @@ const production = {
     cookieRTMaxAge: COOKIE_RT_MAX_AGE || PROD_COOKIE_RT_MAX_AGE_DEFAULT,
     emailName: EMAIL_NAME || '',
     emailAppPassword: EMAIL_APP_PASSWORD || '',
-    resetTokenExpires: RESET_TOKEN_EXPIRES || '10m'
+    resetTokenExpires: RESET_TOKEN_EXPIRES || '10m',
+    paySuccessUrl: PAY_SUCCESS_URL || '',
+    payFailUrl: PAY_FAIL_URL || ''
   },
   mysql: {
     host: MYSQL_HOST || PROD_DB_HOST_DEFAULT,
@@ -95,6 +115,15 @@ const production = {
     databaseName: MYSQL_DATABASE_NAME || PROD_DB_NAME_DEFAULT,
     username: MYSQL_USERNAME || PROD_DB_USERNAME_DEFAULT,
     password: MYSQL_PASSWORD || PROD_DB_PASSWORD_DEFAULT
+  },
+  payments: {
+    vnpay: {
+      tmnCode: VNP_TMNCODE,
+      hashSecret: VNP_HASHSECRET,
+      url: VNP_URL,
+      api: VNP_API,
+      returnUrl: VNP_RETURNURL
+    }
   }
 }
 

@@ -37,10 +37,12 @@
     "joi": "^17.11.0",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
+    "moment": "^2.29.4",
     "mysql2": "^3.6.2",
     "nodemailer": "^6.9.7",
     "remove": "^0.1.5",
-    "sequelize": "^6.33.0"
+    "sequelize": "^6.33.0",
+    "vnpay": "^0.2.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.22.10",
