@@ -29,8 +29,17 @@ const deleteOrder = asyncHandling( async (req, res) => {
   }).send(res)
 })
 
+const getAllOrders = asyncHandling( async (req, res) => {
+  const { filter } = req
+
+  new SuccessResponse({
+    metadata: await orderService.getAllOrders(filter)
+  }).send(res)
+})
+
 module.exports = {
   getOrder,
+  getAllOrders,
   updateOrder,
   deleteOrder
 }

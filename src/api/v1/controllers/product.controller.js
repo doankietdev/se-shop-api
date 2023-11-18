@@ -9,7 +9,7 @@ const createProduct = asyncHandling(async (req, res) => {
   new SuccessResponse({
     statusCode: StatusCodes.CREATED,
     message: ReasonPhrases.CREATED,
-    metadata: await productService.createProduct(req.body)
+    metadata: await productService.createProduct({ ...req.body, imageUrl: req?.file?.path })
   }).send(res)
 })
 

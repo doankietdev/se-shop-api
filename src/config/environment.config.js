@@ -54,7 +54,10 @@ const {
   VNP_API,
   VNP_RETURNURL,
   PAY_SUCCESS_URL,
-  PAY_FAIL_URL
+  PAY_FAIL_URL,
+  CLOUDINARY_NAME,
+  CLOUDINARY_API_KEY,
+  CLOUDINARY_API_SECRET
 } = process.env
 
 const development = {
@@ -88,6 +91,13 @@ const development = {
       url: VNP_URL,
       api: VNP_API,
       returnUrl: VNP_RETURNURL
+    }
+  },
+  clouds: {
+    cloudinary: {
+      name: CLOUDINARY_NAME || '',
+      apiKey: CLOUDINARY_API_KEY || '',
+      apiSecret: CLOUDINARY_API_SECRET || ''
     }
   }
 }
@@ -123,6 +133,13 @@ const production = {
       url: VNP_URL,
       api: VNP_API,
       returnUrl: VNP_RETURNURL
+    }
+  },
+  clouds: {
+    cloudinary: {
+      name: CLOUDINARY_NAME || '',
+      apiKey: CLOUDINARY_API_KEY || '',
+      apiSecret: CLOUDINARY_API_SECRET || ''
     }
   }
 }

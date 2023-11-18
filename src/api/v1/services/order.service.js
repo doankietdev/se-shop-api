@@ -6,8 +6,8 @@ const { Order, OrderStatus, PaymentForm, User } = require('~/api/v1/models')
 const orderRepo = require('~/api/v1/repositories/order.repo')
 const orderDetailRepo = require('~/api/v1/repositories/order.detail.repo')
 
-const getAllOrders = async ({ userId, orderStatusName }) => {
-  return await orderRepo.getAllOrders({ userId, orderStatusName })
+const getAllOrders = async ({ userId, orderStatusName, paymentFormName }) => {
+  return await orderRepo.getAllOrders({ userId, orderStatusName, paymentFormName })
 }
 
 const getOrder = async ({ userId, orderId }) => {

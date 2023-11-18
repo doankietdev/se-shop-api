@@ -9,14 +9,16 @@ const {
   deleteProductById,
   deleteProductByIds
 }= require('~/api/v1/controllers/product.controller')
+const { validateCreateProduct } = require('~/api/v1/validations/product.validation')
+const { uploadProduct } = require('~/api/v1/middlewares/uploadCloudMiddleware')
 const { authenticate } = require('~/api/v1/middlewares/auth.middleware')
 
 const router = express.Router()
 
-// router.use(authenticate)
+router.use(authenticate)
 
 router.get('/', getAllProducts)
-router.post('/', createProduct)
+router.post('/', uploadProduct.single('image'), validateCreateProduct, createProduct)
 router.delete('/', deleteProductByIds)
 
 router.get('/:id', getProductById)

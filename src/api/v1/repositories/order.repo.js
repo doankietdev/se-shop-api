@@ -17,7 +17,7 @@ const createOrder = async ({ shipAddress, phoneNumber, userId, paymentFormId, or
 
 const getAllOrders = async ({ userId, orderStatusName, paymentFormName }) => {
   return await Order.findAll({
-    where: { userId },
+    where: userId,
     attributes: {
       exclude: ['orderStatusId', 'paymentFormId', 'userId']
     },
@@ -26,13 +26,13 @@ const getAllOrders = async ({ userId, orderStatusName, paymentFormName }) => {
         model: OrderStatus,
         as: 'orderStatus',
         attributes: ['id', 'name'],
-        where: orderStatusName ? { name: { [Op.regexp]: `^${orderStatusName}$` } } : null
+        where: orderStatusName ? { name: orderStatusName } : null
       },
       {
         model: PaymentForm,
         as: 'paymentForm',
         attributes: ['id', 'name'],
-        where: paymentFormName ? { name: { [Op.regexp]: `^${paymentFormName}$` } } : null
+        where: paymentFormName ? { name: paymentFormName } : null
       },
       {
         model: OrderDetail,
