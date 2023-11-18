@@ -5,17 +5,12 @@ const {
   convertToQueryLikeObject
 } = require('~/api/v1/utils')
 
-const sortOrder = {
-  asc: 1,
-  desc: -1
-}
-
 const getFilterKeysFromQueryObject = (queryObject = {}) => {
   const keys = Object.keys(queryObject)
   return keys.filter((key) => key[0] !== '_')
 }
 
-const createFilter = (queryObject = {}, flags = 'gi') => {
+const createFilter = (queryObject = {}) => {
   const filterKeys = getFilterKeysFromQueryObject(queryObject)
   const filterObject = getDataInfo(queryObject, filterKeys)
 

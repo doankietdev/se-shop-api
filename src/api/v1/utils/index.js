@@ -17,7 +17,12 @@ const convertValueToRegExOfKeyFromObject = (object = {}, flags = '') => {
 }
 
 const convertToQueryLikeObject = (object = {}) => {
-  Object.keys(object).map((key) => {
+  Object.keys(object).forEach((key) => {
+    const tempNumber = Number(object[key])
+    if (Number.isInteger(tempNumber)) {
+      object[key] = tempNumber
+      return
+    }
     object[key] = {
       [Op.like]: object[key]
     }
