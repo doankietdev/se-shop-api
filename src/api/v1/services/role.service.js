@@ -19,8 +19,14 @@ const getRoleById = async ({ id }) => {
   return role
 }
 
-const getAllRoles = async () => {
-  return await Role.findAll()
+const getAllRoles = async ({ filter, selector, pagination, sorter }) => {
+  return await Role.findAll({
+    where: filter,
+    attributes: selector,
+    offset: pagination.skip,
+    limit: pagination.limit,
+    order: sorter
+  })
 }
 
 const updateRoleById = async ({ id, name, description }) => {

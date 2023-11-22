@@ -12,8 +12,14 @@ const createGender = async ({ name }) => {
   }
 }
 
-const getAllGenders = async () => {
-  return await Gender.findAll()
+const getAllGenders = async ({ filter, selector, pagination, sorter }) => {
+  return await Gender.findAll({
+    where: filter,
+    attributes: selector,
+    offset: pagination.skip,
+    limit: pagination.limit,
+    order: sorter
+  })
 }
 
 const getGenderByName = async ({ name }) => {

@@ -16,8 +16,10 @@ const createRole = asyncHandling(async (req, res) => {
 })
 
 const getAllRoles = asyncHandling(async (req, res) => {
+  const { filter, selector, pagination, sorter } = req
+
   new SuccessResponse({
-    metadata: await roleService.getAllRoles()
+    metadata: await roleService.getAllRoles({ filter, selector, pagination, sorter })
   }).send(res)
 })
 

@@ -16,8 +16,10 @@ const createGender = asyncHandling(async (req, res) => {
 })
 
 const getAllGenders = asyncHandling(async (req, res) => {
+  const { filter, selector, pagination, sorter } = req
+
   new SuccessResponse({
-    metadata: await genderService.getAllGenders()
+    metadata: await genderService.getAllGenders({ filter, selector, pagination, sorter })
   }).send(res)
 })
 
