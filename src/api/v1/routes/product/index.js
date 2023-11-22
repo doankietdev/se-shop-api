@@ -10,7 +10,7 @@ const {
   deleteProductByIds
 }= require('~/api/v1/controllers/product.controller')
 const { validateCreateProduct } = require('~/api/v1/validations/product.validation')
-const { uploadProductImageMiddleware } = require('~/api/v1/middlewares/uploadCloudMiddleware')
+const { uploadProductImageMiddleware } = require('~/api/v1/middlewares/upload.cloud.middleware')
 const { authenticate } = require('~/api/v1/middlewares/auth.middleware')
 
 const router = express.Router()

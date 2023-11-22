@@ -6,7 +6,7 @@ const {
   updateUserById
 } = require('~/api/v1/controllers/user.controller')
 const { authenticate } = require('~/api/v1/middlewares/auth.middleware')
-const { uploadAvatarMiddleware } = require('~/api/v1/middlewares/uploadCloudMiddleware')
+const { uploadAvatarMiddleware } = require('~/api/v1/middlewares/upload.cloud.middleware')
 
 const router = express.Router()
 
