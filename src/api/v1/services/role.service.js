@@ -19,6 +19,10 @@ const getRoleById = async ({ id }) => {
   return role
 }
 
+const getAllRoles = async () => {
+  return await Role.findAll()
+}
+
 const updateRoleById = async ({ id, name, description }) => {
   const role = await Role.findOne({
     where: { id }
@@ -47,6 +51,7 @@ const deleteRoleByIds = async ({ ids }) => {
 module.exports = {
   createRole,
   getRoleById,
+  getAllRoles,
   updateRoleById,
   deleteRoleById,
   deleteRoleByIds
