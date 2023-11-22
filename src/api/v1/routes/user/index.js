@@ -4,7 +4,8 @@ const express = require('express')
 const {
   getAllUsers,
   updateUserById,
-  updateStatus
+  updateStatus,
+  deleteUserById
 } = require('~/api/v1/controllers/user.controller')
 const queryStringMiddleware = require('~/api/v1/middlewares/query.string.middleware')
 const { uploadAvatarMiddleware } = require('~/api/v1/middlewares/upload.cloud.middleware')
@@ -17,5 +18,6 @@ router.use(authenticate)
 router.get('/', queryStringMiddleware, getAllUsers)
 router.patch('/', uploadAvatarMiddleware, updateUserById)
 router.patch('/:id/update-status', uploadAvatarMiddleware, updateStatus)
+router.delete('/:id', deleteUserById)
 
 module.exports = router

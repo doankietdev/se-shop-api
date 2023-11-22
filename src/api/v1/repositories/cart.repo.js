@@ -57,8 +57,17 @@ const addProductsNotExistsInCart = async ({ userId, cartId, orderProducts = [] }
   }))
 }
 
+const deleteCartByUserId = async (userId) => {
+  const foundCart = await Cart.findOne({
+    where: { userId }
+  })
+  if (!foundCart) return null
+  await foundCart.destroy({ force: true })
+}
+
 module.exports = {
   getFullCartByProductIds,
   getFullCart,
-  addProductsNotExistsInCart
+  addProductsNotExistsInCart,
+  deleteCartByUserId
 }

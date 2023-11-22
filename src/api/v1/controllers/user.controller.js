@@ -31,8 +31,20 @@ const updateStatus = asyncHandling(async (req, res) => {
   }).send(res)
 })
 
+const deleteUserById = asyncHandling(async (req, res) => {
+  const { id } = req.params
+
+  console.log({ id });
+
+  new SuccessResponse({
+    message: 'Delete user successfully',
+    metadata: await userService.deleteUserById(id)
+  }).send(res)
+})
+
 module.exports = {
   getAllUsers,
   updateUserById,
-  updateStatus
+  updateStatus,
+  deleteUserById
 }

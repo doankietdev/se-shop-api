@@ -5,6 +5,8 @@ const { User, UserStatus, Role, Gender } = require('~/api/v1/models')
 const ApiError = require('~/core/api.error')
 const { StatusCodes, ReasonPhrases } = require('http-status-codes')
 const cloudinaryProvider = require('~/api/v1/providers/cloudinary.provider')
+const userRepo = require('~/api/v1/repositories/user.repo')
+const cartRepo = require('~/api/v1/repositories/cart.repo')
 
 const createUser = async ({
   roleId, userStatusId, genderId, lastName, firstName,
@@ -105,6 +107,20 @@ const updateStatus = async ({ id, userStatusId }) => {
   }
 }
 
+const deleteUserById = async (id) => {
+  const user = await userRepo.getUserById(id)
+  if (!user) throw new ApiError(StatusCodes.NOT_FOUND, 'User not found')
+
+  await cartRepo.deleteCartByUserId(id)
+
+  try {
+    await user.destroy({ force: true })
+    return {}
+  } catch (error) {
+    throw new ApiError(StatusCodes.CONFLICT, 'Delete user failed')
+  }
+}
+
 module.exports = {
   createUser,
   getUserById,
@@ -112,5 +128,6 @@ module.exports = {
   getUserByEmail,
   getAllUsers,
   updateUserById,
-  updateStatus
+  updateStatus,
+  deleteUserById
 }
