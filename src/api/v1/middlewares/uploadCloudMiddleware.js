@@ -26,5 +26,5 @@ const productStorage = new CloudinaryStorage({
 
 module.exports = {
   uploadAvatarMiddleware: multer({ storage: avatarStorage }).single('image'),
-  uploadProduct: multer({ storage: productStorage })
+  uploadProductImageMiddleware: multer({ storage: productStorage }).single('image')
 }
