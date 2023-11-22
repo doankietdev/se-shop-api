@@ -4,7 +4,7 @@ const Joi = require('joi')
 const { StatusCodes } = require('http-status-codes')
 const ApiError = require('~/core/api.error')
 const asyncHandling = require('~/core/async.handling')
-const cloudinary = require('cloudinary').v2
+const cloudinaryProvider = require('~/api/v1/providers/cloudinary.provider')
 
 const productSchema = Joi.object({
   name: Joi.string().required().max(100),
@@ -28,11 +28,13 @@ const productSchema = Joi.object({
 })
 
 const validateCreateProduct = asyncHandling(async (req, res, next) => {
+  const file = req?.file
+
   try {
-    await productSchema.validateAsync({ ...req.body, image: req?.file?.path }, { abortEarly: false })
+    await productSchema.validateAsync({ ...req.body, image: file?.path }, { abortEarly: false })
     next()
   } catch (error) {
-    await cloudinary.uploader.destroy(req?.file?.fileName)
+    await cloudinaryProvider.destroyFile(file?.path)
     throw new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, error.message)
   }
 })
