@@ -70,7 +70,7 @@ const getUserByEmail = async ({ email }) => {
 
 const updateUserById = async (id, payload = {}) => {
   const user = await getUserById(id)
-  if (!user) return null
+  if (!user) throw new ApiError(StatusCodes.BAD_REQUEST, 'User not found')
 
   // cannot change this fields
   delete payload.username
@@ -93,11 +93,24 @@ const updateUserById = async (id, payload = {}) => {
   return await user.update(payload)
 }
 
+const updateStatus = async ({ id, userStatusId }) => {
+  const user = await getUserById(id)
+  if (!user) throw new ApiError(StatusCodes.BAD_REQUEST, 'User not found')
+
+  try {
+    await user.update({ userStatusId })
+    return {}
+  } catch (error) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, '"userStatusId" is invalid')
+  }
+}
+
 module.exports = {
   createUser,
   getUserById,
   getUserByUsername,
   getUserByEmail,
+  getAllUsers,
   updateUserById,
-  getAllUsers
+  updateStatus
 }

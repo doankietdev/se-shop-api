@@ -21,7 +21,18 @@ const updateUserById = asyncHandling(async (req, res) => {
   }).send(res)
 })
 
+const updateStatus = asyncHandling(async (req, res) => {
+  const { id } = req.params
+  const { userStatusId } = req.body
+
+  new SuccessResponse({
+    message: 'Update user status successfully',
+    metadata: await userService.updateStatus({ id, userStatusId })
+  }).send(res)
+})
+
 module.exports = {
   getAllUsers,
-  updateUserById
+  updateUserById,
+  updateStatus
 }
