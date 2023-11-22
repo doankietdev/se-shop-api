@@ -29,8 +29,17 @@ const createPagination = (queryObject = {}) => {
 }
 
 const createSorter = (queryObject = {}) => {
-  const { _sort, _order } = queryObject
-  const fields = _sort ? _sort.split('.') : null
+  const orders = {
+    asc: 'asc',
+    desc: 'desc'
+  }
+
+  let { _sortBy, _order } = queryObject
+
+  const isValidOrder = orders[_order] ? true : false
+  if (!isValidOrder) _order = orders.asc
+
+  const fields = _sortBy ? _sortBy.split('.') : null
 
   if (fields) {
     return [
