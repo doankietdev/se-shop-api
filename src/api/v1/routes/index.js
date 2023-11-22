@@ -10,8 +10,9 @@ const categoryRouter = require('./category')
 const productRouter = require('./product')
 const cartRouter = require('./cart')
 const checkoutRouter = require('./checkout')
-const orderRouter = require('./order')
 const paymentFormRouter = require('./payment.form')
+const orderStatusRouter = require('./order.status')
+const orderRouter = require('./order')
 
 const router = express.Router()
 
@@ -25,6 +26,7 @@ router.use('/products', productRouter)
 router.use('/carts', cartRouter)
 router.use('/checkout', checkoutRouter)
 router.use('/payment-forms', paymentFormRouter)
+router.use('/order-statuses', orderStatusRouter)
 router.use('/orders', orderRouter)
 
 module.exports = router
