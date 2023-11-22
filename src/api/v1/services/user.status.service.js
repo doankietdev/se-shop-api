@@ -12,8 +12,18 @@ const createUserStatus = async ({ name }) => {
   }
 }
 
-const getAllUserStatuses = async () => {
-  return await UserStatus.findAll()
+const getAllUserStatuses = async ({ filter, selector, pagination, sorter }) => {
+  try {
+    return await UserStatus.findAll({
+      where: filter,
+      attributes: selector,
+      offset: pagination.skip,
+      limit: pagination.limit,
+      order: sorter
+    })
+  } catch (error) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, error.message)
+  }
 }
 
 const getUserStatusById = async ({ id }) => {

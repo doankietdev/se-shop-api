@@ -14,8 +14,10 @@ const createProduct = asyncHandling(async (req, res) => {
 })
 
 const getAllProducts = asyncHandling(async (req, res) => {
+  const { filter, selector, pagination, sorter } = req
+
   new SuccessResponse({
-    metadata: await productService.getAllProducts()
+    metadata: await productService.getAllProducts({ filter, selector, pagination, sorter })
   }).send(res)
 })
 

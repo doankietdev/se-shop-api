@@ -7,9 +7,10 @@ const asyncHandling = require('~/core/async.handling')
 
 const getFullCartByUserId = asyncHandling(async (req, res) => {
   const { id } = req.user
+  const { filter, selector, pagination, sorter } = req
 
   new SuccessResponse({
-    metadata: await cartService.getFullCartByUserId(id)
+    metadata: await cartService.getFullCartByUserId(id, { filter, selector, pagination, sorter })
   }).send(res)
 })
 

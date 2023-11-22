@@ -16,8 +16,10 @@ const createUserStatus = asyncHandling(async (req, res) => {
 })
 
 const getAllUserStatuses = asyncHandling(async (req, res) => {
+  const { filter, selector, pagination, sorter } = req
+
   new SuccessResponse({
-    metadata: await userStatusService.getAllUserStatuses()
+    metadata: await userStatusService.getAllUserStatuses({ filter, selector, pagination, sorter })
   }).send(res)
 })
 

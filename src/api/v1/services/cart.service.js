@@ -1,5 +1,6 @@
 'use strict'
 
+const lodash = require('lodash')
 const { Cart, CartDetail, Product } = require('~/api/v1/models')
 const { getProductById } = require('~/api/v1/repositories/product.repo')
 const { getFullCart } = require('~/api/v1/repositories/cart.repo')
@@ -35,25 +36,38 @@ const getAllFullCarts = async () => {
   return fullCarts
 }
 
-const getFullCartByUserId = async (userId) => {
-  const fullCart = await Cart.findOne({
-    where: { userId },
-    attributes: ['id'],
-    include: [
-      {
-        model: CartDetail,
-        as: 'products',
-        attributes: ['quantity'],
-        include: [{
-          model: Product,
-          as: 'product',
-          attributes: ['id', 'name', 'description', 'imageUrl', 'price']
-        }]
-      }
-    ]
+const getFullCartByUserId = async (userId, { filter, selector, pagination, sorter }) => {
+  const gettedFields = ['id', 'name', 'description', 'imageUrl', 'price']
+  lodash.remove(selector, (field) => {
+    return !gettedFields.includes(field)
   })
-  if (!fullCart) throw new ApiError(StatusCodes.NOT_FOUND, 'No carts found')
-  return fullCart
+
+  try {
+    const fullCart = await Cart.findOne({
+      where: { userId },
+      attributes: ['id'],
+      include: [
+        {
+          model: CartDetail,
+          as: 'products',
+          attributes: ['quantity'],
+          include: [{
+            model: Product,
+            as: 'product',
+            where: filter,
+            attributes: selector?.length > 0 ? selector : gettedFields
+          }],
+          offset: pagination?.skip,
+          limit: pagination?.limit,
+          order: sorter
+        }
+      ]
+    })
+    if (!fullCart) throw new ApiError(StatusCodes.NOT_FOUND, 'No carts found')
+    return fullCart
+  } catch (error) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, error.message)
+  }
 }
 
 const getFullCartById = async (id) => {

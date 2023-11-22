@@ -110,12 +110,11 @@ const order = async ({
   }
 }
 
-const getAllOrders = async ({ userId, orderStatusName, paymentFormName }) => {
-  return await orderRepo.getAllOrders({
-    userId,
-    orderStatusName,
-    paymentFormName
-  })
+const getAllOrders = async ({ filter, selector, pagination, sorter }) => {
+  const orders = await orderRepo.getAllOrders({ filter, selector, pagination, sorter })
+  return {
+    orders
+  }
 }
 
 const cancelOrder = async ({ userId, orderId }) => {

@@ -5,14 +5,15 @@ const {
   getAllUsers,
   updateUserById
 } = require('~/api/v1/controllers/user.controller')
-const { authenticate } = require('~/api/v1/middlewares/auth.middleware')
+const queryStringMiddleware = require('~/api/v1/middlewares/query.string.middleware')
 const { uploadAvatarMiddleware } = require('~/api/v1/middlewares/upload.cloud.middleware')
+const { authenticate } = require('~/api/v1/middlewares/auth.middleware')
 
 const router = express.Router()
 
 router.use(authenticate)
 
-router.get('/', getAllUsers)
+router.get('/', queryStringMiddleware, getAllUsers)
 router.patch('/', uploadAvatarMiddleware, updateUserById)
 
 module.exports = router

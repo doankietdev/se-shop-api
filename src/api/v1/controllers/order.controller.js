@@ -30,10 +30,10 @@ const deleteOrder = asyncHandling( async (req, res) => {
 })
 
 const getAllOrders = asyncHandling( async (req, res) => {
-  const { filter } = req
+  const { filter, selector, pagination, sorter } = req
 
   new SuccessResponse({
-    metadata: await orderService.getAllOrders(filter)
+    metadata: await orderService.getAllOrders({ filter, selector, pagination, sorter })
   }).send(res)
 })
 

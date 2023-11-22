@@ -16,14 +16,15 @@ const createCategory = asyncHandling(async (req, res) => {
 })
 
 const getAllCategories = asyncHandling(async (req, res) => {
+  const { filter, selector, pagination, sorter } = req
+
   new SuccessResponse({
-    metadata: await categoryService.getAllCategories()
+    metadata: await categoryService.getAllCategories({ filter, selector, pagination, sorter })
   }).send(res)
 })
 
 const getProductsByCategoryId = asyncHandling(async (req, res) => {
   const id = Number(req.params.id)
-
   const { filter, selector, pagination, sorter } = req
 
   new SuccessResponse({

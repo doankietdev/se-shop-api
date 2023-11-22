@@ -13,8 +13,18 @@ const createCategory = async ({ name, description }) => {
   }
 }
 
-const getAllCategories = async () => {
-  return await Category.findAll()
+const getAllCategories = async ({ filter, selector, pagination, sorter }) => {
+  try {
+    return await Category.findAll({
+      where: filter,
+      attributes: selector,
+      offset: pagination.skip,
+      limit: pagination.limit,
+      order: sorter
+    })
+  } catch (error) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, error.message)
+  }
 }
 
 const getProductsByCategoryId = async ({ categoryId, filter, selector, pagination, sorter }) => {

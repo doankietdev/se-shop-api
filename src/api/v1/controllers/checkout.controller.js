@@ -24,10 +24,12 @@ const order = asyncHandling(async (req, res) => {
 
 const getAllOrders = asyncHandling(async (req, res) => {
   const { id } = req.user
-  const { status, paymentForm } = req.query
+  const { filter, selector, pagination, sorter } = req
+
+  filter.userId = id
 
   new SuccessResponse({
-    metadata: await checkoutService.getAllOrders({ userId: id, orderStatusName: status, paymentFormName: paymentForm })
+    metadata: await checkoutService.getAllOrders({ filter, selector, pagination, sorter })
   }).send(res)
 })
 

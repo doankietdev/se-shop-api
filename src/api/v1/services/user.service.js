@@ -1,5 +1,6 @@
 'use strict'
 
+const lodash = require('lodash')
 const { User, UserStatus, Role, Gender } = require('~/api/v1/models')
 const ApiError = require('~/core/api.error')
 const { StatusCodes, ReasonPhrases } = require('http-status-codes')
@@ -21,17 +22,30 @@ const createUser = async ({
   }
 }
 
-const getAllUsers = async () => {
-  return await User.findAll({
-    attributes: {
-      exclude: ['userStatusId', 'roleId', 'genderId', 'password', 'publicKey', 'privateKey']
-    },
-    include: [
-      { model: UserStatus, as: 'status', attributes: ['id', 'name'] },
-      { model: Role, as: 'role', attributes: ['id', 'name'] },
-      { model: Gender, as: 'gender', attributes: ['id', 'name'] }
-    ]
+const getAllUsers = async ({ filter, selector, pagination, sorter }) => {
+  const bannedFields = ['userStatusId', 'roleId', 'genderId', 'password', 'publicKey', 'privateKey']
+  lodash.remove(selector, (field) => {
+    return bannedFields.includes(field)
   })
+
+  try {
+    return await User.findAll({
+      where: filter,
+      attributes: selector?.length > 0 ? selector : {
+        exclude: bannedFields
+      },
+      include: [
+        { model: UserStatus, as: 'status', attributes: ['id', 'name'] },
+        { model: Role, as: 'role', attributes: ['id', 'name'] },
+        { model: Gender, as: 'gender', attributes: ['id', 'name'] }
+      ],
+      offset: pagination.skip,
+      limit: pagination.limit,
+      order: sorter
+    })
+  } catch (error) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, error.message)
+  }
 }
 
 const getUserById = async (id) => {

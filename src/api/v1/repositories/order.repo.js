@@ -1,7 +1,6 @@
 'use strict'
 
-const { Order, OrderStatus, PaymentForm, OrderDetail, Product } = require('~/api/v1/models')
-const { Op } = require('sequelize')
+const { User, Order, OrderStatus, PaymentForm, OrderDetail, Product } = require('~/api/v1/models')
 
 const createOrder = async ({ shipAddress, phoneNumber, userId, paymentFormId, orderStatusId }) => {
   return await Order.create({
@@ -15,24 +14,30 @@ const createOrder = async ({ shipAddress, phoneNumber, userId, paymentFormId, or
   })
 }
 
-const getAllOrders = async ({ userId, orderStatusName, paymentFormName }) => {
+// eslint-disable-next-line no-unused-vars
+const getAllOrders = async ({ filter, selector, pagination, sorter }) => {
   return await Order.findAll({
-    where: userId,
+    where: filter?.userId ? { userId: filter.userId } : null,
     attributes: {
       exclude: ['orderStatusId', 'paymentFormId', 'userId']
     },
     include: [
       {
+        model: User,
+        as: 'user',
+        attributes: ['id', 'firstName', 'lastName']
+      },
+      {
         model: OrderStatus,
         as: 'orderStatus',
-        attributes: ['id', 'name'],
-        where: orderStatusName ? { name: orderStatusName } : null
+        attributes: ['id', 'name']
+        // where: filter?.orderStatusName ? { name: filter.orderStatusName } : null
       },
       {
         model: PaymentForm,
         as: 'paymentForm',
         attributes: ['id', 'name'],
-        where: paymentFormName ? { name: paymentFormName } : null
+        where: filter?.paymentFormName ? { name: filter.paymentFormName } : null
       },
       {
         model: OrderDetail,
@@ -48,7 +53,10 @@ const getAllOrders = async ({ userId, orderStatusName, paymentFormName }) => {
           }
         ]
       }
-    ]
+    ],
+    offset: pagination?.skip,
+    limit: pagination?.limit,
+    order: sorter
   })
 }
 

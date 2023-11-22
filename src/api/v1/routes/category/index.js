@@ -15,14 +15,14 @@ const {
   deleteCategoryByIds,
   getProductsByCategoryId
 }= require('~/api/v1/controllers/category.controller')
-const { authenticate } = require('~/api/v1/middlewares/auth.middleware')
 const queryStringMiddleware = require('~/api/v1/middlewares/query.string.middleware')
+const { authenticate } = require('~/api/v1/middlewares/auth.middleware')
 
 const router = express.Router()
 
 // router.use(authenticate)
 
-router.get('/', getAllCategories)
+router.get('/', queryStringMiddleware, getAllCategories)
 router.post('/', validateCreateCategory, createCategory)
 router.delete('/', validateDeleteCategoryByIds, deleteCategoryByIds)
 

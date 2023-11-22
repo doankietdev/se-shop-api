@@ -1,5 +1,6 @@
 'use strict'
 
+const lodash = require('lodash')
 const { Product, Category } = require('~/api/v1/models')
 const ApiError = require('~/core/api.error')
 const { StatusCodes, ReasonPhrases } = require('http-status-codes')
@@ -12,15 +13,28 @@ const createProduct = async (reqBody = {}) => {
   }
 }
 
-const getAllProducts = async () => {
-  return await Product.findAll({
-    attributes: {
-      exclude: ['categoryId']
-    },
-    include: [
-      { model: Category, as: 'category', attributes: ['id', 'name'] }
-    ]
+const getAllProducts = async ({ filter, selector, pagination, sorter }) => {
+  const bannedFields = ['categoryId']
+  lodash.remove(selector, (field) => {
+    return bannedFields.includes(field)
   })
+
+  try {
+    return await Product.findAll({
+      where: filter,
+      attributes: selector?.length > 0 ? selector : {
+        exclude: bannedFields
+      },
+      include: [
+        { model: Category, as: 'category', attributes: ['id', 'name'] }
+      ],
+      offset: pagination.skip,
+      limit: pagination.limit,
+      order: sorter
+    })
+  } catch (error) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, error.message)
+  }
 }
 
 const getProductById = async (id) => {

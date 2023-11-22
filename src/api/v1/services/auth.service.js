@@ -89,16 +89,12 @@ const signIn = async ({ username, password }) => {
 
   const token = await tokenService.createToken({ accessToken, refreshToken, userId: foundUser.id })
 
-  const foundFullCart = await cartService.getFullCartByUserId(foundUser.id)
-  if (!foundFullCart) throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR)
-
   return {
     user: {
       id: foundUser.id,
       lastName: foundUser.lastName,
       firstName: foundUser.firstName,
-      username: foundUser.username,
-      cart: foundFullCart
+      username: foundUser.username
     },
     accessToken: token.accessToken,
     refreshToken: token.refreshToken
