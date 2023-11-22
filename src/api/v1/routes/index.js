@@ -11,6 +11,7 @@ const productRouter = require('./product')
 const cartRouter = require('./cart')
 const checkoutRouter = require('./checkout')
 const orderRouter = require('./order')
+const paymentFormRouter = require('./payment.form')
 
 const router = express.Router()
 
@@ -23,6 +24,7 @@ router.use('/categories', categoryRouter)
 router.use('/products', productRouter)
 router.use('/carts', cartRouter)
 router.use('/checkout', checkoutRouter)
+router.use('/payment-forms', paymentFormRouter)
 router.use('/orders', orderRouter)
 
 module.exports = router
