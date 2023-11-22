@@ -20,13 +20,17 @@ const getRoleById = async ({ id }) => {
 }
 
 const getAllRoles = async ({ filter, selector, pagination, sorter }) => {
-  return await Role.findAll({
-    where: filter,
-    attributes: selector,
-    offset: pagination.skip,
-    limit: pagination.limit,
-    order: sorter
-  })
+  try {
+    return await Role.findAll({
+      where: filter,
+      attributes: selector,
+      offset: pagination.skip,
+      limit: pagination.limit,
+      order: sorter
+    })
+  } catch (error) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, error.message)
+  }
 }
 
 const updateRoleById = async ({ id, name, description }) => {

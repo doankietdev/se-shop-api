@@ -13,13 +13,17 @@ const createGender = async ({ name }) => {
 }
 
 const getAllGenders = async ({ filter, selector, pagination, sorter }) => {
-  return await Gender.findAll({
-    where: filter,
-    attributes: selector,
-    offset: pagination.skip,
-    limit: pagination.limit,
-    order: sorter
-  })
+  try {
+    return await Gender.findAll({
+      where: filter,
+      attributes: selector,
+      offset: pagination.skip,
+      limit: pagination.limit,
+      order: sorter
+    })
+  } catch (error) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, error.message)
+  }
 }
 
 const getGenderByName = async ({ name }) => {
