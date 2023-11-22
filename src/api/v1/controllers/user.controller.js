@@ -10,6 +10,16 @@ const getAllUsers = asyncHandling(async (req, res) => {
   }).send(res)
 })
 
+const updateUserById = asyncHandling(async (req, res) => {
+  const { id } = req.user
+  const imageUrl = req?.file?.path
+
+  new SuccessResponse({
+    metadata: await userService.updateUserById(id, { ...req.body, imageUrl })
+  }).send(res)
+})
+
 module.exports = {
-  getAllUsers
+  getAllUsers,
+  updateUserById
 }

@@ -3,6 +3,7 @@
 const { User, UserStatus, Role, Gender } = require('~/api/v1/models')
 const ApiError = require('~/core/api.error')
 const { StatusCodes, ReasonPhrases } = require('http-status-codes')
+const cloudinaryProvider = require('~/api/v1/providers/cloudinary.provider')
 
 const createUser = async ({
   roleId, userStatusId, genderId, lastName, firstName,
@@ -34,9 +35,7 @@ const getAllUsers = async () => {
 }
 
 const getUserById = async (id) => {
-  const user = await User.findByPk(id, {
-    raw: true
-  })
+  const user = await User.findByPk(id)
   if (!user) throw new ApiError(StatusCodes.NOT_FOUND, 'Item not found')
   return user
 }
@@ -56,8 +55,26 @@ const getUserByEmail = async ({ email }) => {
 }
 
 const updateUserById = async (id, payload = {}) => {
-  const user = await getUserById({ id })
+  const user = await getUserById(id)
   if (!user) return null
+
+  // cannot change this fields
+  delete payload.username
+  delete payload.roleId
+  delete payload.userStatusId
+  delete payload.publicKey
+  delete payload.privateKey
+  delete payload.createdAt
+  delete payload.updatedAt
+
+  if (payload.imageUrl) {
+    try {
+      await cloudinaryProvider.destroyFile(user.imageUrl)
+      return await user.update(payload)
+    } catch (error) {
+      throw new ApiError(StatusCodes.BAD_REQUEST, error.message)
+    }
+  }
 
   return await user.update(payload)
 }
