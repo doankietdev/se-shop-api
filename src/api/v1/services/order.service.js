@@ -70,8 +70,6 @@ const deleteOrder = async ({ userId, orderId }) => {
   if (!foundOrder) throw new ApiError(StatusCodes.BAD_REQUEST, 'Order not found')
 
   await orderDetailRepo.deleteOrderDetailByOrderId(foundOrder.id)
-
-  return await foundOrder.destroy()
 }
 
 module.exports = {

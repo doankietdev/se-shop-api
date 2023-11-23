@@ -16,13 +16,14 @@ const signUp = asyncHandling(async (req, res) => {
     email, address, username, password
   } = req.body
 
+  await authService.signUp({
+    genderId, lastName, firstName, phoneNumber,
+    email, address, username, password
+  })
+
   new SuccessResponse({
     statusCode: StatusCodes.CREATED,
-    message: 'Sign up successfully',
-    metadata: await authService.signUp({
-      genderId, lastName, firstName, phoneNumber,
-      email, address, username, password
-    })
+    message: 'Sign up successfully'
   }).send(res)
 })
 
@@ -43,7 +44,7 @@ const signIn = asyncHandling(async (req, res) => {
 
   new SuccessResponse({
     message: 'Signed in successfully',
-    metadata: result.user
+    metadata: { user: result.user }
   }).send(res)
 })
 
@@ -86,18 +87,21 @@ const signOut = asyncHandling(async (req, res) => {
 const forgotPassword = asyncHandling(async (req, res) => {
   const { email } = req.body
 
+  await authService.forgotPassword({ email })
+
   new SuccessResponse({
-    message: `Sent mail to ${email}`,
-    metadata: await authService.forgotPassword({ email })
+    message: `Sent mail to ${email}`
   }).send(res)
 })
 
 const resetPassword = asyncHandling(async (req, res) => {
   const { password, resetToken } = req.body
 
+  const user = await authService.resetPassword({ password, resetToken })
+
   new SuccessResponse({
     message: 'Reset password successfully',
-    metadata: await authService.resetPassword({ password, resetToken })
+    metadata: { user }
   }).send(res)
 })
 

@@ -1,6 +1,6 @@
 'use strict'
 
-const { StatusCodes, ReasonPhrases } = require('http-status-codes')
+const { StatusCodes } = require('http-status-codes')
 const userStatusService = require('~/api/v1/services/user.status.service')
 const SuccessResponse = require('~/core/success.response')
 const asyncHandling = require('~/core/async.handling')
@@ -8,26 +8,34 @@ const asyncHandling = require('~/core/async.handling')
 const createUserStatus = asyncHandling(async (req, res) => {
   const { name } = req.body
 
+  const userStatus = await userStatusService.createUserStatus({ name })
+
   new SuccessResponse({
     statusCode: StatusCodes.CREATED,
-    message: ReasonPhrases.CREATED,
-    metadata: await userStatusService.createUserStatus({ name })
+    message: 'Create user status successfully',
+    metadata: { userStatus }
   }).send(res)
 })
 
 const getAllUserStatuses = asyncHandling(async (req, res) => {
   const { filter, selector, pagination, sorter } = req
 
+  const userStatuses = await userStatusService.getAllUserStatuses({ filter, selector, pagination, sorter })
+
   new SuccessResponse({
-    metadata: await userStatusService.getAllUserStatuses({ filter, selector, pagination, sorter })
+    message: 'Get all user statuses successfully',
+    metadata: { userStatuses }
   }).send(res)
 })
 
 const getUserStatusById = asyncHandling(async (req, res) => {
   const { id } = req.params
 
+  const userStatus = await userStatusService.getUserStatusById({ id })
+
   new SuccessResponse({
-    metadata: await userStatusService.getUserStatusById({ id })
+    message: 'Get user status successfully',
+    metadata: { userStatus }
   }).send(res)
 })
 
@@ -35,26 +43,33 @@ const updateUserStatusById = asyncHandling( async (req, res) => {
   const { id } = req.params
   const { name } = req.body
 
+  const userStatus = await userStatusService.updateUserStatusById({ id, name })
+
   new SuccessResponse({
-    metadata: await userStatusService.updateUserStatusById({ id, name })
+    message: 'Update user status successfully',
+    metadata: { userStatus }
   }).send(res)
 })
 
 const deleteUserStatusById = asyncHandling(async (req, res) => {
   const { id } = req.params
 
+  const userStatuses = await userStatusService.deleteUserStatusById({ id })
+
   new SuccessResponse({
-    statusCode: StatusCodes.NO_CONTENT,
-    message: StatusCodes.NO_CONTENT,
-    metadata: await userStatusService.deleteUserStatusById({ id })
+    message: 'Delete user status successfully',
+    metadata: { userStatuses }
   }).send(res)
 })
 
 const deleteGenderByIds = asyncHandling(async (req, res) => {
   const { ids } = req.body
 
+  const userStatuses = await userStatusService.deleteUserStatusByIds({ ids })
+
   new SuccessResponse({
-    metadata: await userStatusService.deleteUserStatusByIds({ ids })
+    message: 'Delete some user statuses successfully',
+    metadata: { userStatuses }
   }).send(res)
 })
 

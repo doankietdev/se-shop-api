@@ -8,28 +8,34 @@ const asyncHandling = require('~/core/async.handling')
 const createOrderStatus = asyncHandling(async (req, res) => {
   const { name } = req.body
 
+  const orderStatus = await orderStatusService.createOrderStatus({ name })
+
   new SuccessResponse({
     statusCode: StatusCodes.CREATED,
     message: 'Create order status successfully',
-    metadata: await orderStatusService.createOrderStatus({ name })
+    metadata: { orderStatus }
   }).send(res)
 })
 
 const getAllOrderStatuses = asyncHandling(async (req, res) => {
   const { filter, selector, pagination, sorter } = req
 
+  const orderStatuses = await orderStatusService.getAllOrderStatuses({ filter, selector, pagination, sorter })
+
   new SuccessResponse({
     message: 'Get all order statuses successfully',
-    metadata: await orderStatusService.getAllOrderStatuses({ filter, selector, pagination, sorter })
+    metadata: { orderStatuses }
   }).send(res)
 })
 
 const getOrderStatusById = asyncHandling(async (req, res) => {
   const { id } = req.params
 
+  const orderStatus = await orderStatusService.getOrderStatusById(id)
+
   new SuccessResponse({
     message: 'Get order status successfully',
-    metadata: await orderStatusService.getOrderStatusById(id)
+    metadata: { orderStatus }
   }).send(res)
 })
 
@@ -37,27 +43,32 @@ const updateOrderStatusById = asyncHandling( async (req, res) => {
   const { id } = req.params
   const { name } = req.body
 
+  const orderStatus = await orderStatusService.updateOrderStatusById(id, { name })
+
   new SuccessResponse({
     message: 'Update order status successfully',
-    metadata: await orderStatusService.updateOrderStatusById(id, { name })
+    metadata: { orderStatus }
   }).send(res)
 })
 
 const deleteOrderStatusById = asyncHandling(async (req, res) => {
   const { id } = req.params
 
+  await orderStatusService.deleteOrderStatusById(id)
+
   new SuccessResponse({
-    message: 'Delete order status successfully',
-    metadata: await orderStatusService.deleteOrderStatusById(id)
+    message: 'Delete order status successfully'
   }).send(res)
 })
 
 const deleteOrderStatusByIds = asyncHandling(async (req, res) => {
   const { ids } = req.body
 
+  const orderStatuses = await orderStatusService.deleteOrderStatusByIds(ids)
+
   new SuccessResponse({
     message: 'Delete order statuses successfully',
-    metadata: await orderStatusService.deleteOrderStatusByIds(ids)
+    metadata: { orderStatuses }
   }).send(res)
 })
 

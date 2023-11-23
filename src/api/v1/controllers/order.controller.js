@@ -7,33 +7,42 @@ const asyncHandling = require('~/core/async.handling')
 const getOrder = asyncHandling( async (req, res) => {
   const { orderId, userId } = req.params
 
+  const order = await orderService.getOrder({ userId, orderId })
+
   new SuccessResponse({
-    metadata: await orderService.getOrder({ userId, orderId })
+    message: 'Get order successfully',
+    metadata: { order }
   }).send(res)
 })
 
 const updateOrder = asyncHandling( async (req, res) => {
   const { orderId, userId } = req.params
 
+  const order = await orderService.updateOrder({ userId, orderId, ...req.body })
+
   new SuccessResponse({
-    metadata: await orderService.updateOrder({ userId, orderId, ...req.body })
+    metadata: { order }
   }).send(res)
 })
 
 const deleteOrder = asyncHandling( async (req, res) => {
   const { orderId, userId } = req.params
 
+  await orderService.deleteOrder({ userId, orderId })
+
   new SuccessResponse({
-    message: 'Delete order successfully',
-    metadata: await orderService.deleteOrder({ userId, orderId })
+    message: 'Delete order successfully'
   }).send(res)
 })
 
 const getAllOrders = asyncHandling( async (req, res) => {
   const { filter, selector, pagination, sorter } = req
 
+  const orders = await orderService.getAllOrders({ filter, selector, pagination, sorter })
+
   new SuccessResponse({
-    metadata: await orderService.getAllOrders({ filter, selector, pagination, sorter })
+    message: 'Get all orders successfully',
+    metadata: { orders }
   }).send(res)
 })
 

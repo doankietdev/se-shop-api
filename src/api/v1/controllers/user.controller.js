@@ -7,8 +7,11 @@ const asyncHandling = require('~/core/async.handling')
 const getAllUsers = asyncHandling(async (req, res) => {
   const { filter, selector, pagination, sorter } = req
 
+  const users = await userService.getAllUsers({ filter, selector, pagination, sorter })
+
   new SuccessResponse({
-    metadata: await userService.getAllUsers({ filter, selector, pagination, sorter })
+    message: 'Get all users successfully',
+    metadata: { users }
   }).send(res)
 })
 
@@ -16,8 +19,11 @@ const updateUserById = asyncHandling(async (req, res) => {
   const { id } = req.user
   const imageUrl = req?.file?.path
 
+  const user = await userService.updateUserById(id, { ...req.body, imageUrl })
+
   new SuccessResponse({
-    metadata: await userService.updateUserById(id, { ...req.body, imageUrl })
+    message: 'Update user successfully',
+    metadata: { user }
   }).send(res)
 })
 
@@ -25,20 +31,22 @@ const updateStatus = asyncHandling(async (req, res) => {
   const { id } = req.params
   const { userStatusId } = req.body
 
+  const user = await userService.updateStatus({ id, userStatusId })
+
   new SuccessResponse({
     message: 'Update user status successfully',
-    metadata: await userService.updateStatus({ id, userStatusId })
+    metadata: { user }
   }).send(res)
 })
 
 const deleteUserById = asyncHandling(async (req, res) => {
   const { id } = req.params
 
-  console.log({ id });
+  const users = await userService.deleteUserById(id)
 
   new SuccessResponse({
     message: 'Delete user successfully',
-    metadata: await userService.deleteUserById(id)
+    metadata: { users }
   }).send(res)
 })
 

@@ -9,28 +9,35 @@ const getFullCartByUserId = asyncHandling(async (req, res) => {
   const { id } = req.user
   const { filter, selector, pagination, sorter } = req
 
+  const cart = await cartService.getFullCartByUserId(id, { filter, selector, pagination, sorter })
+
   new SuccessResponse({
-    metadata: await cartService.getFullCartByUserId(id, { filter, selector, pagination, sorter })
+    message: 'Get cart successfully',
+    metadata: { cart }
   }).send(res)
 })
 
 const addProductToCart = asyncHandling(async (req, res) => {
   const { id } = req.user
 
+  const cart = await cartService.addProductToCart({ ...req.body, userId: id })
+
   new SuccessResponse({
     statusCode: StatusCodes.CREATED,
-    message: ReasonPhrases.CREATED,
-    metadata: await cartService.addProductToCart({ ...req.body, userId: id })
+    message: 'Add product to cart successfully',
+    metadata: { cart }
   }).send(res)
 })
 
 const reduceQuantityProduct = asyncHandling(async (req, res) => {
   const { id } = req.user
 
+  const cart = await cartService.reduceQuantityProduct({ ...req.body, userId: id })
+
   new SuccessResponse({
     statusCode: StatusCodes.CREATED,
-    message: ReasonPhrases.CREATED,
-    metadata: await cartService.reduceQuantityProduct({ ...req.body, userId: id })
+    message: 'Reduce quantity of product successfully',
+    metadata: { cart }
   }).send(res)
 })
 

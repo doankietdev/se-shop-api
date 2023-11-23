@@ -1,6 +1,6 @@
 'use strict'
 
-const { StatusCodes, ReasonPhrases } = require('http-status-codes')
+const { StatusCodes } = require('http-status-codes')
 const roleService = require('~/api/v1/services/role.service')
 const SuccessResponse = require('~/core/success.response')
 const asyncHandling = require('~/core/async.handling')
@@ -8,26 +8,34 @@ const asyncHandling = require('~/core/async.handling')
 const createRole = asyncHandling(async (req, res) => {
   const { name, description } = req.body
 
+  const role = await roleService.createRole({ name, description })
+
   new SuccessResponse({
     statusCode: StatusCodes.CREATED,
-    message: ReasonPhrases.CREATED,
-    metadata: await roleService.createRole({ name, description })
+    message: 'Create role successfully',
+    metadata: { role }
   }).send(res)
 })
 
 const getAllRoles = asyncHandling(async (req, res) => {
   const { filter, selector, pagination, sorter } = req
 
+  const roles = await roleService.getAllRoles({ filter, selector, pagination, sorter })
+
   new SuccessResponse({
-    metadata: await roleService.getAllRoles({ filter, selector, pagination, sorter })
+    message: 'Get all roles successfully',
+    metadata: { roles }
   }).send(res)
 })
 
 const getRoleById = asyncHandling(async (req, res) => {
   const { id } = req.params
 
+  const role = await roleService.getRoleById({ id })
+
   new SuccessResponse({
-    metadata: await roleService.getRoleById({ id })
+    message: 'Get role successfully',
+    metadata: { role }
   }).send(res)
 })
 
@@ -35,24 +43,33 @@ const updateRoleById = asyncHandling( async (req, res) => {
   const { id } = req.params
   const { name, description } = req.body
 
+  const role = await roleService.updateRoleById({ id, name, description })
+
   new SuccessResponse({
-    metadata: await roleService.updateRoleById({ id, name, description })
+    message: 'Update role successfully',
+    metadata: { role }
   }).send(res)
 })
 
 const deleteRoleById = asyncHandling(async (req, res) => {
   const { id } = req.params
 
+  const roles = await roleService.deleteRoleById({ id })
+
   new SuccessResponse({
-    metadata: await roleService.deleteRoleById({ id })
+    message: 'Delete role successfully',
+    metadata: { roles }
   }).send(res)
 })
 
 const deleteRoleByIds = asyncHandling(async (req, res) => {
   const { ids } = req.body
 
+  const roles = await roleService.deleteRoleByIds({ ids })
+
   new SuccessResponse({
-    metadata: await roleService.deleteRoleByIds({ ids })
+    message: 'Delete some roles successfully',
+    metadata: { roles }
   }).send(res)
 })
 

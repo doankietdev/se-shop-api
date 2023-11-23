@@ -8,8 +8,11 @@ const { app: { paySuccessUrl, payFailUrl } } = require('~/config/environment.con
 const review = asyncHandling(async (req, res) => {
   const { orderProducts } = req.body
 
+  const result = await checkoutService.review({ orderProducts })
+
   new SuccessResponse({
-    metadata: await checkoutService.review({ orderProducts })
+    message: 'Get review product successfully',
+    metadata: { ...result }
   }).send(res)
 })
 
@@ -17,8 +20,11 @@ const order = asyncHandling(async (req, res) => {
   const { id } = req.user
   const { shipAddress, phoneNumber, paymentFormId, orderProducts } = req.body
 
+  const result = await checkoutService.order({ userId: id, shipAddress, phoneNumber, paymentFormId, orderProducts })
+
   new SuccessResponse({
-    metadata: await checkoutService.order({ userId: id, shipAddress, phoneNumber, paymentFormId, orderProducts })
+    message: 'Order successfully',
+    metadata: { ...result }
   }).send(res)
 })
 
@@ -27,9 +33,11 @@ const getAllOrders = asyncHandling(async (req, res) => {
   const { filter, selector, pagination, sorter } = req
 
   filter.userId = id
+  const orders = await checkoutService.getAllOrders({ filter, selector, pagination, sorter })
 
   new SuccessResponse({
-    metadata: await checkoutService.getAllOrders({ filter, selector, pagination, sorter })
+    message: 'Get all orders successfully',
+    metadata: { orders }
   }).send(res)
 })
 
@@ -37,9 +45,10 @@ const cancelOrder = asyncHandling(async (req, res) => {
   const { id } = req.user
   const { orderId } = req.params
 
+  await checkoutService.cancelOrder({ userId: id, orderId })
+
   new SuccessResponse({
-    message: 'Cancel order successfully',
-    metadata: await checkoutService.cancelOrder({ userId: id, orderId })
+    message: 'Cancel order successfully'
   }).send(res)
 })
 
@@ -47,9 +56,11 @@ const getOrder = asyncHandling(async (req, res) => {
   const { id } = req.user
   const { orderId } = req.params
 
+  const order = await checkoutService.getOrder({ userId: id, orderId })
+
   new SuccessResponse({
-    message: 'Cancel order successfully',
-    metadata: await checkoutService.getOrder({ userId: id, orderId })
+    message: 'Get order successfully',
+    metadata: { order }
   }).send(res)
 })
 
@@ -61,9 +72,11 @@ const createPaymentUrl = asyncHandling(async (req, res) => {
     req.socket.remoteAddress ||
     req.connection.socket.remoteAddress
 
+  const paymentUrl = await checkoutService.createPaymentUrl({ userId: id, bankCode, orderId, ipAddr })
+
   new SuccessResponse({
     message: 'Pay successfully',
-    metadata: await checkoutService.createPaymentUrl({ userId: id, bankCode, orderId, ipAddr })
+    metadata: { paymentUrl }
   }).send(res)
 })
 

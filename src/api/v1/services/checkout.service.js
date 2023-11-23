@@ -195,9 +195,7 @@ const createPaymentUrl = async ({ userId, ipAddr, bankCode, orderId }) => {
     amount,
     orderInfo: `Thanh toan cho::: Ma DH: ${orderId} - Ma KH: ${userId}`
   })
-  return {
-    paymentUrl
-  }
+  return paymentUrl
 }
 
 const checkPay = async (paramsObject) => {

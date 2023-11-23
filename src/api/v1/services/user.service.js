@@ -101,7 +101,7 @@ const updateStatus = async ({ id, userStatusId }) => {
 
   try {
     await user.update({ userStatusId })
-    return {}
+    return user
   } catch (error) {
     throw new ApiError(StatusCodes.BAD_REQUEST, '"userStatusId" is invalid')
   }
@@ -115,7 +115,7 @@ const deleteUserById = async (id) => {
 
   try {
     await user.destroy({ force: true })
-    return {}
+    return await getAllUsers()
   } catch (error) {
     throw new ApiError(StatusCodes.CONFLICT, 'Delete user failed')
   }

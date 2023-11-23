@@ -8,26 +8,34 @@ const asyncHandling = require('~/core/async.handling')
 const createGender = asyncHandling(async (req, res) => {
   const { name } = req.body
 
+  const gender = await genderService.createGender({ name })
+
   new SuccessResponse({
     statusCode: StatusCodes.CREATED,
-    message: ReasonPhrases.CREATED,
-    metadata: await genderService.createGender({ name })
+    message: 'Create gender successfully',
+    metadata: { gender }
   }).send(res)
 })
 
 const getAllGenders = asyncHandling(async (req, res) => {
   const { filter, selector, pagination, sorter } = req
 
+  const genders = await genderService.getAllGenders({ filter, selector, pagination, sorter })
+
   new SuccessResponse({
-    metadata: await genderService.getAllGenders({ filter, selector, pagination, sorter })
+    message: 'Get all genders successfully',
+    metadata: { genders }
   }).send(res)
 })
 
 const getGenderById = asyncHandling(async (req, res) => {
   const { id } = req.params
 
+  const gender = await genderService.getGenderById({ id })
+
   new SuccessResponse({
-    metadata: await genderService.getGenderById({ id })
+    message: 'Get gender successfully',
+    metadata: { gender }
   }).send(res)
 })
 
@@ -35,24 +43,33 @@ const updateGenderById = asyncHandling( async (req, res) => {
   const { id } = req.params
   const { name } = req.body
 
+  const gender = await genderService.updateGenderById({ id, name })
+
   new SuccessResponse({
-    metadata: await genderService.updateGenderById({ id, name })
+    message: 'Update gender successfully',
+    metadata: { gender }
   }).send(res)
 })
 
 const deleteGenderById = asyncHandling(async (req, res) => {
   const { id } = req.params
 
+  const genders = await genderService.deleteGenderById({ id })
+
   new SuccessResponse({
-    metadata: await genderService.deleteGenderById({ id })
+    message: 'Delete gender successfully',
+    metadata: { genders }
   }).send(res)
 })
 
 const deleteGenderByIds = asyncHandling(async (req, res) => {
   const { ids } = req.body
 
+  const genders = await genderService.deleteGenderByIds({ ids })
+
   new SuccessResponse({
-    metadata: await genderService.deleteGenderByIds({ ids })
+    message: 'Delete some genders successfully',
+    metadata: { genders }
   }).send(res)
 })
 
