@@ -14,11 +14,19 @@ module.exports = {
         }
       },
       permissionId: {
-        type: Sequelize.TINYINT,
+        type: Sequelize.INTEGER,
         allowNull: false,
         primaryKey: true,
         references: {
           model: 'Permission',
+          key: 'id'
+        }
+      },
+      userIdAssign: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'User',
           key: 'id'
         }
       },

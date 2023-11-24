@@ -2,6 +2,8 @@
 
 const express = require('express')
 const roleRouter = require('./role')
+const permissionRouter = require('./permission')
+const rolePermissionRouter = require('./role.permission')
 const genderRouter = require('./gender')
 const userStatusRouter = require('./user.status')
 const userRouter = require('./user')
@@ -18,6 +20,8 @@ const router = express.Router()
 
 router.use('/auth', authRouter)
 router.use('/roles', roleRouter)
+router.use('/permissions', permissionRouter)
+router.use('/assigned-permissions', rolePermissionRouter)
 router.use('/genders', genderRouter)
 router.use('/user-statuses', userStatusRouter)
 router.use('/users', userRouter)

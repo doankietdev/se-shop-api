@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Permission', {
+    await queryInterface.createTable('PermissionType', {
       id: {
         type: Sequelize.TINYINT,
         allowNull: false,
@@ -13,12 +13,6 @@ module.exports = {
       name: {
         type: Sequelize.STRING(20),
         allowNull: false
-      },
-      desciption: {
-        type: Sequelize.STRING(100)
-      },
-      url: {
-        type: Sequelize.STRING(200)
       },
       createdAt: {
         type: 'TIMESTAMP',
@@ -34,6 +28,6 @@ module.exports = {
   },
   // eslint-disable-next-line no-unused-vars
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Permission')
+    await queryInterface.dropTable('PermissionType')
   }
 }

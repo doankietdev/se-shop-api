@@ -8,7 +8,8 @@ class Permission extends Model {}
 Permission.init({
   name: DataTypes.STRING,
   description: DataTypes.STRING,
-  url: DataTypes.STRING
+  api: DataTypes.STRING,
+  method: DataTypes.STRING
 }, {
   sequelize: mysql.getInstance(),
   modelName: 'Permission',
