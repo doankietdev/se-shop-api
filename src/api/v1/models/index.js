@@ -1,5 +1,6 @@
 'use strict'
 
+const CorsDomain = require('./cors.domain.model')
 const Role = require('./role.model')
 const Resource = require('./resource.model')
 const PermissionType = require('./permission.type.model')
@@ -184,6 +185,7 @@ OrderDetail.belongsTo(Product, {
 })
 
 module.exports = {
+  CorsDomain,
   Role,
   Resource,
   PermissionType,

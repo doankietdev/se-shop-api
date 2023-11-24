@@ -3,6 +3,7 @@
 const express = require('express')
 const {
   getAllUsers,
+  getUserById,
   updateUserById,
   updateStatus,
   deleteUserById
@@ -16,6 +17,7 @@ const router = express.Router()
 router.use(authenticate)
 
 router.get('/', queryStringMiddleware, getAllUsers)
+router.get('/get-info', getUserById)
 router.patch('/', uploadAvatarMiddleware, updateUserById)
 router.patch('/:id/update-status', uploadAvatarMiddleware, updateStatus)
 router.delete('/:id', deleteUserById)
