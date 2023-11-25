@@ -23,7 +23,7 @@ const getAllProducts = asyncHandling(async (req, res) => {
   const [allProducts, products] = await Promise.all([allProductPromise, productsPromise])
   const total = allProducts.length
   const limit = pagination?.limit
-  const totalPage = limit <= total ? total / limit : 1
+  const totalPage = limit <= total ? Math.ceil(total / limit) : 1
 
   new SuccessResponse({
     message: 'Get all products successfully',
