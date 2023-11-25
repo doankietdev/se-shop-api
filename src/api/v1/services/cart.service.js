@@ -3,7 +3,6 @@
 const lodash = require('lodash')
 const { Cart, CartDetail, Product } = require('~/api/v1/models')
 const { getProductById } = require('~/api/v1/repositories/product.repo')
-const { getFullCart } = require('~/api/v1/repositories/cart.repo')
 const { getCartByCartIdProductId } = require('~/api/v1/repositories/cart.detail.repo')
 const ApiError = require('~/core/api.error')
 const { StatusCodes, ReasonPhrases } = require('http-status-codes')
@@ -91,8 +90,14 @@ const getFullCartById = async (id) => {
   return fullCart
 }
 
+const getCart = async ({ cartId, userId }) => {
+  return await Cart.findOne({
+    where: { userId, id: cartId }
+  })
+}
+
 const addProductToCart = async ({ userId, cartId, productId, quantity }) => {
-  const foundCart = await getFullCart({ cartId, userId })
+  const foundCart = await getCart({ cartId, userId })
   if (!foundCart) throw new ApiError(StatusCodes.BAD_REQUEST, ReasonPhrases.BAD_REQUEST)
 
   const foundProduct = await getProductById(productId)
@@ -118,7 +123,7 @@ const addProductToCart = async ({ userId, cartId, productId, quantity }) => {
 }
 
 const reduceQuantityProduct = async ({ userId, cartId, productId, quantity }) => {
-  const foundCart = await getFullCart({ cartId, userId })
+  const foundCart = await getCart({ cartId, userId })
   if (!foundCart) throw new ApiError(StatusCodes.BAD_REQUEST, ReasonPhrases.BAD_REQUEST)
 
   const foundProduct = await getProductById(productId)
