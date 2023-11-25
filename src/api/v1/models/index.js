@@ -53,27 +53,27 @@ RolePermission.belongsTo(Permission, {
 })
 
 RolePermission.belongsTo(User, {
-  foreignKey: 'userIdAssign',
+  foreignKey: 'assignerId',
   targetKey: 'id',
-  as: 'asignedBy'
+  as: 'assigner'
 })
 
 Role.hasMany(RolePermission, {
   foreignKey: 'roleId',
   sourceKey: 'id',
-  as: 'rolePermissions'
+  as: 'accessControlList'
 })
 
 User.hasMany(RolePermission, {
-  foreignKey: 'userIdAssign',
+  foreignKey: 'assignerId',
   sourceKey: 'id',
-  as: 'assignedPermissions'
+  as: 'accessControlList'
 })
 
 Permission.hasMany(RolePermission, {
   foreignKey: 'permissionId',
   sourceKey: 'id',
-  as: 'assignedFor'
+  as: 'accessControlList'
 })
 
 Resource.hasMany(Permission, {

@@ -14,7 +14,7 @@ RolePermission.init({
     type: DataTypes.INTEGER,
     primaryKey: true
   },
-  userIdAssign: DataTypes.INTEGER
+  assignerId: DataTypes.INTEGER
 }, {
   sequelize: mysql.getInstance(),
   modelName: 'RolePermission',

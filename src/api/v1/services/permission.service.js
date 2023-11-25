@@ -36,7 +36,7 @@ const updatePermissionById = async (id, { name, description, api, method, permis
   const permission = await Permission.findOne({
     where: { id }
   })
-  if (!permission) throw new ApiError(StatusCodes.NOT_FOUND, 'Oermission not found')
+  if (!permission) throw new ApiError(StatusCodes.NOT_FOUND, 'Permission not found')
   return await permission.update({ name, description, api, method, permissionTypeId, resourceId })
 }
 
