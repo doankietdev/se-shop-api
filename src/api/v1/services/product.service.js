@@ -28,8 +28,8 @@ const getAllProducts = async ({ filter, selector, pagination, sorter }) => {
       include: [
         { model: Category, as: 'category', attributes: ['id', 'name'] }
       ],
-      offset: pagination.skip,
-      limit: pagination.limit,
+      offset: pagination?.skip,
+      limit: pagination?.limit,
       order: sorter
     })
   } catch (error) {

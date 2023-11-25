@@ -18,11 +18,16 @@ const createProduct = asyncHandling(async (req, res) => {
 const getAllProducts = asyncHandling(async (req, res) => {
   const { filter, selector, pagination, sorter } = req
 
-  const products = await productService.getAllProducts({ filter, selector, pagination, sorter })
+  const productsPromise = productService.getAllProducts({ filter, selector, pagination, sorter })
+  const allProductPromise = productService.getAllProducts({})
+  const [allProducts, products] = await Promise.all([allProductPromise, productsPromise])
+  const total = allProducts.length
+  const limit = pagination?.limit
+  const totalPage = limit <= total ? total / limit : 1
 
   new SuccessResponse({
     message: 'Get all products successfully',
-    metadata: { products }
+    metadata: { page: pagination.skip / pagination.limit + 1, total, totalPage, products }
   }).send(res)
 })
 

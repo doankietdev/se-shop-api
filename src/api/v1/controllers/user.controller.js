@@ -15,6 +15,17 @@ const getAllUsers = asyncHandling(async (req, res) => {
   }).send(res)
 })
 
+const getUserById = asyncHandling(async (req, res) => {
+  const { id } = req.user
+
+  const user = await userService.getUserById(id)
+
+  new SuccessResponse({
+    message: 'Get user successfully',
+    metadata: { user }
+  }).send(res)
+})
+
 const updateUserById = asyncHandling(async (req, res) => {
   const { id } = req.user
   const imageUrl = req?.file?.path
@@ -52,6 +63,7 @@ const deleteUserById = asyncHandling(async (req, res) => {
 
 module.exports = {
   getAllUsers,
+  getUserById,
   updateUserById,
   updateStatus,
   deleteUserById

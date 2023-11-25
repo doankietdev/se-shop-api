@@ -16,13 +16,14 @@ const { authenticate } = require('~/api/v1/middlewares/auth.middleware')
 
 const router = express.Router()
 
+router.get('/', queryStringMiddleware, getAllProducts)
+router.get('/:id', getProductById)
+
 router.use(authenticate)
 
-router.get('/', queryStringMiddleware, getAllProducts)
 router.post('/', uploadProductImageMiddleware, validateCreateProduct, createProduct)
 router.delete('/', deleteProductByIds)
 
-router.get('/:id', getProductById)
 router.patch('/:id', updateProductById)
 router.delete('/:id', deleteProductById)
 

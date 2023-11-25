@@ -51,7 +51,13 @@ const getAllUsers = async ({ filter, selector, pagination, sorter }) => {
 }
 
 const getUserById = async (id) => {
-  const user = await User.findByPk(id)
+  const bannedFields = ['userStatusId', 'roleId', 'genderId', 'password', 'publicKey', 'privateKey']
+  
+  const user = await User.findByPk(id, {
+    attributes: {
+      exclude: bannedFields
+    }
+  })
   if (!user) throw new ApiError(StatusCodes.NOT_FOUND, 'Item not found')
   return user
 }
