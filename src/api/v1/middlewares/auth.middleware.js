@@ -6,6 +6,7 @@ const asyncHandling = require('~/core/async.handling')
 const { REQUEST_HEADER_KEYS } = require('~/config/constants.config')
 const tokenRepo = require('~/api/v1/services/token.service')
 const userRepo = require('~/api/v1/repositories/user.repo')
+const rolePermissionRepo = require('~/api/v1/repositories/role.permission.repo')
 const { verifyToken } = require('~/api/v1/utils/auth.util')
 
 const authenticate = asyncHandling(async (req, res, next) => {
@@ -30,6 +31,24 @@ const authenticate = asyncHandling(async (req, res, next) => {
   }
 })
 
+const authorize = asyncHandling(async (req, res, next) => {
+  // get roleId
+  const { roleId } = req.user
+  // get reqApi and method from req
+  const reqUrl = req.baseUrl
+  const reqMethod = req.method
+
+  const accessControlList = await rolePermissionRepo.getAllRolePermissionsByRoleId(roleId, {})
+
+  const hasPermission = accessControlList.some(({ permission }) => {
+    return reqUrl === permission.api && reqMethod === permission.method
+  })
+
+  if (hasPermission) return next()
+  next(new ApiError(StatusCodes.FORBIDDEN, ReasonPhrases.FORBIDDEN))
+})
+
 module.exports = {
-  authenticate
+  authenticate,
+  authorize
 }

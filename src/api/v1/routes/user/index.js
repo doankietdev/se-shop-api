@@ -10,11 +10,12 @@ const {
 } = require('~/api/v1/controllers/user.controller')
 const queryStringMiddleware = require('~/api/v1/middlewares/query.string.middleware')
 const { uploadAvatarMiddleware } = require('~/api/v1/middlewares/upload.cloud.middleware')
-const { authenticate } = require('~/api/v1/middlewares/auth.middleware')
+const { authenticate, authorize } = require('~/api/v1/middlewares/auth.middleware')
 
 const router = express.Router()
 
 router.use(authenticate)
+router.use(authorize)
 
 router.get('/', queryStringMiddleware, getAllUsers)
 router.get('/get-info', getUserById)

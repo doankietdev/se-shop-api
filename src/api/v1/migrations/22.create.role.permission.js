@@ -22,7 +22,7 @@ module.exports = {
           key: 'id'
         }
       },
-      userIdAssign: {
+      assignerId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
