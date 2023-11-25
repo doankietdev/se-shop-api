@@ -94,9 +94,9 @@ const getAccessControlListByAssignerId = asyncHandling(async (req, res) => {
 })
 
 const updateAccessControl = asyncHandling( async (req, res) => {
+  const assignerId = req?.user?.id || null
   const { roleId, permissionId } = req.params
-
-  const accessControl = await aclService.updateAccessControl({ roleId, permissionId }, { ...req.body })
+  const accessControl = await aclService.updateAccessControl({ roleId, permissionId }, { ...req.body, assignerId })
 
   new SuccessResponse({
     message: 'Update access control successfully',

@@ -79,9 +79,12 @@ const updateAccessControl = async ({ roleId, permissionId }, payload = {}) => {
   })
   if (!accessControl) throw new ApiError(StatusCodes.NOT_FOUND, 'Access Control not found')
 
-  // delete
-
-  // create
+  try {
+    await assignPermission(payload)
+    await accessControl.destroy()
+  } catch (error) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, 'Update access control failed')
+  }
 }
 
 const unassignPermission = async ({ roleId, permissionId }) => {
