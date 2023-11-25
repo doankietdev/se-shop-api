@@ -21,6 +21,7 @@ const PaymentForm = require('./payment.form.model')
 const OrderStatus = require('./order.status.model')
 const Order = require('./order.model')
 const OrderDetail = require('./order.detail.model')
+const CorsDomain = require('./cors.domain.model')
 
 Permission.belongsTo(PermissionType, {
   foreignKey: 'permissionTypeId',
@@ -205,5 +206,6 @@ module.exports = {
   PaymentForm,
   OrderStatus,
   Order,
-  OrderDetail
+  OrderDetail,
+  CorsDomain
 }
