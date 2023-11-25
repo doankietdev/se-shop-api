@@ -36,8 +36,7 @@ const getAccessControlListByRoleId = async (roleId, {
   pagination,
   sorter
 }) => {
-  filter.roleId = roleId
-  return await rolePermissionRepo.getAllRolePermissions({
+  return await rolePermissionRepo.getAllRolePermissionsByRoleId(roleId, {
     filter,
     selector,
     pagination,

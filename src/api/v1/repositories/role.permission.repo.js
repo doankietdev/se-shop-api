@@ -2,7 +2,7 @@
 
 const { RolePermission, Role, Permission, PermissionType, Resource, User } = require('~/api/v1/models')
 
-const getAllRolePermissions = async ({ filter = null, selector = null, pagination = null, sorter = null }) => {
+const getAllRolePermissions = async ({ filter = {}, selector = null, pagination = null, sorter = null }) => {
   return await RolePermission.findAll({
     where: filter,
     attributes: selector ? selector : {
@@ -42,6 +42,22 @@ const getAllRolePermissions = async ({ filter = null, selector = null, paginatio
   })
 }
 
+const getAllRolePermissionsByRoleId = async (roleId, {
+  filter = {},
+  selector,
+  pagination,
+  sorter
+}) => {
+  filter.roleId = roleId
+  return await getAllRolePermissions({
+    filter,
+    selector,
+    pagination,
+    sorter
+  })
+}
+
 module.exports = {
-  getAllRolePermissions
+  getAllRolePermissions,
+  getAllRolePermissionsByRoleId
 }
