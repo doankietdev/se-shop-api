@@ -193,7 +193,7 @@ const createPaymentUrl = async ({ userId, ipAddr, bankCode, orderId }) => {
     bankCode,
     orderId,
     amount,
-    orderInfo: `Thanh toan cho::: Ma DH: ${orderId} - Ma KH: ${userId}`
+    orderInfo: `Thanh toan cho::: Ma DH: ${orderId} - Ma KH: ${userId}`,
   })
   return paymentUrl
 }

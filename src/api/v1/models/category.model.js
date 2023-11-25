@@ -3,7 +3,6 @@
 const { Model, DataTypes } = require('sequelize')
 const { mysql } = require('~/databases')
 const Product = require('./product.model')
-const slugify = require('~/api/v1/utils/slugify')
 
 class Category extends Model {}
 

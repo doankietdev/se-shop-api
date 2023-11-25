@@ -1,6 +1,6 @@
 'use strict'
 
-const { OrderStatus, Order } = require('~/api/v1/models')
+const { OrderStatus } = require('~/api/v1/models')
 const ApiError = require('~/core/api.error')
 const { StatusCodes } = require('http-status-codes')
 

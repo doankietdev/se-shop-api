@@ -30,7 +30,6 @@ mysql.getInstance()
 
 app.use('/api', redirectApiVersion)
 app.use('/', notFoundMiddleware)
-
 app.use(errorHandlingMiddleware)
 
 module.exports = app

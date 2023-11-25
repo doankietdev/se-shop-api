@@ -4,7 +4,6 @@ const { RolePermission } = require('~/api/v1/models')
 const ApiError = require('~/core/api.error')
 const { StatusCodes } = require('http-status-codes')
 const rolePermissionRepo = require('~/api/v1/repositories/role.permission.repo')
-const { Op } = require('sequelize')
 
 const assignPermission = async ({ roleId, permissionId, assignerId }) => {
   try {
