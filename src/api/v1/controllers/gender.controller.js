@@ -1,13 +1,12 @@
 'use strict'
 
-const { StatusCodes, ReasonPhrases } = require('http-status-codes')
+const { StatusCodes } = require('http-status-codes')
 const genderService = require('~/api/v1/services/gender.service')
 const SuccessResponse = require('~/core/success.response')
 const asyncHandling = require('~/core/async.handling')
 
 const createGender = asyncHandling(async (req, res) => {
   const { name } = req.body
-
   const gender = await genderService.createGender({ name })
 
   new SuccessResponse({
@@ -19,7 +18,6 @@ const createGender = asyncHandling(async (req, res) => {
 
 const getAllGenders = asyncHandling(async (req, res) => {
   const { filter, selector, pagination, sorter } = req
-
   const genders = await genderService.getAllGenders({ filter, selector, pagination, sorter })
 
   new SuccessResponse({
@@ -30,7 +28,6 @@ const getAllGenders = asyncHandling(async (req, res) => {
 
 const getGenderById = asyncHandling(async (req, res) => {
   const { id } = req.params
-
   const gender = await genderService.getGenderById({ id })
 
   new SuccessResponse({
@@ -42,7 +39,6 @@ const getGenderById = asyncHandling(async (req, res) => {
 const updateGenderById = asyncHandling( async (req, res) => {
   const { id } = req.params
   const { name } = req.body
-
   const gender = await genderService.updateGenderById({ id, name })
 
   new SuccessResponse({
@@ -53,7 +49,6 @@ const updateGenderById = asyncHandling( async (req, res) => {
 
 const deleteGenderById = asyncHandling(async (req, res) => {
   const { id } = req.params
-
   const genders = await genderService.deleteGenderById({ id })
 
   new SuccessResponse({
@@ -64,7 +59,6 @@ const deleteGenderById = asyncHandling(async (req, res) => {
 
 const deleteGenderByIds = asyncHandling(async (req, res) => {
   const { ids } = req.body
-
   const genders = await genderService.deleteGenderByIds({ ids })
 
   new SuccessResponse({

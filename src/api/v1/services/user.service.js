@@ -58,7 +58,7 @@ const getUserById = async (id) => {
       exclude: bannedFields
     }
   })
-  if (!user) throw new ApiError(StatusCodes.NOT_FOUND, 'Item not found')
+  if (!user) throw new ApiError(StatusCodes.NOT_FOUND, 'User not found')
   return user
 }
 

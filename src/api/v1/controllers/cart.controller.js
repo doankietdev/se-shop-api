@@ -1,12 +1,12 @@
 'use strict'
 
-const { StatusCodes, ReasonPhrases } = require('http-status-codes')
+const { StatusCodes } = require('http-status-codes')
 const cartService = require('~/api/v1/services/cart.service')
 const SuccessResponse = require('~/core/success.response')
 const asyncHandling = require('~/core/async.handling')
 
 const getFullCartByUserId = asyncHandling(async (req, res) => {
-  const { id } = req.user
+  const id = req?.user?.id || null
   const { filter, selector, pagination, sorter } = req
 
   const cart = await cartService.getFullCartByUserId(id, { filter, selector, pagination, sorter })
@@ -18,9 +18,9 @@ const getFullCartByUserId = asyncHandling(async (req, res) => {
 })
 
 const addProductToCart = asyncHandling(async (req, res) => {
-  const { id } = req.user
+  const userId = req?.user?.id || null
 
-  const cart = await cartService.addProductToCart({ ...req.body, userId: id })
+  const cart = await cartService.addProductToCart({ ...req.body, userId })
 
   new SuccessResponse({
     statusCode: StatusCodes.CREATED,
@@ -30,9 +30,9 @@ const addProductToCart = asyncHandling(async (req, res) => {
 })
 
 const reduceQuantityProduct = asyncHandling(async (req, res) => {
-  const { id } = req.user
+  const userId = req?.user?.id || null
 
-  const cart = await cartService.reduceQuantityProduct({ ...req.body, userId: id })
+  const cart = await cartService.reduceQuantityProduct({ ...req.body, userId })
 
   new SuccessResponse({
     statusCode: StatusCodes.CREATED,

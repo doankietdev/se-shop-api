@@ -17,10 +17,10 @@ const review = asyncHandling(async (req, res) => {
 })
 
 const order = asyncHandling(async (req, res) => {
-  const { id } = req.user
+  const userId = req?.user?.id || null
   const { shipAddress, phoneNumber, paymentFormId, orderProducts } = req.body
 
-  const result = await checkoutService.order({ userId: id, shipAddress, phoneNumber, paymentFormId, orderProducts })
+  const result = await checkoutService.order({ userId, shipAddress, phoneNumber, paymentFormId, orderProducts })
 
   new SuccessResponse({
     message: 'Order successfully',
@@ -29,10 +29,10 @@ const order = asyncHandling(async (req, res) => {
 })
 
 const getAllOrders = asyncHandling(async (req, res) => {
-  const { id } = req.user
+  const userId = req?.user?.id || null
   const { filter, selector, pagination, sorter } = req
 
-  filter.userId = id
+  filter.userId = userId
   const orders = await checkoutService.getAllOrders({ filter, selector, pagination, sorter })
 
   new SuccessResponse({
@@ -42,10 +42,10 @@ const getAllOrders = asyncHandling(async (req, res) => {
 })
 
 const cancelOrder = asyncHandling(async (req, res) => {
-  const { id } = req.user
+  const userId = req?.user?.id || null
   const { orderId } = req.params
 
-  await checkoutService.cancelOrder({ userId: id, orderId })
+  await checkoutService.cancelOrder({ userId, orderId })
 
   new SuccessResponse({
     message: 'Cancel order successfully'
@@ -53,10 +53,10 @@ const cancelOrder = asyncHandling(async (req, res) => {
 })
 
 const getOrder = asyncHandling(async (req, res) => {
-  const { id } = req.user
+  const userId = req?.user?.id || null
   const { orderId } = req.params
 
-  const order = await checkoutService.getOrder({ userId: id, orderId })
+  const order = await checkoutService.getOrder({ userId, orderId })
 
   new SuccessResponse({
     message: 'Get order successfully',
@@ -65,14 +65,14 @@ const getOrder = asyncHandling(async (req, res) => {
 })
 
 const createPaymentUrl = asyncHandling(async (req, res) => {
-  const { id } = req.user
+  const userId = req?.user?.id || null
   const { orderId, bankCode } = req.body
   const ipAddr = req.headers['x-forwarded-for'] ||
     req.connection.remoteAddress ||
     req.socket.remoteAddress ||
     req.connection.socket.remoteAddress
 
-  const paymentUrl = await checkoutService.createPaymentUrl({ userId: id, bankCode, orderId, ipAddr })
+  const paymentUrl = await checkoutService.createPaymentUrl({ userId, bankCode, orderId, ipAddr })
 
   new SuccessResponse({
     message: 'Pay successfully',
@@ -82,9 +82,7 @@ const createPaymentUrl = asyncHandling(async (req, res) => {
 
 const checkPay = asyncHandling(async (req, res) => {
   const vnpParams = req.query
-
   const isSuccess = await checkoutService.checkPay(vnpParams)
-
   if (isSuccess) return res.redirect(paySuccessUrl)
   return res.redirect(payFailUrl)
 })

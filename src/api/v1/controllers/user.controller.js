@@ -15,8 +15,19 @@ const getAllUsers = asyncHandling(async (req, res) => {
   }).send(res)
 })
 
+const getUserInfo = asyncHandling(async (req, res) => {
+  const userId = req?.user?.id || null
+
+  const user = await userService.getUserById(userId)
+
+  new SuccessResponse({
+    message: 'Get user successfully',
+    metadata: { user }
+  }).send(res)
+})
+
 const getUserById = asyncHandling(async (req, res) => {
-  const { id } = req.user
+  const { id } = req.params
 
   const user = await userService.getUserById(id)
 
@@ -26,11 +37,11 @@ const getUserById = asyncHandling(async (req, res) => {
   }).send(res)
 })
 
-const updateUserById = asyncHandling(async (req, res) => {
-  const { id } = req.user
+const updateUser = asyncHandling(async (req, res) => {
+  const userId = req?.user?.id || null
   const imageUrl = req?.file?.path
 
-  const user = await userService.updateUserById(id, { ...req.body, imageUrl })
+  const user = await userService.updateUserById(userId, { ...req.body, imageUrl })
 
   new SuccessResponse({
     message: 'Update user successfully',
@@ -63,8 +74,9 @@ const deleteUserById = asyncHandling(async (req, res) => {
 
 module.exports = {
   getAllUsers,
+  getUserInfo,
   getUserById,
-  updateUserById,
+  updateUser,
   updateStatus,
   deleteUserById
 }

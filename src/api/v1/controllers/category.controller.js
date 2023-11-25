@@ -1,6 +1,6 @@
 'use strict'
 
-const { StatusCodes, ReasonPhrases } = require('http-status-codes')
+const { StatusCodes } = require('http-status-codes')
 const categoryService = require('~/api/v1/services/category.service')
 const SuccessResponse = require('~/core/success.response')
 const asyncHandling = require('~/core/async.handling')
