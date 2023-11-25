@@ -15,8 +15,12 @@ const checkoutRouter = require('./checkout')
 const paymentFormRouter = require('./payment.form')
 const orderStatusRouter = require('./order.status')
 const orderRouter = require('./order')
+const { authenticate, authorize } = require('~/api/v1/middlewares/auth.middleware')
 
 const router = express.Router()
+
+router.use(authenticate)
+router.use(authorize)
 
 router.use('/auth', authRouter)
 router.use('/roles', roleRouter)

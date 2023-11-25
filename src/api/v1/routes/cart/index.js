@@ -7,11 +7,8 @@ const {
   reduceQuantityProduct
 } = require('~/api/v1/controllers/cart.controller')
 const queryStringMiddleware = require('~/api/v1/middlewares/query.string.middleware')
-const { authenticate } = require('~/api/v1/middlewares/auth.middleware')
 
 const router = express.Router()
-
-router.use(authenticate)
 
 router.get('/get-by-user-id', queryStringMiddleware, getFullCartByUserId)
 router.post('/add-to-cart', addProductToCart)

@@ -16,11 +16,8 @@ const {
   getProductsByCategoryId
 }= require('~/api/v1/controllers/category.controller')
 const queryStringMiddleware = require('~/api/v1/middlewares/query.string.middleware')
-const { authenticate } = require('~/api/v1/middlewares/auth.middleware')
 
 const router = express.Router()
-
-// router.use(authenticate)
 
 router.get('/', queryStringMiddleware, getAllCategories)
 router.post('/', validateCreateCategory, createCategory)

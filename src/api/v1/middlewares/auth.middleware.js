@@ -7,9 +7,25 @@ const { REQUEST_HEADER_KEYS } = require('~/config/constants.config')
 const tokenRepo = require('~/api/v1/services/token.service')
 const userRepo = require('~/api/v1/repositories/user.repo')
 const rolePermissionRepo = require('~/api/v1/repositories/role.permission.repo')
+const permissionRepo = require('~/api/v1/repositories/permission.repo')
 const { verifyToken } = require('~/api/v1/utils/auth.util')
 
 const authenticate = asyncHandling(async (req, res, next) => {
+  const reqApi = req.baseUrl + req.path
+  const reqMethod = req.method
+
+  const foundPermission = await permissionRepo.getPermissionWithQuery({
+    where: { api: reqApi, method: reqMethod }
+  })
+  if (!foundPermission) {
+    req.isPrivateApi = false
+    return next()
+  }
+
+  req.isPrivateApi = true
+  req.reqApi = reqApi
+  req.reqMethod = reqMethod
+
   const userId = Number(req.headers[REQUEST_HEADER_KEYS.userId])
   if (!userId) throw new ApiError(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED)
   const { accessToken } = req.cookies
@@ -32,16 +48,15 @@ const authenticate = asyncHandling(async (req, res, next) => {
 })
 
 const authorize = asyncHandling(async (req, res, next) => {
-  // get roleId
+  if (!req.isPrivateApi) return next()
+
   const { roleId } = req.user
-  // get reqApi and method from req
-  const reqUrl = req.baseUrl
-  const reqMethod = req.method
+  const { reqApi, reqMethod } = req
 
   const accessControlList = await rolePermissionRepo.getAllRolePermissionsByRoleId(roleId, {})
 
   const hasPermission = accessControlList.some(({ permission }) => {
-    return reqUrl === permission.api && reqMethod === permission.method
+    return reqApi === permission.api && reqMethod === permission.method
   })
 
   if (hasPermission) return next()
