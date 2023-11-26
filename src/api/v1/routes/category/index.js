@@ -20,12 +20,11 @@ const queryStringMiddleware = require('~/api/v1/middlewares/query.string.middlew
 const router = express.Router()
 
 router.get('/', queryStringMiddleware, getAllCategories)
-router.post('/', validateCreateCategory, createCategory)
-router.delete('/', validateDeleteCategoryByIds, deleteCategoryByIds)
-
-router.get('/:id', getCategoryById)
-router.get('/:id/get-products', queryStringMiddleware, getProductsByCategoryId)
-router.patch('/:id', validateUpdateCategoryById, updateCategoryById)
-router.delete('/:id', deleteCategoryById)
+router.get('/get-category', getCategoryById)
+router.get('/get-products', queryStringMiddleware, getProductsByCategoryId)
+router.post('/create', validateCreateCategory, createCategory)
+router.patch('/update-category', validateUpdateCategoryById, updateCategoryById)
+router.delete('/delete-category', deleteCategoryById)
+router.delete('/delete-categories', validateDeleteCategoryByIds, deleteCategoryByIds)
 
 module.exports = router

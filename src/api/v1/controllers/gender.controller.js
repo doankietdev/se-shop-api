@@ -27,7 +27,7 @@ const getAllGenders = asyncHandling(async (req, res) => {
 })
 
 const getGenderById = asyncHandling(async (req, res) => {
-  const { id } = req.params
+  const { id } = req.query
   const gender = await genderService.getGenderById({ id })
 
   new SuccessResponse({
@@ -37,7 +37,7 @@ const getGenderById = asyncHandling(async (req, res) => {
 })
 
 const updateGenderById = asyncHandling( async (req, res) => {
-  const { id } = req.params
+  const { id } = req.query
   const { name } = req.body
   const gender = await genderService.updateGenderById({ id, name })
 
@@ -48,7 +48,7 @@ const updateGenderById = asyncHandling( async (req, res) => {
 })
 
 const deleteGenderById = asyncHandling(async (req, res) => {
-  const { id } = req.params
+  const { id } = req.query
   const genders = await genderService.deleteGenderById({ id })
 
   new SuccessResponse({

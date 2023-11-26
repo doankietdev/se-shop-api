@@ -19,10 +19,10 @@ const queryStringMiddleware = require('~/api/v1/middlewares/query.string.middlew
 const router = express.Router()
 
 router.get('/', queryStringMiddleware, getAllRoles)
-router.post('/', validateCreateRole, createRole)
-router.delete('/', validateDeleteRoleByIds, deleteRoleByIds)
-router.get('/:id', getRoleById)
-router.patch('/:id', validateUpdateRoleById, updateRoleById)
-router.delete('/:id', deleteRoleById)
+router.get('/get-role', getRoleById)
+router.post('/create', validateCreateRole, createRole)
+router.patch('/update-role', validateUpdateRoleById, updateRoleById)
+router.delete('/delete-role', deleteRoleById)
+router.delete('/delete-roles', validateDeleteRoleByIds, deleteRoleByIds)
 
 module.exports = router

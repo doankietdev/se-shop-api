@@ -16,10 +16,10 @@ const queryStringMiddleware = require('~/api/v1/middlewares/query.string.middlew
 const router = express.Router()
 
 router.get('/', queryStringMiddleware, getAllProducts)
-router.post('/', uploadProductImageMiddleware, validateCreateProduct, createProduct)
-router.delete('/', deleteProductByIds)
-router.get('/:id', getProductById)
-router.patch('/:id', updateProductById)
-router.delete('/:id', deleteProductById)
+router.get('/get-product', getProductById)
+router.post('/create', uploadProductImageMiddleware, validateCreateProduct, createProduct)
+router.patch('/update-product', updateProductById)
+router.delete('/delete-product', deleteProductById)
+router.delete('/delete-products', deleteProductByIds)
 
 module.exports = router

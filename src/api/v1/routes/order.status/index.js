@@ -13,10 +13,10 @@ const queryStringMiddleware = require('~/api/v1/middlewares/query.string.middlew
 const router = express.Router()
 
 router.get('/', queryStringMiddleware, getAllOrderStatuses)
-router.post('/', createOrderStatus)
-router.delete('/', deleteOrderStatusByIds)
-router.get('/:id', getOrderStatusById)
-router.patch('/:id', updateOrderStatusById)
-router.delete('/:id', deleteOrderStatusById)
+router.get('/get-order-status', getOrderStatusById)
+router.post('/create', createOrderStatus)
+router.patch('/update-order-status', updateOrderStatusById)
+router.delete('/delete-order-status', deleteOrderStatusById)
+router.delete('/delete-order-statuses', deleteOrderStatusByIds)
 
 module.exports = router

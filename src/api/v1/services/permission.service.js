@@ -45,16 +45,19 @@ const deletePermissionById = async (id) => {
   if (!permission) throw new ApiError(StatusCodes.NOT_FOUND, 'Permission not found')
   const { dataValues } = await permission.destroy()
   if (!dataValues) throw new ApiError(StatusCodes.BAD_REQUEST, 'Delete permission failed')
-  return await getAllPermissions({})
 }
 
 const deletePermissionByIds = async (ids) => {
-  const numberDeletedItems = await Permission.destroy({
-    where: { id: ids }
-  })
-  const NO_ITEMS_DELETEDS = 0
-  if (numberDeletedItems === NO_ITEMS_DELETEDS) throw new ApiError(StatusCodes.BAD_REQUEST, 'No Permissions are deleted')
-  return await getAllPermissions({})
+  try {
+    const numberDeletedItems = await Permission.destroy({
+      where: { id: ids }
+    })
+    const NO_ITEMS_DELETEDS = 0
+    if (numberDeletedItems === NO_ITEMS_DELETEDS)
+      throw new Error('No permissions are deleted')
+  } catch (error) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, error.message)
+  }
 }
 
 module.exports = {

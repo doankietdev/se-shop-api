@@ -54,21 +54,23 @@ const getOrder = async ({ userId, orderId }) => {
   return foundOrder
 }
 
-const updateOrder = async ({ userId, orderId, ...reqBody }) => {
+const updateOrder = async (id, reqBody) => {
   const foundOrder = await Order.findOne({
-    where: { userId, id: orderId }
+    where: { id }
   })
-  if (!foundOrder) throw new ApiError(StatusCodes.BAD_REQUEST, 'Order not found')
-
-  return await foundOrder.update({ ...reqBody })
+  if (!foundOrder) throw new ApiError(StatusCodes.NOT_FOUND, 'Order not found')
+  try {
+    return await foundOrder.update(reqBody)
+  } catch (error) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, 'Update order failed')
+  }
 }
 
-const deleteOrder = async ({ userId, orderId }) => {
+const deleteOrder = async (id) => {
   const foundOrder = await Order.findOne({
-    where: { userId, id: orderId }
+    where: { id }
   })
   if (!foundOrder) throw new ApiError(StatusCodes.BAD_REQUEST, 'Order not found')
-
   await orderDetailRepo.deleteOrderDetailByOrderId(foundOrder.id)
 }
 

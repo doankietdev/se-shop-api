@@ -5,7 +5,7 @@ const {
   getAllUsers,
   getUserInfo,
   getUserById,
-  updateUser,
+  updateUserItseft,
   updateStatus,
   deleteUserById
 } = require('~/api/v1/controllers/user.controller')
@@ -16,9 +16,9 @@ const router = express.Router()
 
 router.get('/', queryStringMiddleware, getAllUsers)
 router.get('/get-info', getUserInfo)
-router.patch('/', uploadAvatarMiddleware, updateUser)
-router.get('/:id', getUserById)
-router.patch('/:id/update-status', uploadAvatarMiddleware, updateStatus)
-router.delete('/:id', deleteUserById)
+router.get('/get-user', getUserById)
+router.patch('/update-user-itself', uploadAvatarMiddleware, updateUserItseft)
+router.patch('/update-status', updateStatus)
+router.delete('/delete-user', deleteUserById)
 
 module.exports = router

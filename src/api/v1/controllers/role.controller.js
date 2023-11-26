@@ -29,7 +29,7 @@ const getAllRoles = asyncHandling(async (req, res) => {
 })
 
 const getRoleById = asyncHandling(async (req, res) => {
-  const { id } = req.params
+  const { id } = req.query
 
   const role = await roleService.getRoleById({ id })
 
@@ -40,7 +40,7 @@ const getRoleById = asyncHandling(async (req, res) => {
 })
 
 const updateRoleById = asyncHandling( async (req, res) => {
-  const { id } = req.params
+  const { id } = req.query
   const { name, description } = req.body
 
   const role = await roleService.updateRoleById({ id, name, description })
@@ -52,7 +52,7 @@ const updateRoleById = asyncHandling( async (req, res) => {
 })
 
 const deleteRoleById = asyncHandling(async (req, res) => {
-  const { id } = req.params
+  const { id } = req.query
 
   const roles = await roleService.deleteRoleById({ id })
 
@@ -68,7 +68,7 @@ const deleteRoleByIds = asyncHandling(async (req, res) => {
   const roles = await roleService.deleteRoleByIds({ ids })
 
   new SuccessResponse({
-    message: 'Delete some roles successfully',
+    message: 'Delete roles successfully',
     metadata: { roles }
   }).send(res)
 })

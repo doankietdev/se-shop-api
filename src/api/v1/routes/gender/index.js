@@ -18,10 +18,10 @@ const queryStringMiddleware = require('~/api/v1/middlewares/query.string.middlew
 const router = express.Router()
 
 router.get('/', queryStringMiddleware, getAllGenders)
-router.post('/', validateCreateGender, createGender)
-router.delete('/', validateDeleteGenderByIds, deleteGenderByIds)
-router.get('/:id', getGenderById)
-router.patch('/:id', validateUpdateGenderById, updateGenderById)
-router.delete('/:id', deleteGenderById)
+router.get('/get-gender', getGenderById)
+router.post('/create', validateCreateGender, createGender)
+router.patch('/update-gender', validateUpdateGenderById, updateGenderById)
+router.delete('/delete-gender', deleteGenderById)
+router.delete('/delete-genders', validateDeleteGenderByIds, deleteGenderByIds)
 
 module.exports = router

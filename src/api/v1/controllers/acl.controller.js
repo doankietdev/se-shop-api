@@ -29,7 +29,7 @@ const getAccessControlList = asyncHandling(async (req, res) => {
 })
 
 const getAccessControlByRoleIdPermissionId = asyncHandling(async (req, res) => {
-  const { roleId, permissionId } = req.params
+  const { roleId, permissionId } = req.query
 
   const accessControl = await aclService.getAccessControlByRoleIdPermissionId({ roleId, permissionId })
 
@@ -40,7 +40,7 @@ const getAccessControlByRoleIdPermissionId = asyncHandling(async (req, res) => {
 })
 
 const getAccessControlListByRoleId = asyncHandling(async (req, res) => {
-  let { roleId } = req.params
+  let { roleId } = req.query
   const { filter, selector, pagination, sorter } = req
   roleId = Number(roleId)
 
@@ -58,7 +58,7 @@ const getAccessControlListByRoleId = asyncHandling(async (req, res) => {
 })
 
 const getAccessControlListByPermissionId = asyncHandling(async (req, res) => {
-  let { permissionId } = req.params
+  let { permissionId } = req.query
   const { filter, selector, pagination, sorter } = req
   permissionId = Number(permissionId)
 
@@ -76,7 +76,7 @@ const getAccessControlListByPermissionId = asyncHandling(async (req, res) => {
 })
 
 const getAccessControlListByAssignerId = asyncHandling(async (req, res) => {
-  let { assignerId } = req.params
+  let { assignerId } = req.query
   const { filter, selector, pagination, sorter } = req
   assignerId = Number(assignerId)
 
@@ -95,7 +95,7 @@ const getAccessControlListByAssignerId = asyncHandling(async (req, res) => {
 
 const updateAccessControl = asyncHandling( async (req, res) => {
   const assignerId = req?.user?.id || null
-  const { roleId, permissionId } = req.params
+  const { roleId, permissionId } = req.query
   const accessControl = await aclService.updateAccessControl({ roleId, permissionId }, { ...req.body, assignerId })
 
   new SuccessResponse({
@@ -105,7 +105,7 @@ const updateAccessControl = asyncHandling( async (req, res) => {
 })
 
 const unassignPermission = asyncHandling(async (req, res) => {
-  const { roleId, permissionId } = req.params
+  const { roleId, permissionId } = req.query
 
   await aclService.unassignPermission({ roleId, permissionId })
 

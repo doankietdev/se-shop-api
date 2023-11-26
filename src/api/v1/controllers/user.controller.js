@@ -27,7 +27,7 @@ const getUserInfo = asyncHandling(async (req, res) => {
 })
 
 const getUserById = asyncHandling(async (req, res) => {
-  const { id } = req.params
+  const { id } = req.query
 
   const user = await userService.getUserById(id)
 
@@ -37,7 +37,7 @@ const getUserById = asyncHandling(async (req, res) => {
   }).send(res)
 })
 
-const updateUser = asyncHandling(async (req, res) => {
+const updateUserItseft = asyncHandling(async (req, res) => {
   const userId = req?.user?.id || null
   const imageUrl = req?.file?.path
 
@@ -50,7 +50,7 @@ const updateUser = asyncHandling(async (req, res) => {
 })
 
 const updateStatus = asyncHandling(async (req, res) => {
-  const { id } = req.params
+  const { id } = req.query
   const { userStatusId } = req.body
 
   const user = await userService.updateStatus({ id, userStatusId })
@@ -62,7 +62,7 @@ const updateStatus = asyncHandling(async (req, res) => {
 })
 
 const deleteUserById = asyncHandling(async (req, res) => {
-  const { id } = req.params
+  const { id } = req.query
 
   const users = await userService.deleteUserById(id)
 
@@ -76,7 +76,7 @@ module.exports = {
   getAllUsers,
   getUserInfo,
   getUserById,
-  updateUser,
+  updateUserItseft,
   updateStatus,
   deleteUserById
 }

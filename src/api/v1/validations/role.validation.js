@@ -7,7 +7,7 @@ const asyncHandling = require('~/core/async.handling')
 
 const roleSchema = Joi.object({
   name: Joi.string().required().max(20),
-  description: Joi.string().required().max(100)
+  description: Joi.string().max(100)
 })
 
 const validateCreateRole = asyncHandling(async (req, res, next) => {
@@ -22,10 +22,10 @@ const validateCreateRole = asyncHandling(async (req, res, next) => {
 })
 
 const validateUpdateRoleById = asyncHandling(async (req, res, next) => {
-  const { name } = req.body
+  const { name, description } = req.body
 
   try {
-    await roleSchema.validateAsync({ name }, { abortEarly: false })
+    await roleSchema.validateAsync({ name, description }, { abortEarly: false })
     next()
   } catch (error) {
     throw new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, error.message)

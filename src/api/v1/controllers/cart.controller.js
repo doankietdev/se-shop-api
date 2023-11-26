@@ -5,7 +5,7 @@ const cartService = require('~/api/v1/services/cart.service')
 const SuccessResponse = require('~/core/success.response')
 const asyncHandling = require('~/core/async.handling')
 
-const getFullCartByUserId = asyncHandling(async (req, res) => {
+const getFullCartForCustomer = asyncHandling(async (req, res) => {
   const id = req?.user?.id || null
   const { filter, selector, pagination, sorter } = req
 
@@ -42,7 +42,7 @@ const reduceQuantityProduct = asyncHandling(async (req, res) => {
 })
 
 module.exports = {
-  getFullCartByUserId,
+  getFullCartForCustomer,
   addProductToCart,
   reduceQuantityProduct
 }

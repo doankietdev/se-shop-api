@@ -29,7 +29,7 @@ const getAllPaymentForms = asyncHandling(async (req, res) => {
 })
 
 const getPaymentFormById = asyncHandling(async (req, res) => {
-  const { id } = req.params
+  const { id } = req.query
 
   const paymentForm = await paymentFormService.getPaymentFormById(id)
 
@@ -40,7 +40,7 @@ const getPaymentFormById = asyncHandling(async (req, res) => {
 })
 
 const updatePaymentFormById = asyncHandling( async (req, res) => {
-  const { id } = req.params
+  const { id } = req.query
   const { name, description } = req.body
 
   const paymentForm = await paymentFormService.updatePaymentFormById(id, { name, description })
@@ -52,7 +52,7 @@ const updatePaymentFormById = asyncHandling( async (req, res) => {
 })
 
 const deletePaymentFormById = asyncHandling(async (req, res) => {
-  const { id } = req.params
+  const { id } = req.query
 
   const paymentForms = await paymentFormService.deletePaymentFormById(id)
 

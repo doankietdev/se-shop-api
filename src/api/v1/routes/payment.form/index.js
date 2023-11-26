@@ -13,10 +13,10 @@ const {
 const router = express.Router()
 
 router.get('/', queryStringMiddleware, getAllPaymentForms)
-router.post('/', createPaymentForm)
-router.delete('/', deletePaymentFormByIds)
-router.get('/:id', getPaymentFormById)
-router.patch('/:id', updatePaymentFormById)
-router.delete('/:id', deletePaymentFormById)
+router.get('/get-payment-form', getPaymentFormById)
+router.post('/create', createPaymentForm)
+router.patch('/update-payment-form', updatePaymentFormById)
+router.delete('/delete-payment-form', deletePaymentFormById)
+router.delete('/delete-payment-forms', deletePaymentFormByIds)
 
 module.exports = router

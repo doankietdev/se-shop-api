@@ -32,8 +32,7 @@ const getAllOrders = asyncHandling(async (req, res) => {
   const userId = req?.user?.id || null
   const { filter, selector, pagination, sorter } = req
 
-  filter.userId = userId
-  const orders = await checkoutService.getAllOrders({ filter, selector, pagination, sorter })
+  const orders = await checkoutService.getAllOrder(userId, { filter, selector, pagination, sorter })
 
   new SuccessResponse({
     message: 'Get all orders successfully',
@@ -43,7 +42,7 @@ const getAllOrders = asyncHandling(async (req, res) => {
 
 const cancelOrder = asyncHandling(async (req, res) => {
   const userId = req?.user?.id || null
-  const { orderId } = req.params
+  const { orderId } = req.query
 
   await checkoutService.cancelOrder({ userId, orderId })
 
@@ -54,7 +53,7 @@ const cancelOrder = asyncHandling(async (req, res) => {
 
 const getOrder = asyncHandling(async (req, res) => {
   const userId = req?.user?.id || null
-  const { orderId } = req.params
+  const { orderId } = req.query
 
   const order = await checkoutService.getOrder({ userId, orderId })
 

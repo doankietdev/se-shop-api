@@ -29,7 +29,7 @@ const getAllCategories = asyncHandling(async (req, res) => {
 })
 
 const getProductsByCategoryId = asyncHandling(async (req, res) => {
-  const id = Number(req.params.id)
+  const { id } = req.query
   const { filter, selector, pagination, sorter } = req
 
   const products = await categoryService.getProductsByCategoryId({ categoryId: id, filter, selector, pagination, sorter })
@@ -41,7 +41,7 @@ const getProductsByCategoryId = asyncHandling(async (req, res) => {
 })
 
 const getCategoryById = asyncHandling(async (req, res) => {
-  const { id } = req.params
+  const { id } = req.query
 
   const category = await categoryService.getCategoryById({ id })
 
@@ -52,7 +52,7 @@ const getCategoryById = asyncHandling(async (req, res) => {
 })
 
 const updateCategoryById = asyncHandling( async (req, res) => {
-  const id = Number(req.params.id)
+  const { id } = req.query
   const { name, description } = req.body
 
   const category = await categoryService.updateCategoryById({ id, name, description })
@@ -64,7 +64,7 @@ const updateCategoryById = asyncHandling( async (req, res) => {
 })
 
 const deleteCategoryById = asyncHandling(async (req, res) => {
-  const { id } = Number(req.params.id)
+  const { id } = req.params
 
   const categories = await categoryService.deleteCategoryById({ id })
 

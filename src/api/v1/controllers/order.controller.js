@@ -5,7 +5,7 @@ const orderService = require('~/api/v1/services/order.service')
 const asyncHandling = require('~/core/async.handling')
 
 const getOrder = asyncHandling( async (req, res) => {
-  const { orderId, userId } = req.params
+  const { orderId, userId } = req.query
 
   const order = await orderService.getOrder({ userId, orderId })
 
@@ -15,20 +15,33 @@ const getOrder = asyncHandling( async (req, res) => {
   }).send(res)
 })
 
-const updateOrder = asyncHandling( async (req, res) => {
-  const { orderId, userId } = req.params
+const updateOrderStatus = asyncHandling( async (req, res) => {
+  const { id } = req.query
+  const { orderStatusId } = req.body
 
-  const order = await orderService.updateOrder({ userId, orderId, ...req.body })
+  const order = await orderService.updateOrder(id, { orderStatusId })
 
   new SuccessResponse({
     metadata: { order }
   }).send(res)
 })
 
-const deleteOrder = asyncHandling( async (req, res) => {
-  const { orderId, userId } = req.params
+// const updateOrderStatus = asyncHandling( async (req, res) => {
+//   const { id } = req.query
 
-  await orderService.deleteOrder({ userId, orderId })
+//   const { orderStatusId }
+
+//   const order = await orderService.updateOrder(id, req.body)
+
+//   new SuccessResponse({
+//     metadata: { order }
+//   }).send(res)
+// })
+
+const deleteOrder = asyncHandling( async (req, res) => {
+  const { id } = req.query
+
+  await orderService.deleteOrder(id)
 
   new SuccessResponse({
     message: 'Delete order successfully'
@@ -49,6 +62,6 @@ const getAllOrders = asyncHandling( async (req, res) => {
 module.exports = {
   getOrder,
   getAllOrders,
-  updateOrder,
+  updateOrderStatus,
   deleteOrder
 }

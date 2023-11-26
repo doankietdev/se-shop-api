@@ -14,10 +14,10 @@ const queryStringMiddleware = require('~/api/v1/middlewares/query.string.middlew
 const router = express.Router()
 
 router.get('/', queryStringMiddleware, getAllPermissions)
-router.post('/', createPermission)
-router.delete('/', deletePermissionByIds)
-router.get('/:id', getPermissionById)
-router.patch('/:id', updatePermissionById)
-router.delete('/:id', deletePermissionById)
+router.get('/get-permission', getPermissionById)
+router.post('/create', createPermission)
+router.patch('/update-permission', updatePermissionById)
+router.delete('/delete-permission', deletePermissionById)
+router.delete('/delete-permissions', deletePermissionByIds)
 
 module.exports = router

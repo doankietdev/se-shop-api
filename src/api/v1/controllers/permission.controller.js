@@ -29,7 +29,7 @@ const getAllPermissions = asyncHandling(async (req, res) => {
 })
 
 const getPermissionById = asyncHandling(async (req, res) => {
-  const { id } = req.params
+  const { id } = req.query
 
   const permission = await resourceService.getPermissionById(id)
 
@@ -40,7 +40,7 @@ const getPermissionById = asyncHandling(async (req, res) => {
 })
 
 const updatePermissionById = asyncHandling( async (req, res) => {
-  const { id } = req.params
+  const { id } = req.query
   const { name, description, api, method, permissionTypeId, resourceId } = req.body
 
   const permission = await resourceService.updatePermissionById(id, { name, description, api, method, permissionTypeId, resourceId })
@@ -52,7 +52,7 @@ const updatePermissionById = asyncHandling( async (req, res) => {
 })
 
 const deletePermissionById = asyncHandling(async (req, res) => {
-  const { id } = req.params
+  const { id } = req.query
 
   const permissions = await resourceService.deletePermissionById(id)
 

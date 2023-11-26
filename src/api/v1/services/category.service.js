@@ -45,7 +45,7 @@ const getProductsByCategoryId = async ({ categoryId, filter, selector, paginatio
       {
         model: Product,
         as: 'products',
-        attributes: selector || ['name', 'slug', 'description', 'imageUrl', 'price', 'stockQuantity'],
+        attributes: selector || ['name', 'description', 'imageUrl', 'price', 'stockQuantity'],
         offset: pagination.skip,
         limit: pagination.limit
       }

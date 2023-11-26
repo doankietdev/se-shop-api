@@ -29,7 +29,7 @@ const getAllOrderStatuses = asyncHandling(async (req, res) => {
 })
 
 const getOrderStatusById = asyncHandling(async (req, res) => {
-  const { id } = req.params
+  const { id } = req.query
 
   const orderStatus = await orderStatusService.getOrderStatusById(id)
 
@@ -40,7 +40,7 @@ const getOrderStatusById = asyncHandling(async (req, res) => {
 })
 
 const updateOrderStatusById = asyncHandling( async (req, res) => {
-  const { id } = req.params
+  const { id } = req.query
   const { name } = req.body
 
   const orderStatus = await orderStatusService.updateOrderStatusById(id, { name })
@@ -52,7 +52,7 @@ const updateOrderStatusById = asyncHandling( async (req, res) => {
 })
 
 const deleteOrderStatusById = asyncHandling(async (req, res) => {
-  const { id } = req.params
+  const { id } = req.query
 
   await orderStatusService.deleteOrderStatusById(id)
 

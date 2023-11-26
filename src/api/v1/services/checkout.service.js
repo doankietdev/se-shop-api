@@ -110,11 +110,8 @@ const order = async ({
   }
 }
 
-const getAllOrders = async ({ filter, selector, pagination, sorter }) => {
-  const orders = await orderRepo.getAllOrders({ filter, selector, pagination, sorter })
-  return {
-    orders
-  }
+const getAllOrder = async (userId, { filter, selector, pagination, sorter }) => {
+  return await orderRepo.getAllOrdersForCustomer(userId, { filter, selector, pagination, sorter })
 }
 
 const cancelOrder = async ({ userId, orderId }) => {
@@ -130,12 +127,10 @@ const cancelOrder = async ({ userId, orderId }) => {
   })
   if (!fullOrder) throw new ApiError(StatusCodes.BAD_REQUEST, 'Order not found')
   const isCancelled = fullOrder.orderStatus.name === 'Pending'
-  if (!isCancelled) throw new ApiError(StatusCodes.BAD_REQUEST, 'Cannot cannel')
+  if (!isCancelled) throw new ApiError(StatusCodes.BAD_REQUEST, 'Cannot cancel order')
 
   await orderDetailRepo.deleteOrderDetailByOrderId(fullOrder.id)
   await orderRepo.deleteOrder({ userId, orderId })
-
-  return {}
 }
 
 const getOrder = async ({ userId, orderId }) => {
@@ -220,7 +215,7 @@ const checkPay = async (paramsObject) => {
 module.exports = {
   review,
   order,
-  getAllOrders,
+  getAllOrder,
   cancelOrder,
   getOrder,
   createPaymentUrl,

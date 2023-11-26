@@ -29,7 +29,7 @@ const getAllUserStatuses = asyncHandling(async (req, res) => {
 })
 
 const getUserStatusById = asyncHandling(async (req, res) => {
-  const { id } = req.params
+  const { id } = req.query
 
   const userStatus = await userStatusService.getUserStatusById({ id })
 
@@ -40,7 +40,7 @@ const getUserStatusById = asyncHandling(async (req, res) => {
 })
 
 const updateUserStatusById = asyncHandling( async (req, res) => {
-  const { id } = req.params
+  const { id } = req.query
   const { name } = req.body
 
   const userStatus = await userStatusService.updateUserStatusById({ id, name })
@@ -52,7 +52,7 @@ const updateUserStatusById = asyncHandling( async (req, res) => {
 })
 
 const deleteUserStatusById = asyncHandling(async (req, res) => {
-  const { id } = req.params
+  const { id } = req.query
 
   const userStatuses = await userStatusService.deleteUserStatusById({ id })
 

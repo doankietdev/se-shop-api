@@ -57,7 +57,45 @@ const getAllRolePermissionsByRoleId = async (roleId, {
   })
 }
 
+const getRolePermissionByRoleIdPermissionId = async({ roleId, permissionId }) => {
+  return await RolePermission.findOne({
+    where: { roleId, permissionId },
+    attributes: {
+      exclude: ['roleId', 'permissionId', 'assignerId']
+    },
+    include: [
+      {
+        model: Role,
+        as: 'role',
+        attributes: { exclude: ['description', 'createdAt', 'updatedAt'] }
+      },
+      {
+        model: Permission,
+        as: 'permission',
+        attributes: { exclude: ['createdAt', 'updatedAt'] },
+        include: [
+          {
+            model: PermissionType,
+            as: 'permissionType',
+            attributes: { exclude: ['createdAt', 'updatedAt'] }
+          },
+          {
+            model: Resource,
+            as: 'resource',
+            attributes: { exclude: ['createdAt', 'updatedAt'] }
+          }
+        ]
+      },
+      { model: User,
+        as: 'assigner',
+        attributes: ['id', 'firstName', 'lastName']
+      }
+    ]
+  })
+}
+
 module.exports = {
   getAllRolePermissions,
-  getAllRolePermissionsByRoleId
+  getAllRolePermissionsByRoleId,
+  getRolePermissionByRoleIdPermissionId
 }

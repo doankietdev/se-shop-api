@@ -22,8 +22,9 @@ const getAccessControlList = async ({ filter, selector, pagination, sorter }) =>
 }
 
 const getAccessControlByRoleIdPermissionId = async ({ roleId, permissionId }) => {
-  const rolePermission = await RolePermission.findOne({
-    where: { roleId, permissionId }
+  const rolePermission = await rolePermissionRepo.getRolePermissionByRoleIdPermissionId({
+    roleId,
+    permissionId
   })
   if (!rolePermission) throw new ApiError(StatusCodes.NOT_FOUND, 'Access control not found')
   return rolePermission
@@ -91,7 +92,7 @@ const unassignPermission = async ({ roleId, permissionId }) => {
   const accessControl = await RolePermission.findOne({
     where: { roleId, permissionId }
   })
-  if (!accessControl) throw new ApiError(StatusCodes.NOT_FOUND, 'Permission not found')
+  if (!accessControl) throw new ApiError(StatusCodes.NOT_FOUND, 'Access control not found')
   try {
     await accessControl.destroy()
   } catch (error) {

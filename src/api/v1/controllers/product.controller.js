@@ -32,7 +32,7 @@ const getAllProducts = asyncHandling(async (req, res) => {
 })
 
 const getProductById = asyncHandling(async (req, res) => {
-  const { id } = req.params
+  const { id } = req.query
 
   const product = await productService.getProductById(id)
 
@@ -43,7 +43,7 @@ const getProductById = asyncHandling(async (req, res) => {
 })
 
 const updateProductById = asyncHandling( async (req, res) => {
-  const id = Number(req.params.id)
+  const { id } = req.query
 
   const product = await productService.updateProductById(id, req.body)
 
@@ -54,7 +54,7 @@ const updateProductById = asyncHandling( async (req, res) => {
 })
 
 const deleteProductById = asyncHandling(async (req, res) => {
-  const id = Number(req.params.id)
+  const { id } = req.query
 
   const products = await productService.deleteProductById(id)
 
