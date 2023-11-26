@@ -28,6 +28,9 @@ Permission.init({
   resourceId: {
     type: DataTypes.TINYINT.UNSIGNED
   },
+  versionId: {
+    type: DataTypes.TINYINT.UNSIGNED
+  },
   createdAt: {
     type: DataTypes.DATE
   },
