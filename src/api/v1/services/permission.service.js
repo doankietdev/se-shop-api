@@ -4,9 +4,9 @@ const { Permission } = require('~/api/v1/models')
 const ApiError = require('~/core/api.error')
 const { StatusCodes } = require('http-status-codes')
 
-const createPermission = async ({ name, description, api, method, permissionTypeId, resourceId }) => {
+const createPermission = async ({ name, description, api, method, permissionTypeId, resourceId, versionId }) => {
   try {
-    return await Permission.create({ name, description, api, method, permissionTypeId, resourceId })
+    return await Permission.create({ name, description, api, method, permissionTypeId, resourceId, versionId })
   } catch (error) {
     throw new ApiError(StatusCodes.BAD_REQUEST, 'Create permission failed')
   }
@@ -32,12 +32,12 @@ const getPermissionById = async (id) => {
   return permission
 }
 
-const updatePermissionById = async (id, { name, description, api, method, permissionTypeId, resourceId }) => {
+const updatePermissionById = async (id, { name, description, api, method, permissionTypeId, resourceId, versionId }) => {
   const permission = await Permission.findOne({
     where: { id }
   })
   if (!permission) throw new ApiError(StatusCodes.NOT_FOUND, 'Permission not found')
-  return await permission.update({ name, description, api, method, permissionTypeId, resourceId })
+  return await permission.update({ name, description, api, method, permissionTypeId, resourceId, versionId })
 }
 
 const deletePermissionById = async (id) => {
