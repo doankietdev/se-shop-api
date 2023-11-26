@@ -22,6 +22,9 @@ Permission.init({
   method: {
     type: DataTypes.STRING
   },
+  isPrivate: {
+    type: DataTypes.BOOLEAN
+  },
   permissionTypeId: {
     type: DataTypes.TINYINT.UNSIGNED
   },

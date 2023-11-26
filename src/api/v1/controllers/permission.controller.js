@@ -6,9 +6,9 @@ const SuccessResponse = require('~/core/success.response')
 const asyncHandling = require('~/core/async.handling')
 
 const createPermission = asyncHandling(async (req, res) => {
-  const { name, description, api, method, permissionTypeId, resourceId, versionId } = req.body
+  const { name, description, api, method, isPrivate, permissionTypeId, resourceId, versionId } = req.body
 
-  const permission = await resourceService.createPermission({ name, description, api, method, permissionTypeId, resourceId, versionId })
+  const permission = await resourceService.createPermission({ name, description, api, method, isPrivate, permissionTypeId, resourceId, versionId })
 
   new SuccessResponse({
     statusCode: StatusCodes.CREATED,
@@ -41,9 +41,9 @@ const getPermissionById = asyncHandling(async (req, res) => {
 
 const updatePermissionById = asyncHandling( async (req, res) => {
   const { id } = req.query
-  const { name, description, api, method, permissionTypeId, resourceId, versionId } = req.body
+  const { name, description, api, method, isPrivate, permissionTypeId, resourceId, versionId } = req.body
 
-  const permission = await resourceService.updatePermissionById(id, { name, description, api, method, permissionTypeId, resourceId, versionId })
+  const permission = await resourceService.updatePermissionById(id, { name, description, api, method, isPrivate, permissionTypeId, resourceId, versionId })
 
   new SuccessResponse({
     message: 'Update permission successfully',

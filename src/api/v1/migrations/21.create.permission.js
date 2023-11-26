@@ -27,6 +27,10 @@ module.exports = {
         type: Sequelize.STRING(10),
         allowNull: true
       },
+      isPrivate: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+      },
       permissionTypeId: {
         type: Sequelize.TINYINT.UNSIGNED,
         allowNull: false,
