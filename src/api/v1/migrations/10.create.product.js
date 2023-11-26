@@ -71,7 +71,7 @@ module.exports = {
         allowNull: true
       },
       connectivity: {
-        type: Sequelize.STRING(255),
+        type: Sequelize.STRING(200),
         allowNull: true
       },
       color: {

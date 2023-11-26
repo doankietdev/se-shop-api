@@ -11,12 +11,12 @@ module.exports = {
         autoIncrement: true
       },
       name: {
-        type: Sequelize.STRING(100),
+        type: Sequelize.STRING(50),
         allowNull: false,
         unique: true
       },
       description: {
-        type: Sequelize.STRING(200)
+        type: Sequelize.STRING(100)
       },
       createdAt: {
         type: 'TIMESTAMP',

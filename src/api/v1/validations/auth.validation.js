@@ -13,8 +13,8 @@ const validateSignUp = asyncHandling(async (req, res, next) => {
 
   const userSchema = Joi.object({
     genderId: Joi.number(),
-    lastName: Joi.string().required().max(30),
-    firstName: Joi.string().required().max(20),
+    lastName: Joi.string().required().max(50),
+    firstName: Joi.string().required().max(30),
     phoneNumber: Joi.string().required().min(10).max(11),
     email: Joi.string().max(50),
     address: Joi.string().max(100),
@@ -53,7 +53,7 @@ const validateForgotPassword = asyncHandling(async (req, res, next) => {
   const { email } = req.body
 
   const infoSchema = Joi.object({
-    email: Joi.string().required().email()
+    email: Joi.string().email().required()
   })
 
   try {
@@ -68,7 +68,7 @@ const validateResetPassword = asyncHandling(async (req, res, next) => {
   const { password, resetToken } = req.body
 
   const infoSchema = Joi.object({
-    password: Joi.string().required().min(6),
+    password: Joi.string().min(6).required(),
     resetToken: Joi.string().required()
   })
 

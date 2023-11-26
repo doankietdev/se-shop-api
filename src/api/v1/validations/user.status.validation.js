@@ -6,7 +6,7 @@ const ApiError = require('~/core/api.error')
 const asyncHandling = require('~/core/async.handling')
 
 const userStatusSchema = Joi.object({
-  name: Joi.string().required().max(20)
+  name: Joi.string().max(20).required()
 })
 
 const validateCreateUserStatus = asyncHandling(async (req, res, next) => {
@@ -35,7 +35,7 @@ const validateDeleteUserStatusByIds = asyncHandling(async (req, res, next) => {
   const { ids } = req.body
 
   const idsSchema = Joi.object({
-    ids: Joi.array().items(Joi.number())
+    ids: Joi.array().items(Joi.number()).required()
   })
 
   try {

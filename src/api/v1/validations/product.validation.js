@@ -7,20 +7,26 @@ const asyncHandling = require('~/core/async.handling')
 const cloudinaryProvider = require('~/api/v1/providers/cloudinary.provider')
 
 const productSchema = Joi.object({
-  name: Joi.string().required().max(100),
-  description: Joi.string().max(100),
-  image: Joi.string().required().max(200),
-  displayDetails: Joi.string().max(255),
+  name: Joi.string().max(200).required(),
+  description: Joi.string().max(1000),
+  image: Joi.object({
+    fieldname: Joi.string().required(),
+    originalname: Joi.string().required(),
+    encoding: Joi.string().required(),
+    mimetype: Joi.string().required(),
+    size: Joi.number().required()
+  }).required(),
+  screen: Joi.string().max(200),
   operatingSystem: Joi.string().max(50),
   processor: Joi.string().max(50),
   ram: Joi.number().min(1),
-  storage: Joi.number().min(1),
+  storageCapacity: Joi.number().min(1),
   dimensions: Joi.string().max(50),
   weight: Joi.number().min(1),
   batteryCapacity: Joi.number().min(1),
   frontCameraResolution: Joi.string().max(50),
   rearCameraResolution: Joi.string().max(50),
-  connectivity: Joi.string().max(255),
+  connectivity: Joi.string().max(200),
   color: Joi.string().max(50),
   price: Joi.number().min(1),
   stockQuantity: Joi.number().min(0),
