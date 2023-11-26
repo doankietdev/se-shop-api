@@ -43,6 +43,10 @@ module.exports = {
           key: 'id'
         }
       },
+      versionId: {
+        type: Sequelize.TINYINT.UNSIGNED,
+        allowNull: false
+      },
       createdAt: {
         type: 'TIMESTAMP',
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
