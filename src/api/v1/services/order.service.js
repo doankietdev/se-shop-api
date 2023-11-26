@@ -67,11 +67,9 @@ const updateOrder = async (id, reqBody) => {
 }
 
 const deleteOrder = async (id) => {
-  const foundOrder = await Order.findOne({
-    where: { id }
-  })
-  if (!foundOrder) throw new ApiError(StatusCodes.BAD_REQUEST, 'Order not found')
-  await orderDetailRepo.deleteOrderDetailByOrderId(foundOrder.id)
+  await orderDetailRepo.deleteOrderDetailByOrderId(id)
+  const deletedOrder = await orderRepo.deleteOrderById(id)
+  if (!deletedOrder) throw new ApiError(StatusCodes.BAD_REQUEST, 'Delete order failed')
 }
 
 module.exports = {

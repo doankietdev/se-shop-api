@@ -111,10 +111,26 @@ const getOrderWithQuery = async (query = {}) => {
   return Order.findOne(query)
 }
 
+const getOrderById = async (id) => {
+  return await Order.findOne({
+    where: { id }
+  })
+}
+
 const deleteOrder = async ({ userId, orderId }) => {
-  return await Order.destroy({
+  const order = await Order.findOne({
     where: { userId, id: orderId }
   })
+  if (!order) return null
+  return await order.destroy()
+}
+
+const deleteOrderById = async (id) => {
+  const order = await Order.findOne({
+    where: { id }
+  })
+  if (!order) return null
+  return await order.destroy()
 }
 
 module.exports = {
@@ -122,5 +138,7 @@ module.exports = {
   getAllOrders,
   getAllOrdersForCustomer,
   getOrderWithQuery,
-  deleteOrder
+  getOrderById,
+  deleteOrder,
+  deleteOrderById
 }
