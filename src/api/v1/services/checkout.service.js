@@ -2,10 +2,12 @@
 
 const { StatusCodes, ReasonPhrases } = require('http-status-codes')
 const ApiError = require('~/core/api.error')
+const cartService = require('~/api/v1/services/cart.service')
 const productRepo = require('~/api/v1/repositories/product.repo')
 const checkoutRepo = require('~/api/v1/repositories/checkout.repo')
 const orderStatusRepo = require('~/api/v1/repositories/order.status.repo')
 const orderRepo = require('~/api/v1/repositories/order.repo')
+const cartRepo = require('~/api/v1/repositories/cart.repo')
 const orderDetailRepo = require('~/api/v1/repositories/order.detail.repo')
 const {
   OrderStatus,
@@ -14,7 +16,7 @@ const {
   PaymentForm
 } = require('~/api/v1/models')
 const vnpayProvider = require('~/api/v1/providers/vnpay.provider')
-const { app: { paySuccessUrl, payFailUrl } } = require('~/config/environment.config')
+// const { app: { paySuccessUrl, payFailUrl } } = require('~/config/environment.config')
 
 const review = async ({ orderProducts = [] }) => {
   const checkedProducts = await checkoutRepo.checkProductsAvailable(
@@ -40,17 +42,24 @@ const review = async ({ orderProducts = [] }) => {
 }
 
 const order = async ({
+  cartId,
   userId,
   shipAddress,
   phoneNumber,
   paymentFormId,
   orderProducts = []
 }) => {
-  const checkedProducts = await checkoutRepo.checkProductsAvailable(
-    orderProducts
-  )
-  if (checkedProducts.includes(undefined))
-    throw new ApiError(StatusCodes.BAD_REQUEST, 'Order wrong')
+  const foundCart = cartRepo.getCartByCartIdUserId({ cartId, userId })
+  if (!foundCart) throw new ApiError(StatusCodes.BAD_REQUEST, 'Order failed')
+
+  const [checkedOrderProducts, checkedProducts] = await Promise.all([
+    checkoutRepo.checkOrderProductsWithCart(cartId, userId, orderProducts),
+    checkoutRepo.checkProductsAvailable(orderProducts)
+  ])
+
+  if (checkedOrderProducts.includes(null) || checkedProducts.includes(null)) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, 'Order failed')
+  }
 
   try {
     const newOrder = await orderRepo.createOrder({
@@ -63,11 +72,14 @@ const order = async ({
 
     const fullOrderProducts = await Promise.all(
       orderProducts.map(async (orderProduct) => {
+        // to get product price in db
         const foundProduct = await productRepo.getProductById(
           orderProduct.productId
         )
-        if (!foundProduct)
-          throw new ApiError(StatusCodes.BAD_REQUEST, 'Order wrong')
+        if (!foundProduct) {
+          await newOrder.destroy()
+          throw new ApiError(StatusCodes.BAD_REQUEST, 'Order failed')
+        }
 
         const newOrderDetail = await orderDetailRepo.createOrderDetail({
           orderId: newOrder.id,
@@ -76,7 +88,7 @@ const order = async ({
           price: foundProduct.price
         })
 
-        // reduce inventory when ordering
+        // reduce stock quantity when ordering
         foundProduct.update({
           stockQuantity: foundProduct.stockQuantity - orderProduct.quantity
         })
@@ -97,6 +109,17 @@ const order = async ({
     const foundOrderStatus = await orderStatusRepo.getOrderStatusById(
       newOrder.orderStatusId
     )
+
+    // remove ordered products in cart
+    const reduceQuantityProductPromises = orderProducts.map(orderProduct => {
+      return cartService.reduceQuantityProduct({
+        cartId,
+        userId,
+        productId: orderProduct.productId,
+        quantity: orderProduct.quantity
+      })
+    })
+    await Promise.all(reduceQuantityProductPromises)
 
     return {
       orderId: newOrder.id,
@@ -129,8 +152,15 @@ const cancelOrder = async ({ userId, orderId }) => {
   const isCancelled = fullOrder.orderStatus.name === 'Pending'
   if (!isCancelled) throw new ApiError(StatusCodes.BAD_REQUEST, 'Cannot cancel order')
 
-  await orderDetailRepo.deleteOrderDetailByOrderId(fullOrder.id)
+  const deletedOrderDetails = await orderDetailRepo.deleteOrderDetailByOrderId(fullOrder.id)
   await orderRepo.deleteOrder({ userId, orderId })
+
+  // undo stock quantity
+  const updateProductByIdPromises = deletedOrderDetails.map(async (deletedOrderDetail) => {
+    const { productId, quantity } = deletedOrderDetail
+    return await productRepo.increaseStockQuantiy(productId, quantity)
+  })
+  await Promise.all(updateProductByIdPromises)
 }
 
 const getOrder = async ({ userId, orderId }) => {

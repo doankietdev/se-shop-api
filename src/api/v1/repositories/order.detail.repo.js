@@ -12,9 +12,15 @@ const createOrderDetail = async ({ quantity, price, orderId, productId }) => {
 }
 
 const deleteOrderDetailByOrderId = async (orderId) => {
-  return await OrderDetail.destroy({
+  const orderDetails = await OrderDetail.findAll({
     where: { orderId }
   })
+
+  const deletedOrderDetails = []
+  for (const orderDetail of orderDetails) {
+    deletedOrderDetails.push(await orderDetail.destroy())
+  }
+  return deletedOrderDetails
 }
 
 module.exports = {

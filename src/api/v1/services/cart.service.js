@@ -3,7 +3,7 @@
 const lodash = require('lodash')
 const { Cart, CartDetail, Product } = require('~/api/v1/models')
 const { getProductById } = require('~/api/v1/repositories/product.repo')
-const { getCartByCartIdProductId } = require('~/api/v1/repositories/cart.detail.repo')
+const { getCartByCartIdProductId, deleteCartDetail } = require('~/api/v1/repositories/cart.detail.repo')
 const ApiError = require('~/core/api.error')
 const { StatusCodes, ReasonPhrases } = require('http-status-codes')
 
@@ -132,16 +132,15 @@ const reduceQuantityProduct = async ({ userId, cartId, productId, quantity }) =>
   const foundCartDetail = await getCartByCartIdProductId({ cartId, productId })
   if (!foundCartDetail) throw new ApiError(StatusCodes.BAD_REQUEST, ReasonPhrases.BAD_REQUEST)
 
-  const isExceedReductionQuantity = foundCartDetail.quantity < quantity
-  if (isExceedReductionQuantity) throw new ApiError(StatusCodes.BAD_REQUEST, 'Exceeded reduction quantity')
-
-  await foundCartDetail.update({ quantity: foundCartDetail.quantity - quantity })
-
-  const fullCart = await getFullCartById(cartId)
-  return {
-    id: fullCart.id,
-    products: fullCart.products
+  const restQuantity = foundCartDetail.quantity - quantity
+  if (restQuantity < 0) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, 'Exceeded reduction quantity')
   }
+  if (restQuantity === 0) {
+    await deleteCartDetail({ cartId, productId })
+    return
+  }
+  await foundCartDetail.update({ quantity: restQuantity })
 }
 
 module.exports = {

@@ -14,7 +14,21 @@ const getProductsByIds = async (ids = []) => {
   })
 }
 
+const updateProductById = async (id, payload = {}) => {
+  const product = await getProductById(id)
+  if (!product) return null
+  return await product.update(payload)
+}
+
+const increaseStockQuantiy = async (id, quantity = 0) => {
+  const product = await getProductById(id)
+  if (!product) return null
+  return await product.update({ stockQuantity: product.stockQuantity + quantity })
+}
+
 module.exports = {
   getProductById,
-  getProductsByIds
+  getProductsByIds,
+  updateProductById,
+  increaseStockQuantiy
 }

@@ -2,6 +2,7 @@
 
 const lodash = require('lodash')
 const { Product, Category } = require('~/api/v1/models')
+const productRepo = require('~/api/v1/repositories/product.repo')
 const ApiError = require('~/core/api.error')
 const { StatusCodes, ReasonPhrases } = require('http-status-codes')
 
@@ -44,11 +45,9 @@ const getProductById = async (id) => {
 }
 
 const updateProductById = async (id, reqBody = {}) => {
-  const product = await Product.findOne({
-    where: { id }
-  })
-  if (!product) throw new ApiError(StatusCodes.NOT_FOUND, 'No products found')
-  return await product.update(reqBody)
+  const updatedProduct = await productRepo.updateProductById(id, reqBody)
+  if (!updatedProduct) throw new ApiError(StatusCodes.NOT_FOUND, 'No products found')
+  return updateProductById
 }
 
 const deleteProductById = async (id) => {

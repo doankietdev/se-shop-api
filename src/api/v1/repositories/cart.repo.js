@@ -43,20 +43,6 @@ const getFullCart = async ({ cartId, userId }) => {
   })
 }
 
-const addProductsNotExistsInCart = async ({ userId, cartId, orderProducts = [] }) => {
-  return await Promise.all(orderProducts.map(async (orderProduct) => {
-    const foundCartDetail = await cartDetailRepo.getCartByCartIdProductId({ cartId, productId: orderProduct.productId })
-    if (!foundCartDetail) {
-      return await cartService.addProductToCart({
-        userId,
-        cartId,
-        productId: orderProduct.productId,
-        quantity: orderProduct.quantity
-      })
-    }
-  }))
-}
-
 const deleteCartByUserId = async (userId) => {
   const foundCart = await Cart.findOne({
     where: { userId }
@@ -65,9 +51,15 @@ const deleteCartByUserId = async (userId) => {
   await foundCart.destroy({ force: true })
 }
 
+const getCartByCartIdUserId = async({ cartId, userId }) => {
+  return await Cart.findOne({
+    where: { id: cartId, userId }
+  })
+}
+
 module.exports = {
   getFullCartByProductIds,
   getFullCart,
-  addProductsNotExistsInCart,
-  deleteCartByUserId
+  deleteCartByUserId,
+  getCartByCartIdUserId
 }
