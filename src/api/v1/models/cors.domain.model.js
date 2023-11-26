@@ -9,6 +9,9 @@ CorsDomain.init({
   domain: {
     type: DataTypes.STRING,
     primaryKey: true
+  },
+  description: {
+    type: DataTypes.STRING
   }
 }, {
   sequelize: mysql.getInstance(),

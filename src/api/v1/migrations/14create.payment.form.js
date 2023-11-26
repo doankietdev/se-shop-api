@@ -5,7 +5,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('PaymentForm', {
       id: {
-        type: Sequelize.TINYINT,
+        type: Sequelize.TINYINT.UNSIGNED,
         allowNull: false,
         primaryKey: true,
         autoIncrement: true

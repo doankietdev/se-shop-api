@@ -5,7 +5,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Gender', {
       id: {
-        type: Sequelize.TINYINT,
+        type: Sequelize.TINYINT.UNSIGNED,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true
@@ -25,8 +25,6 @@ module.exports = {
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
         allowNull: false
       }
-    }, {
-      charset: 'utf8'
     })
   },
   // eslint-disable-next-line no-unused-vars

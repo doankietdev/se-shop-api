@@ -4,9 +4,9 @@ const { UserStatus } = require('~/api/v1/models')
 const ApiError = require('~/core/api.error')
 const { StatusCodes, ReasonPhrases } = require('http-status-codes')
 
-const createUserStatus = async ({ name }) => {
+const createUserStatus = async ({ id, name }) => {
   try {
-    return await UserStatus.create({ name })
+    return await UserStatus.create({ id, name })
   } catch (error) {
     throw new ApiError(StatusCodes.BAD_REQUEST, ReasonPhrases.BAD_REQUEST)
   }

@@ -5,17 +5,19 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Permission', {
       id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true
       },
       name: {
         type: Sequelize.STRING(20),
-        allowNull: false
+        allowNull: false,
+        unique: true
       },
       description: {
-        type: Sequelize.STRING(100)
+        type: Sequelize.STRING(100),
+        allowNull: true
       },
       api: {
         type: Sequelize.STRING(100),
@@ -26,7 +28,7 @@ module.exports = {
         allowNull: true
       },
       permissionTypeId: {
-        type: Sequelize.TINYINT,
+        type: Sequelize.TINYINT.UNSIGNED,
         allowNull: false,
         references: {
           model: 'PermissionType',
@@ -34,7 +36,7 @@ module.exports = {
         }
       },
       resourceId: {
-        type: Sequelize.TINYINT,
+        type: Sequelize.TINYINT.UNSIGNED,
         allowNull: false,
         references: {
           model: 'Resource',
@@ -51,6 +53,12 @@ module.exports = {
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
         allowNull: false
       }
+    })
+
+    await queryInterface.addIndex('Permission', {
+      fields: ['api', 'method'],
+      type: 'unique',
+      name: 'Permission_unique_api-method'
     })
   },
   // eslint-disable-next-line no-unused-vars

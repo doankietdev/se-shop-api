@@ -5,13 +5,13 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('User', {
       id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true
       },
       userStatusId: {
-        type: Sequelize.TINYINT,
+        type: Sequelize.TINYINT.UNSIGNED,
         allowNull: false,
         references: {
           model: 'UserStatus',
@@ -19,7 +19,7 @@ module.exports = {
         }
       },
       roleId: {
-        type: Sequelize.TINYINT,
+        type: Sequelize.TINYINT.UNSIGNED,
         allowNull: false,
         references: {
           model: 'Role',
@@ -27,7 +27,7 @@ module.exports = {
         }
       },
       genderId: {
-        type: Sequelize.TINYINT,
+        type: Sequelize.TINYINT.UNSIGNED,
         allowNull: false,
         references: {
           model: 'Gender',
@@ -35,11 +35,11 @@ module.exports = {
         }
       },
       lastName: {
-        type: Sequelize.STRING(30),
+        type: Sequelize.STRING(50),
         allowNull: false
       },
       firstName: {
-        type: Sequelize.STRING(20),
+        type: Sequelize.STRING(30),
         allowNull: false
       },
       imageUrl: {
@@ -53,7 +53,7 @@ module.exports = {
       },
       email: {
         type: Sequelize.STRING(50),
-        allowNull: true,
+        allowNull: false,
         unique: true
       },
       address: {
@@ -66,7 +66,7 @@ module.exports = {
         unique: true
       },
       password: {
-        type: Sequelize.STRING(100),
+        type: Sequelize.STRING(200),
         allowNull: false
       },
       publicKey: {

@@ -4,9 +4,9 @@ const { OrderStatus } = require('~/api/v1/models')
 const ApiError = require('~/core/api.error')
 const { StatusCodes } = require('http-status-codes')
 
-const createOrderStatus = async ({ name }) => {
+const createOrderStatus = async ({ id, name }) => {
   try {
-    return await OrderStatus.create({ name })
+    return await OrderStatus.create({ id, name })
   } catch (error) {
     throw new ApiError(StatusCodes.BAD_REQUEST, 'Create order status failed')
   }

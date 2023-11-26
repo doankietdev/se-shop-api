@@ -5,14 +5,15 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('PermissionType', {
       id: {
-        type: Sequelize.TINYINT,
+        type: Sequelize.TINYINT.UNSIGNED,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true
       },
       name: {
-        type: Sequelize.STRING(20),
-        allowNull: false
+        type: Sequelize.STRING(10),
+        allowNull: false,
+        unique: true
       },
       createdAt: {
         type: 'TIMESTAMP',

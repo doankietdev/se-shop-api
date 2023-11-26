@@ -6,9 +6,9 @@ const SuccessResponse = require('~/core/success.response')
 const asyncHandling = require('~/core/async.handling')
 
 const createRole = asyncHandling(async (req, res) => {
-  const { name, description } = req.body
+  const { id, name, description } = req.body
 
-  const role = await roleService.createRole({ name, description })
+  const role = await roleService.createRole({ id, name, description })
 
   new SuccessResponse({
     statusCode: StatusCodes.CREATED,

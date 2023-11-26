@@ -5,17 +5,18 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Category', {
       id: {
-        type: Sequelize.TINYINT,
+        type: Sequelize.TINYINT.UNSIGNED,
         allowNull: false,
         primaryKey: true,
         autoIncrement: true
       },
       name: {
-        type: Sequelize.STRING(50),
-        allowNull: false
+        type: Sequelize.STRING(100),
+        allowNull: false,
+        unique: true
       },
       description: {
-        type: Sequelize.STRING(100)
+        type: Sequelize.STRING(200)
       },
       createdAt: {
         type: 'TIMESTAMP',

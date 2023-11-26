@@ -5,18 +5,18 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Role', {
       id: {
-        type: Sequelize.TINYINT,
+        type: Sequelize.TINYINT.UNSIGNED,
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true
       },
       name: {
-        type: Sequelize.STRING(20),
+        type: Sequelize.STRING(50),
         allowNull: false,
         unique: true
       },
       description: {
-        type: Sequelize.STRING(100)
+        type: Sequelize.STRING(100),
+        allowNull: true
       },
       createdAt: {
         type: 'TIMESTAMP',
@@ -28,8 +28,6 @@ module.exports = {
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
         allowNull: false
       }
-    }, {
-      charset: 'utf8'
     })
   },
   // eslint-disable-next-line no-unused-vars

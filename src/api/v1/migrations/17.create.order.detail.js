@@ -5,7 +5,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('OrderDetail', {
       orderId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
         primaryKey: true,
         references: {
@@ -14,7 +14,7 @@ module.exports = {
         }
       },
       productId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
         primaryKey: true,
         references: {
@@ -23,22 +23,12 @@ module.exports = {
         }
       },
       quantity: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        validate: {
-          isPositive: (value) => {
-            return value > 0
-          }
-        }
+        type: Sequelize.INTEGER.UNSIGNED,
+        allowNull: false
       },
       price: {
-        type: Sequelize.BIGINT,
-        allowNull: false,
-        validate: {
-          isPositive: (value) => {
-            return value > 0
-          }
-        }
+        type: Sequelize.BIGINT.UNSIGNED,
+        allowNull: false
       },
       createdAt: {
         type: 'TIMESTAMP',
@@ -51,6 +41,18 @@ module.exports = {
         allowNull: false
       }
     })
+
+    await queryInterface.sequelize.query(`
+      ALTER TABLE OrderDetail
+      ADD CONSTRAINT OrderDetail_check_quantity
+      CHECK (quantity > 0);
+    `)
+
+    await queryInterface.sequelize.query(`
+      ALTER TABLE OrderDetail
+      ADD CONSTRAINT OrderDetail_check_price
+      CHECK (price >= 0);
+    `)
   },
   // eslint-disable-next-line no-unused-vars
   async down(queryInterface, Sequelize) {

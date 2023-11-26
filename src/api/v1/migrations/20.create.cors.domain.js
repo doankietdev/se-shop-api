@@ -5,9 +5,13 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('CorsDomain', {
       domain: {
-        type: Sequelize.STRING(100),
+        type: Sequelize.STRING(200),
         allowNull: false,
         primaryKey: true
+      },
+      decription: {
+        type: Sequelize.STRING(200),
+        allowNull: true
       },
       createdAt: {
         type: 'TIMESTAMP',

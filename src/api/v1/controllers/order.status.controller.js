@@ -6,9 +6,9 @@ const SuccessResponse = require('~/core/success.response')
 const asyncHandling = require('~/core/async.handling')
 
 const createOrderStatus = asyncHandling(async (req, res) => {
-  const { name } = req.body
+  const { id, name } = req.body
 
-  const orderStatus = await orderStatusService.createOrderStatus({ name })
+  const orderStatus = await orderStatusService.createOrderStatus({ id, name })
 
   new SuccessResponse({
     statusCode: StatusCodes.CREATED,

@@ -9,7 +9,7 @@ Product.init({
   name: DataTypes.STRING,
   description: DataTypes.STRING,
   imageUrl: DataTypes.STRING,
-  displayDetails: DataTypes.STRING,
+  screen: DataTypes.STRING,
   operatingSystem: DataTypes.STRING,
   processor: DataTypes.STRING,
   ram: DataTypes.INTEGER,

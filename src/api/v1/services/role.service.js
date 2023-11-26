@@ -1,13 +1,12 @@
 'use strict'
 
 const { Role } = require('~/api/v1/models')
-const roleRepo = require('~/api/v1/repositories/role.repo')
 const ApiError = require('~/core/api.error')
-const { StatusCodes, ReasonPhrases } = require('http-status-codes')
+const { StatusCodes } = require('http-status-codes')
 
-const createRole = async ({ name, description }) => {
+const createRole = async ({ id, name, description }) => {
   try {
-    return await Role.create({ name, description })
+    return await Role.create({ id, name, description })
   } catch (error) {
     throw new ApiError(StatusCodes.BAD_REQUEST, 'Create role failed')
   }
