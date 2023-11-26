@@ -6,17 +6,51 @@ const { mysql } = require('~/databases')
 class User extends Model {}
 
 User.init({
-  userStatusId: DataTypes.TINYINT,
-  lastName: DataTypes.STRING,
-  firstName: DataTypes.STRING,
-  imageUrl: DataTypes.STRING,
-  phoneNumber: DataTypes.STRING,
-  email: DataTypes.STRING,
-  address: DataTypes.STRING,
-  username: DataTypes.STRING,
-  password: DataTypes.STRING,
-  publicKey: DataTypes.STRING,
-  privateKey: DataTypes.STRING
+  userStatusId: {
+    type: DataTypes.TINYINT.UNSIGNED
+  },
+  roleId: {
+    type: DataTypes.TINYINT.UNSIGNED
+  },
+  genderId: {
+    type: DataTypes.TINYINT.UNSIGNED
+  },
+  lastName: {
+    type: DataTypes.STRING
+  },
+  firstName: {
+    type: DataTypes.STRING
+  },
+  imageUrl: {
+    type: DataTypes.STRING
+  },
+  phoneNumber: {
+    type: DataTypes.STRING
+  },
+  email: {
+    type: DataTypes.STRING
+  },
+  address: {
+    type: DataTypes.STRING
+  },
+  username: {
+    type: DataTypes.STRING
+  },
+  password: {
+    type: DataTypes.STRING
+  },
+  publicKey: {
+    type: DataTypes.STRING
+  },
+  privateKey: {
+    type: DataTypes.STRING
+  },
+  createdAt: {
+    type: DataTypes.DATE
+  },
+  updatedAt: {
+    type: DataTypes.DATE
+  }
 }, {
   sequelize: mysql.getInstance(),
   modelName: 'User',

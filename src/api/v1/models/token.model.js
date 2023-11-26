@@ -13,6 +13,15 @@ Token.init({
   refreshToken: {
     type: DataTypes.STRING,
     primaryKey: true
+  },
+  userId: {
+    type: DataTypes.INTEGER.UNSIGNED
+  },
+  createdAt: {
+    type: DataTypes.DATE
+  },
+  updatedAt: {
+    type: DataTypes.DATE
   }
 }, {
   sequelize: mysql.getInstance(),

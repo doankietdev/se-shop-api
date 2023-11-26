@@ -7,14 +7,22 @@ class RolePermission extends Model {}
 
 RolePermission.init({
   roleId: {
-    type: DataTypes.TINYINT,
+    type: DataTypes.TINYINT.UNSIGNED,
     primaryKey: true
   },
   permissionId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.INTEGER.UNSIGNED,
     primaryKey: true
   },
-  assignerId: DataTypes.INTEGER
+  assignerId: {
+    type: DataTypes.INTEGER.UNSIGNED
+  },
+  createdAt: {
+    type: DataTypes.DATE
+  },
+  updatedAt: {
+    type: DataTypes.DATE
+  }
 }, {
   sequelize: mysql.getInstance(),
   modelName: 'RolePermission',

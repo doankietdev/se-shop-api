@@ -6,7 +6,19 @@ const { mysql } = require('~/databases')
 class OrderStatus extends Model {}
 
 OrderStatus.init({
-  name: DataTypes.STRING
+  id: {
+    type: DataTypes.TINYINT.UNSIGNED,
+    primaryKey: true
+  },
+  name: {
+    type: DataTypes.STRING
+  },
+  createdAt: {
+    type: DataTypes.DATE
+  },
+  updatedAt: {
+    type: DataTypes.DATE
+  }
 }, {
   sequelize: mysql.getInstance(),
   modelName: 'OrderStatus',

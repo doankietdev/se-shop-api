@@ -7,14 +7,22 @@ class CartDetail extends Model {}
 
 CartDetail.init({
   cartId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.INTEGER.UNSIGNED,
     primaryKey: true
   },
   productId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.INTEGER.UNSIGNED,
     primaryKey: true
   },
-  quantity: DataTypes.INTEGER
+  quantity: {
+    type: DataTypes.INTEGER.UNSIGNED
+  },
+  createdAt: {
+    type: DataTypes.DATE
+  },
+  updatedAt: {
+    type: DataTypes.DATE
+  }
 }, {
   sequelize: mysql.getInstance(),
   modelName: 'CartDetail',

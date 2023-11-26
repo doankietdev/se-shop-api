@@ -6,10 +6,34 @@ const { mysql } = require('~/databases')
 class Permission extends Model {}
 
 Permission.init({
-  name: DataTypes.STRING,
-  description: DataTypes.STRING,
-  api: DataTypes.STRING,
-  method: DataTypes.STRING
+  id: {
+    type: DataTypes.INTEGER.UNSIGNED,
+    primaryKey: true
+  },
+  name: {
+    type: DataTypes.STRING
+  },
+  description: {
+    type: DataTypes.STRING
+  },
+  api: {
+    type: DataTypes.STRING
+  },
+  method: {
+    type: DataTypes.STRING
+  },
+  permissionTypeId: {
+    type: DataTypes.TINYINT.UNSIGNED
+  },
+  resourceId: {
+    type: DataTypes.TINYINT.UNSIGNED
+  },
+  createdAt: {
+    type: DataTypes.DATE
+  },
+  updatedAt: {
+    type: DataTypes.DATE
+  }
 }, {
   sequelize: mysql.getInstance(),
   modelName: 'Permission',

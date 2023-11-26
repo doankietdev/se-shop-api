@@ -6,23 +6,67 @@ const { mysql } = require('~/databases')
 class Product extends Model {}
 
 Product.init({
-  name: DataTypes.STRING,
-  description: DataTypes.STRING,
-  imageUrl: DataTypes.STRING,
-  screen: DataTypes.STRING,
-  operatingSystem: DataTypes.STRING,
-  processor: DataTypes.STRING,
-  ram: DataTypes.INTEGER,
-  storage: DataTypes.INTEGER,
-  dimensions: DataTypes.STRING,
-  weight: DataTypes.DECIMAL(5, 2),
-  batteryCapacity: DataTypes.INTEGER,
-  frontCameraResolution: DataTypes.STRING,
-  rearCameraResolution: DataTypes.STRING,
-  connectivity: DataTypes.STRING,
-  color: DataTypes.STRING,
-  price: DataTypes.BIGINT,
-  stockQuantity: DataTypes.INTEGER
+  id: {
+    type: DataTypes.INTEGER.UNSIGNED,
+    primaryKey: true
+  },
+  name: {
+    type: DataTypes.STRING
+  },
+  description: {
+    type: DataTypes.STRING
+  },
+  imageUrl: {
+    type: DataTypes.STRING
+  },
+  screen: {
+    type: DataTypes.STRING
+  },
+  operatingSystem: {
+    type: DataTypes.STRING
+  },
+  processor: {
+    type: DataTypes.STRING
+  },
+  ram: {
+    type: DataTypes.INTEGER.UNSIGNED
+  },
+  storageCapacity: {
+    type: DataTypes.INTEGER.UNSIGNED
+  },
+  dimensions: {
+    type: DataTypes.STRING
+  },
+  weight: {
+    type: DataTypes.DECIMAL(5, 2).UNSIGNED
+  },
+  batteryCapacity: {
+    type: DataTypes.INTEGER.UNSIGNED
+  },
+  frontCameraResolution: {
+    type: DataTypes.STRING
+  },
+  rearCameraResolution: {
+    type: DataTypes.STRING
+  },
+  connectivity: {
+    type: DataTypes.STRING
+  },
+  color: {
+    type: DataTypes.STRING
+  },
+  price: {
+    type: DataTypes.BIGINT.UNSIGNED
+  },
+  stockQuantity: {
+    type: DataTypes.INTEGER.UNSIGNED
+  },
+  createdAt: {
+    type: DataTypes.DATE
+  },
+  updatedAt: {
+    type: DataTypes.DATE
+  }
 }, {
   sequelize: mysql.getInstance(),
   modelName: 'Product',
