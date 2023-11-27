@@ -1,7 +1,7 @@
 'use strict'
 
 const { ResetToken } = require('~/api/v1/models')
-const ApiError = require('../../../../build/src/core/api.error')
+const ApiError = require('~/core/api.error')
 const { StatusCodes, ReasonPhrases } = require('http-status-codes')
 
 const createResetToken = async ({ resetToken, userId }) => {
