@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   mysql:
-    image: doananhkiet886/mysql:latest
+    image: mysql:5.7.44
     restart: always
     environment:
       - MYSQL_DATABASE=SE_SHOP
