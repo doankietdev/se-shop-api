@@ -19,8 +19,8 @@ const { authenticate, authorize } = require('~/api/v1/middlewares/auth.middlewar
 
 const router = express.Router()
 
-// router.use(authenticate)
-// router.use(authorize)
+router.use(authenticate)
+router.use(authorize)
 
 router.use('/auth', authRouter)
 router.use('/roles', roleRouter)
