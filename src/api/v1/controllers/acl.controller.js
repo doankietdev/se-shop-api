@@ -98,7 +98,9 @@ const getAccessControlListByAssignerId = asyncHandling(async (req, res) => {
 })
 
 const updateAccessControl = asyncHandling( async (req, res) => {
-  const assignerId = req?.user?.id || null
+  if (!req.user) throw new ApiError(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED)
+
+  const { id: assignerId } = req.user
   const { roleId, permissionId } = req.query
   const accessControl = await aclService.updateAccessControl({ roleId, permissionId }, { ...req.body, assignerId })
 
