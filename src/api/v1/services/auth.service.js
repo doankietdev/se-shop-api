@@ -146,12 +146,24 @@ const refreshToken = async ({ userId, refreshToken }) => {
   }
 }
 
-const signOut = async ({ accessToken, refreshToken }) => {
+const signOut = async ({ res, accessToken, refreshToken }) => {
   const token = await tokenService.findOneToken({
     where: { accessToken, refreshToken }
   })
   if (!token) throw new ApiError(StatusCodes.UNAUTHORIZED, StatusCodes.UNAUTHORIZED)
-  return await token.destroy()
+
+  try {
+    const deletedToken = await token.destroy()
+    res.clearCookie('accessToken')
+    res.clearCookie('refreshToken')
+    await refreshTokenUsedService.createRefreshTokenUsed({
+      refreshTokenUsed: deletedToken.refreshToken,
+      userId: deletedToken.userId
+    })
+  } catch (error) {
+    console.log({ error });
+    throw new ApiError(StatusCodes.BAD_REQUEST, 'Refresh token failed')
+  }
 }
 
 const forgotPassword = async ({ email }) => {

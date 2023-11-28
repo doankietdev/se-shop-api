@@ -74,10 +74,7 @@ const signOut = asyncHandling(async (req, res) => {
   const { accessToken, refreshToken } = req.cookies
   if (!accessToken || !refreshToken) throw new ApiError(StatusCodes.BAD_REQUEST, 'Not signed in yet')
 
-  res.clearCookie('accessToken')
-  res.clearCookie('refreshToken')
-
-  await authService.signOut({ accessToken, refreshToken })
+  await authService.signOut({ res, accessToken, refreshToken })
 
   new SuccessResponse({
     message: 'Signed out successfully'
