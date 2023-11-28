@@ -121,7 +121,6 @@ const deleteUserById = async (id) => {
 
   try {
     await user.destroy({ force: true })
-    return await getAllUsers()
   } catch (error) {
     throw new ApiError(StatusCodes.CONFLICT, 'Delete user failed')
   }

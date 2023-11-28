@@ -45,7 +45,6 @@ const deletePaymentFormById = async (id) => {
   if (!paymentForm) throw new ApiError(StatusCodes.NOT_FOUND, 'Payment form not found')
   try {
     await paymentForm.destroy()
-    return await getAllPaymentForms()
   } catch (error) {
     throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, 'Delete payment form failed')
   }
@@ -57,7 +56,6 @@ const deletePaymentFormByIds = async (ids) => {
   })
   const NO_ITEMS_DELETEDS = 0
   if (numberDeletedItems === NO_ITEMS_DELETEDS) throw new ApiError(StatusCodes.BAD_REQUEST, 'No payment forms are deleted')
-  return await getAllPaymentForms()
 }
 
 module.exports = {

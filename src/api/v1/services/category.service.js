@@ -72,11 +72,12 @@ const updateCategoryById = async ({ id, name, description }) => {
 }
 
 const deleteCategoryById = async ({ id }) => {
-  const category = await Category.findByPk(id)
+  const category = await Category.findOne({
+    where: { id }
+  })
   if (!category) throw new ApiError(StatusCodes.NOT_FOUND, 'Item not found')
   const { dataValues } = await category.destroy()
   if (!dataValues) throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR)
-  return await getAllCategories()
 }
 
 const deleteCategoryByIds = async ({ ids }) => {
@@ -85,7 +86,6 @@ const deleteCategoryByIds = async ({ ids }) => {
   })
   const NO_ITEMS_DELETEDS = 0
   if (numberDeletedItems === NO_ITEMS_DELETEDS) throw new ApiError(StatusCodes.BAD_REQUEST, 'No items are deleted')
-  return await getAllCategories()
 }
 
 module.exports = {

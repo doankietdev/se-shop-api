@@ -56,7 +56,6 @@ const deleteOrderStatusByIds = async (ids) => {
   })
   const NO_ITEMS_DELETEDS = 0
   if (numberDeletedItems === NO_ITEMS_DELETEDS) throw new ApiError(StatusCodes.BAD_REQUEST, 'No order statuses are deleted')
-  return await getAllOrderStatuses()
 }
 
 module.exports = {

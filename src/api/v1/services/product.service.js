@@ -55,7 +55,6 @@ const deleteProductById = async (id) => {
   if (!product) throw new ApiError(StatusCodes.NOT_FOUND, 'Product not found')
   const { dataValues } = await product.destroy()
   if (!dataValues) throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR)
-  return await getAllProducts()
 }
 
 const deleteProductByIds = async (ids = []) => {
@@ -64,7 +63,6 @@ const deleteProductByIds = async (ids = []) => {
   })
   const NO_ITEMS_DELETEDS = 0
   if (numberDeletedItems === NO_ITEMS_DELETEDS) throw new ApiError(StatusCodes.BAD_REQUEST, 'No products are deleted')
-  return await getAllProducts()
 }
 
 module.exports = {

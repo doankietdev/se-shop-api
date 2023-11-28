@@ -45,7 +45,6 @@ const deleteUserStatusById = async ({ id }) => {
   if (!userStatus) throw new ApiError(StatusCodes.NOT_FOUND, 'Item not found')
   const { dataValues } = await userStatus.destroy()
   if (!dataValues) throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR)
-  return await getAllUserStatuses()
 }
 
 const deleteUserStatusByIds = async ({ ids }) => {
@@ -54,7 +53,6 @@ const deleteUserStatusByIds = async ({ ids }) => {
   })
   const NO_ITEMS_DELETEDS = 0
   if (numberDeletedItems === NO_ITEMS_DELETEDS) throw new ApiError(StatusCodes.BAD_REQUEST, 'No items are deleted')
-  return await getAllUserStatuses()
 }
 
 module.exports = {

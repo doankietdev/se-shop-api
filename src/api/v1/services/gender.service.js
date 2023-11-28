@@ -51,7 +51,6 @@ const deleteGenderById = async ({ id }) => {
   if (!gender) throw new ApiError(StatusCodes.NOT_FOUND, 'Item not found')
   const { dataValues } = await gender.destroy()
   if (!dataValues) throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR)
-  return await getAllGenders()
 }
 
 const deleteGenderByIds = async ({ ids }) => {
@@ -60,7 +59,6 @@ const deleteGenderByIds = async ({ ids }) => {
   })
   const NO_ITEMS_DELETEDS = 0
   if (numberDeletedItems === NO_ITEMS_DELETEDS) throw new ApiError(StatusCodes.BAD_REQUEST, 'No items are deleted')
-  return await getAllGenders()
 }
 
 module.exports = {
