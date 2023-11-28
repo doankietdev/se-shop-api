@@ -41,8 +41,21 @@ const reduceQuantityProduct = asyncHandling(async (req, res) => {
   }).send(res)
 })
 
+const increaseQuantityProduct = asyncHandling(async (req, res) => {
+  const userId = req?.user?.id || null
+
+  const cart = await cartService.increaseQuantityProduct({ ...req.body, userId })
+
+  new SuccessResponse({
+    statusCode: StatusCodes.CREATED,
+    message: 'Increase quantity of product successfully',
+    metadata: { cart }
+  }).send(res)
+})
+
 module.exports = {
   getFullCartForCustomer,
   addProductToCart,
-  reduceQuantityProduct
+  reduceQuantityProduct,
+  increaseQuantityProduct
 }

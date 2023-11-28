@@ -7,7 +7,7 @@ const {
   getAllOrders,
   cancelOrder,
   getOrder,
-  createPaymentUrl,
+  pay,
   checkPay
 } = require('~/api/v1/controllers/checkout.controller')
 const queryStringMiddleware = require('~/api/v1/middlewares/query.string.middleware')
@@ -20,6 +20,6 @@ router.get('/check-pay', checkPay)
 router.get('/review', review)
 router.post('/order', order)
 router.post('/cancel-order', cancelOrder)
-router.post('/create-payment-url', createPaymentUrl)
+router.post('/pay', pay)
 
 module.exports = router

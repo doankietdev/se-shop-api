@@ -8,6 +8,7 @@ const createPermission = async ({ name, description, api, method, isPrivate, per
   try {
     return await Permission.create({ name, description, api, method, isPrivate, permissionTypeId, resourceId, versionId })
   } catch (error) {
+    console.log({ error });
     throw new ApiError(StatusCodes.BAD_REQUEST, 'Create permission failed')
   }
 }

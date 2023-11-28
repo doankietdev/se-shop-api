@@ -23,6 +23,6 @@ router.get('/get-user-status', getUserStatusById)
 router.post('/create', validateCreateUserStatus, createUserStatus)
 router.patch('/update-user-status', validateUpdateUserStatusById, updateUserStatusById)
 router.delete('/delete-user-status', deleteUserStatusById)
-router.delete('/get-user-statuses', validateDeleteUserStatusByIds, deleteGenderByIds)
+router.delete('/delete-user-statuses', validateDeleteUserStatusByIds, deleteGenderByIds)
 
 module.exports = router

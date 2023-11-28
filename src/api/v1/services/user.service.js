@@ -109,7 +109,7 @@ const updateStatus = async ({ id, userStatusId }) => {
     await user.update({ userStatusId })
     return user
   } catch (error) {
-    throw new ApiError(StatusCodes.BAD_REQUEST, '"userStatusId" is invalid')
+    throw new ApiError(StatusCodes.BAD_REQUEST, 'Update status failed')
   }
 }
 

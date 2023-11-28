@@ -63,7 +63,7 @@ const getOrder = asyncHandling(async (req, res) => {
   }).send(res)
 })
 
-const createPaymentUrl = asyncHandling(async (req, res) => {
+const pay = asyncHandling(async (req, res) => {
   const userId = req?.user?.id || null
   const { orderId, bankCode } = req.body
   const ipAddr = req.headers['x-forwarded-for'] ||
@@ -72,11 +72,7 @@ const createPaymentUrl = asyncHandling(async (req, res) => {
     req.connection.socket.remoteAddress
 
   const paymentUrl = await checkoutService.createPaymentUrl({ userId, bankCode, orderId, ipAddr })
-
-  new SuccessResponse({
-    message: 'Pay successfully',
-    metadata: { paymentUrl }
-  }).send(res)
+  res.redirect(paymentUrl)
 })
 
 const checkPay = asyncHandling(async (req, res) => {
@@ -92,6 +88,6 @@ module.exports = {
   getAllOrders,
   cancelOrder,
   getOrder,
-  createPaymentUrl,
+  pay,
   checkPay
 }

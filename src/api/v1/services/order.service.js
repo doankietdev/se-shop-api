@@ -10,11 +10,11 @@ const getAllOrders = async ({ filter, selector, pagination, sorter }) => {
   return await orderRepo.getAllOrders({ filter, selector, pagination, sorter })
 }
 
-const getOrder = async ({ userId, orderId }) => {
+const getOrder = async (orderId) => {
   const bannedFieldsOfOrderDetails = ['orderId', 'productId', 'createdAt', 'updatedAt']
 
   const foundOrder = await Order.findOne({
-    where: { userId, id: orderId },
+    where: { id: orderId },
     attributes: {
       exclude: ['orderStatusId', 'paymentFormId', 'userId']
     },

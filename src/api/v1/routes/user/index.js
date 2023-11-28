@@ -17,7 +17,7 @@ const router = express.Router()
 router.get('/', queryStringMiddleware, getAllUsers)
 router.get('/get-info', getUserInfo)
 router.get('/get-user', getUserById)
-router.patch('/update-user-itself', uploadAvatarMiddleware, updateUserItseft)
+router.patch('/update-profile', uploadAvatarMiddleware, updateUserItseft)
 router.patch('/update-status', updateStatus)
 router.delete('/delete-user', deleteUserById)
 

@@ -5,9 +5,9 @@ const orderService = require('~/api/v1/services/order.service')
 const asyncHandling = require('~/core/async.handling')
 
 const getOrder = asyncHandling( async (req, res) => {
-  const { orderId, userId } = req.query
+  const { orderId } = req.query
 
-  const order = await orderService.getOrder({ userId, orderId })
+  const order = await orderService.getOrder(orderId)
 
   new SuccessResponse({
     message: 'Get order successfully',
