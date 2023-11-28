@@ -142,7 +142,7 @@ const refreshToken = async ({ userId, refreshToken }) => {
       refreshToken: token.refreshToken
     }
   } catch (error) {
-    throw new ApiError(StatusCodes.UNAUTHORIZED, error.message)
+    throw new ApiError(StatusCodes.UNAUTHORIZED, 'Refresh token failed')
   }
 }
 
@@ -156,6 +156,7 @@ const signOut = async ({ res, accessToken, refreshToken }) => {
     const deletedToken = await token.destroy()
     res.clearCookie('accessToken')
     res.clearCookie('refreshToken')
+    console.log('PASSS');
     await refreshTokenUsedService.createRefreshTokenUsed({
       refreshTokenUsed: deletedToken.refreshToken,
       userId: deletedToken.userId
