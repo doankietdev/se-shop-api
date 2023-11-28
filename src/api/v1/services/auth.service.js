@@ -161,7 +161,6 @@ const signOut = async ({ res, accessToken, refreshToken }) => {
       userId: deletedToken.userId
     })
   } catch (error) {
-    console.log({ error });
     throw new ApiError(StatusCodes.BAD_REQUEST, 'Refresh token failed')
   }
 }
