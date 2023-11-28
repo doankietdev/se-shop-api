@@ -27,6 +27,23 @@ const signUp = asyncHandling(async (req, res) => {
   }).send(res)
 })
 
+const signUpAdmin = asyncHandling(async (req, res) => {
+  const {
+    genderId, lastName, firstName, phoneNumber,
+    email, address, username, password, secretKey
+  } = req.body
+
+  await authService.signUpAdmin({
+    genderId, lastName, firstName, phoneNumber,
+    email, address, username, password, secretKey
+  })
+
+  new SuccessResponse({
+    statusCode: StatusCodes.CREATED,
+    message: 'Sign up account for admin successfully'
+  }).send(res)
+})
+
 const signIn = asyncHandling(async (req, res) => {
   const { username, password } = req.body
 
@@ -104,6 +121,7 @@ const resetPassword = asyncHandling(async (req, res) => {
 
 module.exports = {
   signUp,
+  signUpAdmin,
   signIn,
   refreshToken,
   signOut,

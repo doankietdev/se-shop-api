@@ -7,10 +7,12 @@ const getAllRoles = async () => {
   return await Role.findAll()
 }
 
-const getRoleByName = async (name) => {
+const getRoleByName = async (name = '') => {
   return await Role.findOne({
     where: {
-      [Op.like]: `%${name}%`
+      name: {
+        [Op.like]: `%${name}%`
+      }
     }
   })
 }

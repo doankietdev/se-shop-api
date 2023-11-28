@@ -57,7 +57,8 @@ const {
   PAY_FAIL_URL,
   CLOUDINARY_NAME,
   CLOUDINARY_API_KEY,
-  CLOUDINARY_API_SECRET
+  CLOUDINARY_API_SECRET,
+  SECRET_KEY_ADMIN
 } = process.env
 
 const development = {
@@ -75,7 +76,8 @@ const development = {
     emailAppPassword: EMAIL_APP_PASSWORD || '',
     resetTokenExpires: RESET_TOKEN_EXPIRES || '10m',
     paySuccessUrl: PAY_SUCCESS_URL || '',
-    payFailUrl: PAY_FAIL_URL || ''
+    payFailUrl: PAY_FAIL_URL || '',
+    secretKeyAdmin: SECRET_KEY_ADMIN
   },
   mysql: {
     host: MYSQL_HOST || DEV_DB_HOST_DEFAULT,
@@ -117,7 +119,8 @@ const production = {
     emailAppPassword: EMAIL_APP_PASSWORD || '',
     resetTokenExpires: RESET_TOKEN_EXPIRES || '10m',
     paySuccessUrl: PAY_SUCCESS_URL || '',
-    payFailUrl: PAY_FAIL_URL || ''
+    payFailUrl: PAY_FAIL_URL || '',
+    secretKeyAdmin: SECRET_KEY_ADMIN
   },
   mysql: {
     host: MYSQL_HOST || PROD_DB_HOST_DEFAULT,

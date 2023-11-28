@@ -2,7 +2,7 @@
 
 const { Op } = require('sequelize')
 const bcrypt = require('bcrypt')
-const { app: { saltRounds, protocol, host, port } } = require('~/config/environment.config')
+const { app: { saltRounds, protocol, host, port, secretKeyAdmin } } = require('~/config/environment.config')
 const ApiError = require('~/core/api.error')
 const { StatusCodes, ReasonPhrases } = require('http-status-codes')
 const cartService = require('~/api/v1/services/cart.service')
@@ -69,6 +69,58 @@ const signUp = async ({
   await cartService.createCart({ userId: newUser.id })
 
   return {}
+}
+
+const signUpAdmin = async ({
+  genderId, lastName, firstName, phoneNumber,
+  email, address, username, password, secretKey
+}) => {
+  const foundUser = await userRepo.getUser({
+    where: {
+      [Op.or]: [
+        { username },
+        { email },
+        { phoneNumber }
+      ]
+    }
+  })
+  if (foundUser) {
+    let isExist = foundUser.username === username
+    if (isExist) throw new ApiError(StatusCodes.BAD_REQUEST, 'Username already exists')
+
+    isExist = foundUser.email === email
+    if (isExist) throw new ApiError(StatusCodes.BAD_REQUEST, 'Email has been used')
+
+    isExist = foundUser.phoneNumber === phoneNumber
+    if (isExist) throw new ApiError(StatusCodes.BAD_REQUEST, 'Phone number has been used')
+    return
+  }
+
+  const isMatchSecretKey = secretKey === secretKeyAdmin
+  if (!isMatchSecretKey) throw new ApiError(StatusCodes.BAD_REQUEST, 'Secret key is wrong')
+
+  const adminRole = await roleRepo.getRoleByName('admin')
+  if (!adminRole) throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR)
+  const activeStatus = await userStatusRepo.getUserStatusByName('active')
+  if (!activeStatus) throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR)
+
+  const passwordHash = await bcrypt.hash(password, saltRounds)
+  const { publicKey, privateKey } = createKeyPairRsa()
+
+  await userService.createUser({
+    roleId: adminRole.id,
+    userStatusId: activeStatus.id,
+    genderId,
+    lastName,
+    firstName,
+    phoneNumber,
+    email,
+    address,
+    username,
+    password: passwordHash,
+    publicKey,
+    privateKey
+  })
 }
 
 const signIn = async ({ username, password }) => {
@@ -255,6 +307,7 @@ const resetPassword = async ({ resetToken, password }) => {
 
 module.exports = {
   signUp,
+  signUpAdmin,
   signIn,
   refreshToken,
   signOut,
