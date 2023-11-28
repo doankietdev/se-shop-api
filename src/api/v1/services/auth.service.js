@@ -71,22 +71,23 @@ const signUp = async ({
 }
 
 const signIn = async ({ username, password }) => {
-  const foundUser = await userRepo.getUser({
-    attributes: {
-      exclude: ['roleId', 'userStatusId', 'createdAt', 'updatedAt']
-    },
-    where: { username }
-  })
+  const foundUser = await userRepo.getUserByUsername(username)
   if (!foundUser) throw new ApiError(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED)
 
-  const match = await bcrypt.compare(password, foundUser.password)
-  if (!match) throw new ApiError(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED)
+  const isMatchPassoword = await bcrypt.compare(password, foundUser.password)
+  if (!isMatchPassoword) throw new ApiError(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED)
+
+  // check user status
+  const foundUserStatus = await userStatusRepo.getUserStatusById(foundUser.userStatusId)
+  if (!foundUserStatus) throw new ApiError(StatusCodes.FORBIDDEN, ReasonPhrases.FORBIDDEN)
+  if (foundUserStatus.name.toLowerCase() !== 'active') {
+    throw new ApiError(StatusCodes.FORBIDDEN, 'Account has been disabled')
+  }
 
   const { accessToken, refreshToken } = createTokenPair({
     payload: { userId: foundUser.id, username: foundUser.username },
     privateKey: foundUser.privateKey
   })
-
   const token = await tokenService.createToken({ accessToken, refreshToken, userId: foundUser.id })
 
   return {

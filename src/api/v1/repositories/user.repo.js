@@ -6,11 +6,20 @@ const getUser = async (query = {}) => {
   return await User.findOne(query)
 }
 
-const getUserById = async (id) => {
-  return await User.findByPk(id)
+const getUserByUsername = async (username = '') => {
+  return await User.findOne({
+    where: { username }
+  })
+}
+
+const getUserById = async (id = '') => {
+  return await User.findOne({
+    where: { id }
+  })
 }
 
 module.exports = {
   getUser,
-  getUserById
+  getUserById,
+  getUserByUsername
 }
