@@ -40,11 +40,12 @@ const signUp = async ({
 
     isExist = foundUser.phoneNumber === phoneNumber
     if (isExist) throw new ApiError(StatusCodes.BAD_REQUEST, 'Phone number has been used')
+    return
   }
 
-  const customerRole = await roleRepo.getRoleByName('Customer')
+  const customerRole = await roleRepo.getRoleByName('customer')
   if (!customerRole) throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR)
-  const activeStatus = await userStatusRepo.getUserStatusByName('Active')
+  const activeStatus = await userStatusRepo.getUserStatusByName('active')
   if (!activeStatus) throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR)
 
   const passwordHash = await bcrypt.hash(password, saltRounds)
@@ -72,10 +73,10 @@ const signUp = async ({
 
 const signIn = async ({ username, password }) => {
   const foundUser = await userRepo.getUserByUsername(username)
-  if (!foundUser) throw new ApiError(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED)
+  if (!foundUser) throw new ApiError(StatusCodes.NOT_FOUND, 'Username or password is wrong')
 
   const isMatchPassoword = await bcrypt.compare(password, foundUser.password)
-  if (!isMatchPassoword) throw new ApiError(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED)
+  if (!isMatchPassoword) throw new ApiError(StatusCodes.UNAUTHORIZED, 'Username or password is wrong')
 
   // check user status
   const foundUserStatus = await userStatusRepo.getUserStatusById(foundUser.userStatusId)
