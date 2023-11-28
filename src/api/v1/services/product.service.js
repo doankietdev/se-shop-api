@@ -40,19 +40,19 @@ const getAllProducts = async ({ filter, selector, pagination, sorter }) => {
 
 const getProductById = async (id) => {
   const product = await Product.findByPk(id)
-  if (!product) throw new ApiError(StatusCodes.NOT_FOUND, 'No products found')
+  if (!product) throw new ApiError(StatusCodes.NOT_FOUND, 'Product not found')
   return product
 }
 
 const updateProductById = async (id, reqBody = {}) => {
   const updatedProduct = await productRepo.updateProductById(id, reqBody)
-  if (!updatedProduct) throw new ApiError(StatusCodes.NOT_FOUND, 'No products found')
+  if (!updatedProduct) throw new ApiError(StatusCodes.NOT_FOUND, 'Product not found')
   return updateProductById
 }
 
 const deleteProductById = async (id) => {
   const product = await Product.findByPk(id)
-  if (!product) throw new ApiError(StatusCodes.NOT_FOUND, 'No products found')
+  if (!product) throw new ApiError(StatusCodes.NOT_FOUND, 'Product not found')
   const { dataValues } = await product.destroy()
   if (!dataValues) throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR)
   return await getAllProducts()
@@ -63,7 +63,7 @@ const deleteProductByIds = async (ids = []) => {
     where: { id: ids }
   })
   const NO_ITEMS_DELETEDS = 0
-  if (numberDeletedItems === NO_ITEMS_DELETEDS) throw new ApiError(StatusCodes.BAD_REQUEST, 'No items are deleted')
+  if (numberDeletedItems === NO_ITEMS_DELETEDS) throw new ApiError(StatusCodes.BAD_REQUEST, 'No products are deleted')
   return await getAllProducts()
 }
 
