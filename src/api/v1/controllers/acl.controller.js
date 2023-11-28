@@ -1,12 +1,16 @@
 'use strict'
 
-const { StatusCodes } = require('http-status-codes')
+const { StatusCodes, ReasonPhrases } = require('http-status-codes')
 const aclService = require('~/api/v1/services/acl.service')
 const SuccessResponse = require('~/core/success.response')
 const asyncHandling = require('~/core/async.handling')
+const ApiError = require('~/core/api.error')
 
 const assignPermission = asyncHandling(async (req, res) => {
-  const { roleId, permissionId, assignerId } = req.body
+  if (!req.user) throw new ApiError(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED)
+
+  const { id: assignerId } = req.user
+  const { roleId, permissionId } = req.body
 
   const accessControl = await aclService.assignPermission({ roleId, permissionId, assignerId })
 
