@@ -4,8 +4,16 @@ const { RolePermission } = require('~/api/v1/models')
 const ApiError = require('~/core/api.error')
 const { StatusCodes } = require('http-status-codes')
 const rolePermissionRepo = require('~/api/v1/repositories/role.permission.repo')
+const permissionRepo = require('~/api/v1/repositories/permission.repo')
 
 const assignPermission = async ({ roleId, permissionId, assignerId }) => {
+  const foundPermission = await permissionRepo.getPermissionById(permissionId)
+  if (!foundPermission) throw new ApiError(StatusCodes.BAD_REQUEST, 'Assign permission failed')
+
+  if (!foundPermission.isPrivate) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, 'Cannot assign, because this permission is public')
+  }
+
   try {
     return await RolePermission.create({ roleId, permissionId, assignerId })
   } catch (error) {
