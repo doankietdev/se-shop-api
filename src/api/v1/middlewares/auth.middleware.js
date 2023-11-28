@@ -44,7 +44,10 @@ const authenticate = asyncHandling(async (req, res, next) => {
     req.reqMethod = reqMethod
     next()
   } catch (error) {
-    throw new ApiError(StatusCodes.UNAUTHORIZED, error.message)
+    if (error.name === 'TokenExpiredError') {
+      throw new ApiError(StatusCodes.UNAUTHORIZED, 'Access token expired')
+    }
+    throw new ApiError(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED)
   }
 })
 
