@@ -39,18 +39,18 @@ const getProductsByCategoryId = async ({ categoryId, filter, selector, paginatio
       ...filter
     },
     attributes: {
-      exclude: ['createdAt', 'updatedAt', 'slug']
+      exclude: ['createdAt', 'updatedAt']
     },
     include: [
       {
         model: Product,
         as: 'products',
-        attributes: selector || ['name', 'description', 'imageUrl', 'price', 'stockQuantity'],
-        offset: pagination.skip,
-        limit: pagination.limit
+        attributes: selector || ['id', 'name', 'description', 'imageUrl', 'price', 'stockQuantity'],
+        offset: pagination?.skip,
+        limit: pagination?.limit,
+        order: sorter
       }
-    ],
-    order: sorter
+    ]
   })
   if (!products) throw new ApiError(StatusCodes.NOT_FOUND, 'Not found products')
 

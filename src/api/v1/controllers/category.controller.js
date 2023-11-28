@@ -32,11 +32,16 @@ const getProductsByCategoryId = asyncHandling(async (req, res) => {
   const { id } = req.query
   const { filter, selector, pagination, sorter } = req
 
-  const products = await categoryService.getProductsByCategoryId({ categoryId: id, filter, selector, pagination, sorter })
+  const productsPromise = categoryService.getProductsByCategoryId({ categoryId: id, filter, selector, pagination, sorter })
+  const allProductPromise = categoryService.getProductsByCategoryId({ categoryId: id })
+  const [allProducts, products] = await Promise.all([allProductPromise, productsPromise])
+  const total = allProducts?.products.length
+  const limit = pagination?.limit
+  const totalPage = limit <= total ? Math.ceil(total / limit) : 1
 
   new SuccessResponse({
     message: 'Get products by category id successfully',
-    metadata: { products }
+    metadata: { page: pagination.skip / pagination.limit + 1, total, totalPage, products }
   }).send(res)
 })
 
