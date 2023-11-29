@@ -90,6 +90,17 @@ const deleteUserById = asyncHandling(async (req, res) => {
   }).send(res)
 })
 
+const deleteUsersbyIds = asyncHandling(async (req, res) => {
+  const { ids } = req.body
+
+  const users = await userService.deleteUsersbyIds(ids)
+
+  new SuccessResponse({
+    message: 'Delete users successfully',
+    metadata: { users }
+  }).send(res)
+})
+
 module.exports = {
   getAllUsers,
   getUserInfo,
@@ -97,5 +108,6 @@ module.exports = {
   createUser,
   updateUserItseft,
   updateStatus,
-  deleteUserById
+  deleteUserById,
+  deleteUsersbyIds
 }

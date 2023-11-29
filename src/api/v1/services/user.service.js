@@ -7,6 +7,8 @@ const { StatusCodes } = require('http-status-codes')
 const cloudinaryProvider = require('~/api/v1/providers/cloudinary.provider')
 const userRepo = require('~/api/v1/repositories/user.repo')
 const cartRepo = require('~/api/v1/repositories/cart.repo')
+const tokenService = require('~/api/v1/services/token.service')
+const refreshTokenUsedService = require('~/api/v1/services/refresh.token.used.sevice')
 const ApiError = require('~/core/api.error')
 
 const createUser = async ({
@@ -147,6 +149,18 @@ const deleteUserById = async (id) => {
   }
 }
 
+const deleteUsersbyIds = async(ids = []) => {
+  try {
+    await tokenService.deleteByUsersIds(ids)
+    await refreshTokenUsedService.deleteByUserIds(ids)
+    await User.destroy({
+      where: { id: ids }
+    })
+  } catch (error) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, 'Delete users failed')
+  }
+}
+
 module.exports = {
   createUser,
   getUserById,
@@ -155,5 +169,6 @@ module.exports = {
   getAllUsers,
   updateUserById,
   updateStatus,
-  deleteUserById
+  deleteUserById,
+  deleteUsersbyIds
 }

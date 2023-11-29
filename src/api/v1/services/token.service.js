@@ -41,11 +41,29 @@ const deleteAll = async () => {
   return await Token.destroy({ where: {} })
 }
 
+const deleteByUserId = async (userId) => {
+  return await Token.destroy({
+    where: {
+      userId
+    }
+  })
+}
+
+const deleteByUsersIds = async (userIds) => {
+  return await Token.destroy({
+    where: {
+      userId: userIds
+    }
+  })
+}
+
 module.exports = {
   createToken,
   getTokenByAccessToken,
   getTokenByRefreshToken,
   findOneToken,
   deleteTokenByRefreshToken,
-  deleteAll
+  deleteAll,
+  deleteByUserId,
+  deleteByUsersIds
 }

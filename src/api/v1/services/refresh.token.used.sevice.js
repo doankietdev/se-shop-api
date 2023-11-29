@@ -20,8 +20,26 @@ const getRefreshTokenUsed = async ({ refreshToken }) => {
   return await RefreshTokenUsed.findByPk(refreshToken)
 }
 
+const deleteByUserId = async (userId = '') => {
+  return await RefreshTokenUsed.destroy({
+    where: {
+      userId
+    }
+  })
+}
+
+const deleteByUserIds = async (userIds = []) => {
+  return await RefreshTokenUsed.destroy({
+    where: {
+      userId: userIds
+    }
+  })
+}
+
 module.exports = {
   createRefreshTokenUsed,
   getAllUsedRefreshTokens,
-  getRefreshTokenUsed
+  getRefreshTokenUsed,
+  deleteByUserId,
+  deleteByUserIds
 }
