@@ -110,7 +110,7 @@ const refreshToken = async ({ userId, refreshToken }) => {
   // automatically detect illegally stolen refresh token
   const foundRefreshTokenUsed = await refreshTokenUsedService.getRefreshTokenUsed({ refreshToken })
   if (foundRefreshTokenUsed) {
-    await tokenService.deleteAll()
+    await tokenService.deleteByUserId(userId)
     throw new ApiError(StatusCodes.UNAUTHORIZED, 'Something unusual happened')
   }
 
