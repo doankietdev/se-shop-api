@@ -6,10 +6,6 @@ const { mysql } = require('~/databases')
 class Order extends Model {}
 
 Order.init({
-  id: {
-    type: DataTypes.INTEGER.UNSIGNED,
-    primaryKey: true
-  },
   orderStatusId: {
     type: DataTypes.TINYINT.UNSIGNED
   },

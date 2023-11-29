@@ -51,7 +51,7 @@ const deleteCartByUserId = async (userId) => {
   await foundCart.destroy({ force: true })
 }
 
-const getCartByCartIdUserId = async({ cartId, userId }) => {
+const getCartByCartIdUserId = async({ cartId = '', userId = '' }) => {
   return await Cart.findOne({
     where: { id: cartId, userId }
   })
