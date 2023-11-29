@@ -53,9 +53,24 @@ const increaseQuantityProduct = asyncHandling(async (req, res) => {
   }).send(res)
 })
 
+const deleteProductFromCart = asyncHandling(async (req, res) => {
+  const userId = req?.user?.id || null
+
+  const { cartId, productId } = req.query
+
+  const cart = await cartService.deleteProductFromCart({ cartId, userId, productId })
+
+  new SuccessResponse({
+    statusCode: StatusCodes.CREATED,
+    message: 'Delete product from cart successfully',
+    metadata: { cart }
+  }).send(res)
+})
+
 module.exports = {
   getFullCartForCustomer,
   addProductToCart,
   reduceQuantityProduct,
-  increaseQuantityProduct
+  increaseQuantityProduct,
+  deleteProductFromCart
 }

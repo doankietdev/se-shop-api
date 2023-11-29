@@ -98,10 +98,10 @@ const getCart = async ({ cartId, userId }) => {
 
 const addProductToCart = async ({ userId, cartId, productId, quantity }) => {
   const foundCart = await getCart({ cartId, userId })
-  if (!foundCart) throw new ApiError(StatusCodes.BAD_REQUEST, ReasonPhrases.BAD_REQUEST)
+  if (!foundCart) throw new ApiError(StatusCodes.NOT_FOUND, 'Cart not found')
 
   const foundProduct = await getProductById(productId)
-  if (!foundProduct) throw new ApiError(StatusCodes.BAD_REQUEST, ReasonPhrases.BAD_REQUEST)
+  if (!foundProduct) throw new ApiError(StatusCodes.NOT_FOUND, 'Product not found')
 
   const foundCartDetail = await getCartByCartIdProductId({ cartId, productId })
 
@@ -162,6 +162,24 @@ const increaseQuantityProduct = async({ userId, cartId, productId, quantity }) =
   await foundCartDetail.update({ quantity: quantitAfterIncrease })
 }
 
+const deleteProductFromCart = async ({ cartId, userId, productId }) => {
+  const foundCart = await getCart({ cartId, userId })
+  if (!foundCart) throw new ApiError(StatusCodes.NOT_FOUND, 'Delete product from cart failed')
+
+  try {
+    const deletedCartDetail = await deleteCartDetail({ cartId, productId })
+    if (!deletedCartDetail) throw new Error()
+
+    const fullCart = await getFullCartById(cartId)
+    return {
+      id: fullCart.id,
+      products: fullCart.products
+    }
+  } catch (error) {
+    throw new ApiError(StatusCodes.NOT_FOUND, 'No products found in cart')
+  }
+}
+
 module.exports = {
   createCart,
   getFullCartById,
@@ -169,5 +187,6 @@ module.exports = {
   getAllFullCarts,
   addProductToCart,
   reduceQuantityProduct,
-  increaseQuantityProduct
+  increaseQuantityProduct,
+  deleteProductFromCart
 }
