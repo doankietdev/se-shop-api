@@ -45,9 +45,8 @@ const getProductById = async (id = '') => {
 }
 
 const updateProductById = async (id = '', reqBody = {}) => {
-  const updatedProduct = await productRepo.updateProductById(id, reqBody)
-  if (!updatedProduct) throw new ApiError(StatusCodes.NOT_FOUND, 'Product not found')
-  return updatedProduct
+  const numberUpdated = await productRepo.updateProductById(id, reqBody)
+  if (numberUpdated === 0) throw new ApiError(StatusCodes.NOT_FOUND, 'Product not found')
 }
 
 const increaseStockQuantiy = async(id = '', reqBody= {}) => {

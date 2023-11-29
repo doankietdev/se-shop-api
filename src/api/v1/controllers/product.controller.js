@@ -4,7 +4,6 @@ const { StatusCodes } = require('http-status-codes')
 const productService = require('~/api/v1/services/product.service')
 const SuccessResponse = require('~/core/success.response')
 const asyncHandling = require('~/core/async.handling')
-const { async } = require('@babel/runtime/helpers/regeneratorRuntime')
 
 const createProduct = asyncHandling(async (req, res) => {
   const product = await productService.createProduct({ ...req.body, imageUrl: req?.file?.path })

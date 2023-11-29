@@ -17,19 +17,23 @@ const getProductsByIds = async (ids = []) => {
 }
 
 const updateProductById = async (id, payload = {}) => {
-  const product = await getProductById(id)
-  if (!product) return null
-  return await product.update(payload)
+  try {
+    const [numberUpdated] = await Product.update(payload, {
+      where: { id }
+    })
+    return numberUpdated
+  } catch (error) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, 'Update product failed')
+  }
 }
 
 const increaseStockQuantiy = async (id, quantity = 0) => {
   try {
-    const result = await Product.increment({
+    const [[, numberUpdated]] = await Product.increment({
       stockQuantity: quantity
     }, {
       where: { id: id }
     })
-    const numberUpdated = result[0][1]
     return numberUpdated
   } catch (error) {
     throw new ApiError(StatusCodes.BAD_REQUEST, 'Increase stock quantity of product failed')
