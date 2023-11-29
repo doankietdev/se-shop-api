@@ -38,16 +38,30 @@ const getAllProducts = async ({ filter, selector, pagination, sorter }) => {
   }
 }
 
-const getProductById = async (id) => {
+const getProductById = async (id = '') => {
   const product = await Product.findByPk(id)
   if (!product) throw new ApiError(StatusCodes.NOT_FOUND, 'Product not found')
   return product
 }
 
-const updateProductById = async (id, reqBody = {}) => {
+const updateProductById = async (id = '', reqBody = {}) => {
   const updatedProduct = await productRepo.updateProductById(id, reqBody)
   if (!updatedProduct) throw new ApiError(StatusCodes.NOT_FOUND, 'Product not found')
-  return updateProductById
+  return updatedProduct
+}
+
+const increaseStockQuantiy = async(id = '', reqBody= {}) => {
+  const { quantity } = reqBody
+  if (quantity < 0) throw new ApiError(StatusCodes.BAD_REQUEST, 'Increase stock quantity of product failed')
+  const numberUpdated = await productRepo.increaseStockQuantiy(id, quantity)
+  if (numberUpdated === 0) throw new ApiError(StatusCodes.NOT_FOUND, 'Product not found')
+}
+
+const decreaseStockQuantiy = async(id = '', reqBody= {}) => {
+  const { quantity } = reqBody
+  if (quantity < 0) throw new ApiError(StatusCodes.BAD_REQUEST, 'Increase stock quantity of product failed')
+  const numberUpdated = await productRepo.decreaseStockQuantiy(id, quantity)
+  if (numberUpdated === 0) throw new ApiError(StatusCodes.NOT_FOUND, 'Product not found')
 }
 
 const deleteProductById = async (id) => {
@@ -70,6 +84,8 @@ module.exports = {
   getAllProducts,
   getProductById,
   updateProductById,
+  increaseStockQuantiy,
+  decreaseStockQuantiy,
   deleteProductById,
   deleteProductByIds
 }

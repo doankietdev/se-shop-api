@@ -6,6 +6,8 @@ const {
   getAllProducts,
   getProductById,
   updateProductById,
+  increaseStockQuantiy,
+  decreaseStockQuantiy,
   deleteProductById,
   deleteProductByIds
 }= require('~/api/v1/controllers/product.controller')
@@ -19,6 +21,8 @@ router.get('/', queryStringMiddleware, getAllProducts)
 router.get('/get-product', getProductById)
 router.post('/create', uploadProductImageMiddleware, validateCreateProduct, createProduct)
 router.patch('/update-product', updateProductById)
+router.patch('/increase-stock-quantity', increaseStockQuantiy)
+router.patch('/decrease-stock-quantity', decreaseStockQuantiy)
 router.delete('/delete-product', deleteProductById)
 router.delete('/delete-products', deleteProductByIds)
 

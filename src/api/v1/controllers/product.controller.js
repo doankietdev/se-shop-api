@@ -4,6 +4,7 @@ const { StatusCodes } = require('http-status-codes')
 const productService = require('~/api/v1/services/product.service')
 const SuccessResponse = require('~/core/success.response')
 const asyncHandling = require('~/core/async.handling')
+const { async } = require('@babel/runtime/helpers/regeneratorRuntime')
 
 const createProduct = asyncHandling(async (req, res) => {
   const product = await productService.createProduct({ ...req.body, imageUrl: req?.file?.path })
@@ -53,6 +54,28 @@ const updateProductById = asyncHandling( async (req, res) => {
   }).send(res)
 })
 
+const increaseStockQuantiy = asyncHandling(async (req, res) => {
+  const { id } = req.query
+
+  const product = await productService.increaseStockQuantiy(id, req.body)
+
+  new SuccessResponse({
+    message: 'Increase stock quantity of product successfully',
+    metadata: { product }
+  }).send(res)
+})
+
+const decreaseStockQuantiy = asyncHandling(async (req, res) => {
+  const { id } = req.query
+
+  const product = await productService.decreaseStockQuantiy(id, req.body)
+
+  new SuccessResponse({
+    message: 'Decrease stock quantity of product successfully',
+    metadata: { product }
+  }).send(res)
+})
+
 const deleteProductById = asyncHandling(async (req, res) => {
   const { id } = req.query
 
@@ -80,6 +103,8 @@ module.exports = {
   getAllProducts,
   getProductById,
   updateProductById,
+  increaseStockQuantiy,
+  decreaseStockQuantiy,
   deleteProductById,
   deleteProductByIds
 }
