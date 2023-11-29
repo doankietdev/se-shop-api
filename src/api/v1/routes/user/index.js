@@ -5,6 +5,7 @@ const {
   getAllUsers,
   getUserInfo,
   getUserById,
+  createUser,
   updateUserItseft,
   updateStatus,
   deleteUserById
@@ -17,6 +18,7 @@ const router = express.Router()
 router.get('/', queryStringMiddleware, getAllUsers)
 router.get('/get-info', getUserInfo)
 router.get('/get-user', getUserById)
+router.post('/create', createUser)
 router.patch('/update-profile', uploadAvatarMiddleware, updateUserItseft)
 router.patch('/update-status', updateStatus)
 router.delete('/delete-user', deleteUserById)

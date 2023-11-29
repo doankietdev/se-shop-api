@@ -1,26 +1,47 @@
 'use strict'
 
 const lodash = require('lodash')
+const { Op } = require('sequelize')
 const { User, UserStatus, Role, Gender } = require('~/api/v1/models')
-const ApiError = require('~/core/api.error')
-const { StatusCodes, ReasonPhrases } = require('http-status-codes')
+const { StatusCodes } = require('http-status-codes')
 const cloudinaryProvider = require('~/api/v1/providers/cloudinary.provider')
 const userRepo = require('~/api/v1/repositories/user.repo')
 const cartRepo = require('~/api/v1/repositories/cart.repo')
+const ApiError = require('~/core/api.error')
 
 const createUser = async ({
   roleId, userStatusId, genderId, lastName, firstName,
-  imageUrl, phoneNumber, email, address,
-  username, password, publicKey, privateKey
+  phoneNumber, email, address, username, password
 }) => {
+  const foundUser = await userRepo.getUser({
+    where: {
+      [Op.or]: [
+        { username },
+        { email },
+        { phoneNumber }
+      ]
+    }
+  })
+
+  if (foundUser) {
+    let isExist = foundUser.username === username
+    if (isExist) throw new ApiError(StatusCodes.BAD_REQUEST, 'Username already exists')
+
+    isExist = foundUser.email === email
+    if (isExist) throw new ApiError(StatusCodes.BAD_REQUEST, 'Email has been used')
+
+    isExist = foundUser.phoneNumber === phoneNumber
+    if (isExist) throw new ApiError(StatusCodes.BAD_REQUEST, 'Phone number has been used')
+    return
+  }
+
   try {
-    return await User.create({
-      roleId, userStatusId, genderId, lastName,
-      firstName, imageUrl, phoneNumber, email, address,
-      username, password, publicKey, privateKey
+    return await userRepo.createUser({
+      roleId, userStatusId, genderId, lastName, firstName,
+      phoneNumber, email, address, username, password
     })
   } catch (error) {
-    throw new ApiError(StatusCodes.BAD_REQUEST, ReasonPhrases.BAD_REQUEST)
+    throw new ApiError(StatusCodes.BAD_REQUEST, 'Create user failed')
   }
 }
 
@@ -37,7 +58,7 @@ const getAllUsers = async ({ filter, selector, pagination, sorter }) => {
         exclude: bannedFields
       },
       include: [
-        { model: UserStatus, as: 'status', attributes: ['id', 'name'] },
+        { model: UserStatus, as: 'userStatus', attributes: ['id', 'name'] },
         { model: Role, as: 'role', attributes: ['id', 'name'] },
         { model: Gender, as: 'gender', attributes: ['id', 'name'] }
       ],

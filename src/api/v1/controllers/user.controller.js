@@ -3,6 +3,7 @@
 const userService = require('~/api/v1/services/user.service')
 const SuccessResponse = require('~/core/success.response')
 const asyncHandling = require('~/core/async.handling')
+const { StatusCodes } = require('http-status-codes')
 
 const getAllUsers = asyncHandling(async (req, res) => {
   const { filter, selector, pagination, sorter } = req
@@ -34,6 +35,23 @@ const getUserById = asyncHandling(async (req, res) => {
   new SuccessResponse({
     message: 'Get user successfully',
     metadata: { user }
+  }).send(res)
+})
+
+const createUser = asyncHandling(async (req, res) => {
+  const {
+    roleId, userStatusId, genderId, lastName, firstName,
+    phoneNumber, email, address, username, password
+  } = req.body
+
+  await userService.createUser({
+    roleId, userStatusId, genderId, lastName, firstName,
+    phoneNumber, email, address, username, password
+  })
+
+  new SuccessResponse({
+    statusCode: StatusCodes.CREATED,
+    message: 'Create user successfully'
   }).send(res)
 })
 
@@ -76,6 +94,7 @@ module.exports = {
   getAllUsers,
   getUserInfo,
   getUserById,
+  createUser,
   updateUserItseft,
   updateStatus,
   deleteUserById

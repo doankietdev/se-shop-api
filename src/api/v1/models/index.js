@@ -85,7 +85,7 @@ Resource.hasMany(Permission, {
 User.belongsTo(UserStatus, {
   foreignKey: 'userStatusId',
   targetKey: 'id',
-  as: 'status'
+  as: 'userStatus'
 })
 
 User.belongsTo(Role, {

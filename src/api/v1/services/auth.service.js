@@ -15,87 +15,35 @@ const userRepo = require('~/api/v1/repositories/user.repo')
 const userStatusRepo = require('~/api/v1/repositories/user.status.repo')
 const resetTokenRepo = require('~/api/v1/repositories/reset.token.repo')
 const sendMail = require('~/api/v1/utils/send.mail')
-const { createKeyPairRsa, createTokenPair, verifyToken, createResetToken } = require('~/api/v1/utils/auth.util')
+const { createTokenPair, verifyToken, createResetToken } = require('~/api/v1/utils/auth.util')
 
 const signUp = async ({
   genderId, lastName, firstName, phoneNumber,
   email, address, username, password
 }) => {
-  const foundUser = await userRepo.getUser({
-    where: {
-      [Op.or]: [
-        { username },
-        { email },
-        { phoneNumber }
-      ]
-    }
-  })
-
-  if (foundUser) {
-    let isExist = foundUser.username === username
-    if (isExist) throw new ApiError(StatusCodes.BAD_REQUEST, 'Username already exists')
-
-    isExist = foundUser.email === email
-    if (isExist) throw new ApiError(StatusCodes.BAD_REQUEST, 'Email has been used')
-
-    isExist = foundUser.phoneNumber === phoneNumber
-    if (isExist) throw new ApiError(StatusCodes.BAD_REQUEST, 'Phone number has been used')
-    return
-  }
-
   const customerRole = await roleRepo.getRoleByName('customer')
   if (!customerRole) throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR)
   const activeStatus = await userStatusRepo.getUserStatusByName('active')
   if (!activeStatus) throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR)
 
-  const passwordHash = await bcrypt.hash(password, saltRounds)
-  const { publicKey, privateKey } = createKeyPairRsa()
-
-  const newUser = await userService.createUser({
+  return await userService.createUser({
     roleId: customerRole.id,
+    genderId: genderId,
     userStatusId: activeStatus.id,
-    genderId,
     lastName,
     firstName,
     phoneNumber,
     email,
     address,
     username,
-    password: passwordHash,
-    publicKey,
-    privateKey
+    password
   })
-
-  await cartService.createCart({ userId: newUser.id })
-
-  return {}
 }
 
 const signUpAdmin = async ({
   genderId, lastName, firstName, phoneNumber,
   email, address, username, password, secretKey
 }) => {
-  const foundUser = await userRepo.getUser({
-    where: {
-      [Op.or]: [
-        { username },
-        { email },
-        { phoneNumber }
-      ]
-    }
-  })
-  if (foundUser) {
-    let isExist = foundUser.username === username
-    if (isExist) throw new ApiError(StatusCodes.BAD_REQUEST, 'Username already exists')
-
-    isExist = foundUser.email === email
-    if (isExist) throw new ApiError(StatusCodes.BAD_REQUEST, 'Email has been used')
-
-    isExist = foundUser.phoneNumber === phoneNumber
-    if (isExist) throw new ApiError(StatusCodes.BAD_REQUEST, 'Phone number has been used')
-    return
-  }
-
   const isMatchSecretKey = secretKey === secretKeyAdmin
   if (!isMatchSecretKey) throw new ApiError(StatusCodes.BAD_REQUEST, 'Secret key is wrong')
 
@@ -104,22 +52,17 @@ const signUpAdmin = async ({
   const activeStatus = await userStatusRepo.getUserStatusByName('active')
   if (!activeStatus) throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR)
 
-  const passwordHash = await bcrypt.hash(password, saltRounds)
-  const { publicKey, privateKey } = createKeyPairRsa()
-
-  await userService.createUser({
+  return await userService.createUser({
     roleId: adminRole.id,
+    genderId: genderId,
     userStatusId: activeStatus.id,
-    genderId,
     lastName,
     firstName,
     phoneNumber,
     email,
     address,
     username,
-    password: passwordHash,
-    publicKey,
-    privateKey
+    password
   })
 }
 
@@ -208,7 +151,6 @@ const signOut = async ({ res, accessToken, refreshToken }) => {
     const deletedToken = await token.destroy()
     res.clearCookie('accessToken')
     res.clearCookie('refreshToken')
-    console.log('PASSS');
     await refreshTokenUsedService.createRefreshTokenUsed({
       refreshTokenUsed: deletedToken.refreshToken,
       userId: deletedToken.userId
