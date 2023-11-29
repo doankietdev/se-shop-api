@@ -19,9 +19,9 @@ const authenticate = asyncHandling(async (req, res, next) => {
     where: { api: reqApi, method: reqMethod }
   })
   if (!foundPermission) {
-    throw new ApiError(StatusCodes.FORBIDDEN, ReasonPhrases.FORBIDDEN)
+    throw new ApiError(StatusCodes.NOT_FOUND, ReasonPhrases.NOT_FOUND)
   }
-  if (!foundPermission.isPrivate) {
+  if (!foundPermission?.isPrivate) {
     req.isPrivateApi = false
     return next()
   }
