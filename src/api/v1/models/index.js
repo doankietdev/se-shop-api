@@ -21,6 +21,8 @@ const PaymentForm = require('./payment.form.model')
 const OrderStatus = require('./order.status.model')
 const Order = require('./order.model')
 const OrderDetail = require('./order.detail.model')
+const WishList = require('./wish.list.model')
+const WishListDetail = require('./wish.list.detail.model')
 
 Permission.belongsTo(PermissionType, {
   foreignKey: 'permissionTypeId',
@@ -184,6 +186,28 @@ OrderDetail.belongsTo(Product, {
   as: 'product'
 })
 
+WishList.belongsTo(User, {
+  foreignKey: 'userId',
+  targetKey: 'id',
+  as: 'user'
+})
+WishList.belongsTo(Product, {
+  foreignKey: 'productId',
+  targetKey: 'id',
+  as: 'product'
+})
+WishList.hasMany(WishListDetail, {
+  foreignKey: 'wishListId',
+  sourceKey: 'id',
+  as: 'products'
+})
+
+User.hasOne(WishList, {
+  foreignKey: 'userId',
+  sourceKey: 'id',
+  as: 'wishList'
+})
+
 module.exports = {
   CorsDomain,
   Role,
@@ -205,5 +229,7 @@ module.exports = {
   PaymentForm,
   OrderStatus,
   Order,
-  OrderDetail
+  OrderDetail,
+  WishList,
+  WishListDetail
 }
