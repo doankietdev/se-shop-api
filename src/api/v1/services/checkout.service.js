@@ -42,22 +42,14 @@ const review = async ({ orderProducts = [] }) => {
 }
 
 const order = async ({
-  cartId,
   userId,
   shipAddress,
   phoneNumber,
   paymentFormId,
-  orderProducts = []
+  orderProduct = {}
 }) => {
-  const foundCart = cartRepo.getCartByCartIdUserId({ cartId, userId })
-  if (!foundCart) throw new ApiError(StatusCodes.BAD_REQUEST, 'Order failed')
-
-  const [checkedOrderProducts, checkedProducts] = await Promise.all([
-    checkoutRepo.checkOrderProductsWithCart(cartId, userId, orderProducts),
-    checkoutRepo.checkProductsAvailable(orderProducts)
-  ])
-
-  if (checkedOrderProducts.includes(null) || checkedProducts.includes(null)) {
+  const checkedProducts = await checkoutRepo.checkProductsAvailable([orderProduct])
+  if (checkedProducts.includes(null)) {
     throw new ApiError(StatusCodes.BAD_REQUEST, 'Order failed')
   }
 
@@ -70,7 +62,77 @@ const order = async ({
       orderStatusId: 1
     })
 
-    const fullOrderProducts = await Promise.all(
+    // to get price of product in db
+    const foundProduct = await productRepo.getProductById(orderProduct.productId)
+    if (!foundProduct) {
+      await newOrder.destroy()
+      throw new ApiError(StatusCodes.BAD_REQUEST, 'Order failed')
+    }
+
+    const newOrderDetail = await orderDetailRepo.createOrderDetail({
+      orderId: newOrder.id,
+      productId: orderProduct.productId,
+      quantity: orderProduct.quantity,
+      price: foundProduct.price
+    })
+
+    // reduce stock quantity when ordering
+    foundProduct.update({
+      stockQuantity: foundProduct.stockQuantity - orderProduct.quantity
+    })
+
+    const { quantity } = newOrderDetail
+    const { price, id: productId, name, description, imageUrl } = foundProduct
+    const newOrderProduct = {
+      quantity,
+      totalAmount: quantity * price,
+      product: { id: productId, name, description, imageUrl, price }
+    }
+    const foundOrderStatus = await orderStatusRepo.getOrderStatusById(newOrder.orderStatusId)
+
+    return {
+      orderId: newOrder.id,
+      shipAddress: newOrder.shipAddress,
+      phoneNumber: newOrder.phoneNumber,
+      orderStatus: foundOrderStatus.name,
+      orderProducts: [newOrderProduct],
+      totalAmount: newOrderProduct.totalAmount
+    }
+  } catch (error) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, 'Order failed')
+  }
+}
+
+const orderFromCart = async ({
+  cartId,
+  userId,
+  shipAddress,
+  phoneNumber,
+  paymentFormId,
+  orderProducts = []
+}) => {
+  const foundCart = cartRepo.getCartByCartIdUserId({ cartId, userId })
+  if (!foundCart) throw new ApiError(StatusCodes.BAD_REQUEST, 'Order failed')
+
+  const [checkedOrderProductsWithCart, checkedProducts] = await Promise.all([
+    checkoutRepo.checkOrderProductsWithCart(cartId, userId, orderProducts),
+    checkoutRepo.checkProductsAvailable(orderProducts)
+  ])
+
+  if (checkedOrderProductsWithCart.includes(null) || checkedProducts.includes(null)) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, 'Order failed')
+  }
+
+  try {
+    const newOrder = await orderRepo.createOrder({
+      shipAddress,
+      phoneNumber,
+      userId,
+      paymentFormId,
+      orderStatusId: 1
+    })
+
+    const newOrderProducts = await Promise.all(
       orderProducts.map(async (orderProduct) => {
         // to get product price in db
         const foundProduct = await productRepo.getProductById(
@@ -93,43 +155,42 @@ const order = async ({
           stockQuantity: foundProduct.stockQuantity - orderProduct.quantity
         })
 
+        const { quantity } = newOrderDetail
+        const { price, id, name, description, imageUrl } = foundProduct
+
         return {
-          quantity: newOrderDetail.quantity,
-          product: {
-            id: foundProduct.id,
-            name: foundProduct.name,
-            description: foundProduct.description,
-            imageUrl: foundProduct.imageUrl,
-            price: foundProduct.price
-          }
+          quantity,
+          totalAmount: quantity * price,
+          product: { id, name, description, imageUrl, price }
         }
       })
     )
 
-    const foundOrderStatus = await orderStatusRepo.getOrderStatusById(
-      newOrder.orderStatusId
-    )
-
-    // remove ordered products in cart
-    const reduceQuantityProductPromises = orderProducts.map(orderProduct => {
-      return cartService.reduceQuantityProduct({
+    // delete ordered products in cart
+    const deleteProductFromCartPromises = orderProducts.map(async (orderProduct) => {
+      return cartService.deleteProductFromCart({
         cartId,
-        userId,
         productId: orderProduct.productId,
-        quantity: orderProduct.quantity
+        userId
       })
     })
-    await Promise.all(reduceQuantityProductPromises)
+    await Promise.all(deleteProductFromCartPromises)
+
+    const foundOrderStatus = await orderStatusRepo.getOrderStatusById(newOrder.orderStatusId)
+    const totalOrderAmount = newOrderProducts.reduce((acc, orderProduct) => {
+      return acc + orderProduct.totalAmount
+    }, 0)
 
     return {
       orderId: newOrder.id,
       shipAddress: newOrder.shipAddress,
       phoneNumber: newOrder.phoneNumber,
       orderStatus: foundOrderStatus.name,
-      products: fullOrderProducts
+      orderProducts: newOrderProducts,
+      totalAmount: totalOrderAmount
     }
   } catch (error) {
-    throw new ApiError(StatusCodes.BAD_REQUEST, error.message)
+    throw new ApiError(StatusCodes.BAD_REQUEST, 'Order failed')
   }
 }
 
@@ -245,6 +306,7 @@ const checkPay = async (paramsObject) => {
 module.exports = {
   review,
   order,
+  orderFromCart,
   getAllOrder,
   cancelOrder,
   getOrder,

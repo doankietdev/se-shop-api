@@ -4,6 +4,7 @@ const express = require('express')
 const {
   review,
   order,
+  orderFromCart,
   getAllOrders,
   cancelOrder,
   getOrder,
@@ -19,6 +20,7 @@ router.get('/get-order', getOrder)
 router.get('/check-pay', checkPay)
 router.get('/review', review)
 router.post('/order', order)
+router.post('/order-from-cart', orderFromCart)
 router.post('/cancel-order', cancelOrder)
 router.post('/pay', pay)
 

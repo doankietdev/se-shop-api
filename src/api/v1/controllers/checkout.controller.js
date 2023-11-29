@@ -18,9 +18,21 @@ const review = asyncHandling(async (req, res) => {
 
 const order = asyncHandling(async (req, res) => {
   const userId = req?.user?.id || null
+  const { shipAddress, phoneNumber, paymentFormId, orderProduct } = req.body
+
+  const result = await checkoutService.order({ userId, shipAddress, phoneNumber, paymentFormId, orderProduct })
+
+  new SuccessResponse({
+    message: 'Order successfully',
+    metadata: { ...result }
+  }).send(res)
+})
+
+const orderFromCart = asyncHandling(async (req, res) => {
+  const userId = req?.user?.id || null
   const { shipAddress, phoneNumber, paymentFormId, cartId, orderProducts } = req.body
 
-  const result = await checkoutService.order({ cartId, userId, shipAddress, phoneNumber, paymentFormId, orderProducts })
+  const result = await checkoutService.orderFromCart({ cartId, userId, shipAddress, phoneNumber, paymentFormId, orderProducts })
 
   new SuccessResponse({
     message: 'Order successfully',
@@ -85,6 +97,7 @@ const checkPay = asyncHandling(async (req, res) => {
 module.exports = {
   review,
   order,
+  orderFromCart,
   getAllOrders,
   cancelOrder,
   getOrder,

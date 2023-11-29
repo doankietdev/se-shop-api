@@ -2,7 +2,6 @@
 
 const productRepo = require('~/api/v1/repositories/product.repo')
 const cartDetailRepo = require('~/api/v1/repositories/cart.detail.repo')
-const { or } = require('sequelize')
 
 const checkProductsAvailable = async (orderProducts = []) => {
   return await Promise.all(orderProducts.map(async (orderProduct) => {
@@ -25,12 +24,14 @@ const checkOrderProductsWithCart = async (cartId, userId, orderProducts = []) =>
       productId: orderProduct.productId,
       cartId
     })
-    if (!foundCartDetail) return null
+    if (!foundCartDetail) {
+      return null
+    }
 
-    const isOrderingExceedProductQuantityInCart =
-      orderProduct.quantity > foundCartDetail.quantity
+    const isMathQuantity =
+      orderProduct.quantity === foundCartDetail.quantity
 
-    if (isOrderingExceedProductQuantityInCart) return null
+    if (!isMathQuantity) return null
 
     return {
       quantity: orderProduct.quantity,
