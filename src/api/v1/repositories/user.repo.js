@@ -27,16 +27,14 @@ const createUser = async({
 }) => {
   const { publicKey, privateKey } = createKeyPairRsa()
   const passwordHash = await bcrypt.hash(password, saltRounds)
-  return await User.create({
+  const user = (await User.create({
     roleId, userStatusId, genderId, lastName, firstName, imageUrl, phoneNumber,
     email, address, username, password: passwordHash, publicKey, privateKey
-  }, {
-    include: [
-      { model: Role, foreignKey: 'roleId', as: 'role' },
-      { model: UserStatus, foreignKey: 'userStatusId', as: 'userStatus' },
-      { model: Gender, foreignKey: 'genderId', as: 'gender' }
-    ]
-  })
+  })).dataValues
+  delete user.password
+  delete user.publicKey
+  delete user.privateKey
+  return user
 }
 
 module.exports = {

@@ -44,14 +44,15 @@ const createUser = asyncHandling(async (req, res) => {
     phoneNumber, email, address, username, password
   } = req.body
 
-  await userService.createUser({
+  const user = await userService.createUser({
     roleId, userStatusId, genderId, lastName, firstName,
     phoneNumber, email, address, username, password
   })
 
   new SuccessResponse({
     statusCode: StatusCodes.CREATED,
-    message: 'Create user successfully'
+    message: 'Create user successfully',
+    metadata: { user }
   }).send(res)
 })
 
