@@ -3,7 +3,7 @@
 const lodash = require('lodash')
 const { Cart, CartDetail, Product } = require('~/api/v1/models')
 const { getProductById } = require('~/api/v1/repositories/product.repo')
-const { getCartByCartIdProductId, deleteCartDetail } = require('~/api/v1/repositories/cart.detail.repo')
+const { getCartByCartIdProductId, deleteCartDetail, deleteCartDetailsByCartIdProductIds } = require('~/api/v1/repositories/cart.detail.repo')
 const ApiError = require('~/core/api.error')
 const { StatusCodes, ReasonPhrases } = require('http-status-codes')
 
@@ -168,7 +168,7 @@ const deleteProductFromCart = async ({ cartId, userId, productId }) => {
 
   try {
     const deletedCartDetail = await deleteCartDetail({ cartId, productId })
-    if (!deletedCartDetail) throw new Error()
+    if (!deletedCartDetail) throw new Error('Cart not found')
 
     const fullCart = await getFullCartById(cartId)
     return {
@@ -180,6 +180,22 @@ const deleteProductFromCart = async ({ cartId, userId, productId }) => {
   }
 }
 
+const deleteProductsFromCart = async ({ cartId, userId, productIds }) => {
+  const foundCart = await getCart({ cartId, userId })
+  if (!foundCart) throw new ApiError(StatusCodes.NOT_FOUND, 'Delete product from cart failed')
+
+  const hasDeletedCartDetail = await deleteCartDetailsByCartIdProductIds({ cartId, productIds })
+  if (!hasDeletedCartDetail) {
+    throw new ApiError(StatusCodes.NOT_FOUND, 'No products found in cart')
+  }
+
+  const fullCart = await getFullCartById(cartId)
+  return {
+    id: fullCart.id,
+    products: fullCart.products
+  }
+}
+
 module.exports = {
   createCart,
   getFullCartById,
@@ -188,5 +204,6 @@ module.exports = {
   addProductToCart,
   reduceQuantityProduct,
   increaseQuantityProduct,
-  deleteProductFromCart
+  deleteProductFromCart,
+  deleteProductsFromCart
 }

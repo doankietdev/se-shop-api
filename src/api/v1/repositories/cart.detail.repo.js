@@ -16,7 +16,17 @@ const deleteCartDetail = async ({ cartId, productId }) => {
   return await foundCartDetail.destroy()
 }
 
+const deleteCartDetailsByCartIdProductIds= async ({ cartId, productIds }) => {
+  const numberDeletedItems = await CartDetail.destroy({
+    where: { cartId, productId: productIds }
+  })
+  const NO_ITEMS_DELETEDS = 0
+  if (numberDeletedItems === NO_ITEMS_DELETEDS) return false
+  return true
+}
+
 module.exports = {
   getCartByCartIdProductId,
-  deleteCartDetail
+  deleteCartDetail,
+  deleteCartDetailsByCartIdProductIds
 }
