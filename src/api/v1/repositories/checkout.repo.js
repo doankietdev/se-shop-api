@@ -40,27 +40,7 @@ const checkOrderProductsWithCart = async (cartId, userId, orderProducts = []) =>
   }))
 }
 
-const getfullOrderProductsByIds = async (orderProducts = []) => {
-  return await Promise.all(orderProducts.map(async (orderProduct) => {
-    const foundProduct = await productRepo.getProductById(orderProduct.productId)
-
-    if (foundProduct) {
-      return {
-        quantity: orderProduct.quantity,
-        product: {
-          id: foundProduct.id,
-          name: foundProduct.name,
-          description: foundProduct.description,
-          imageUrl: foundProduct.imageUrl,
-          price: foundProduct.price
-        }
-      }
-    }
-  }))
-}
-
 module.exports = {
   checkProductsAvailable,
-  checkOrderProductsWithCart,
-  getfullOrderProductsByIds
+  checkOrderProductsWithCart
 }

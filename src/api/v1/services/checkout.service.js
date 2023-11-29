@@ -22,22 +22,32 @@ const review = async ({ orderProducts = [] }) => {
   const checkedProducts = await checkoutRepo.checkProductsAvailable(
     orderProducts
   )
-  if (checkedProducts.includes(undefined))
+  if (checkedProducts.includes(null))
     throw new ApiError(StatusCodes.BAD_REQUEST, 'Order wrong')
 
-  const totalOrder = checkedProducts.reduce((acc, orderProduct) => {
-    return acc + orderProduct.price * orderProduct.quantity
-  }, 0)
+  const newOrderProducts = await Promise.all(
+    orderProducts.map(async (orderProduct) => {
+      const { quantity, productId } = orderProduct
+      // to get product price in db
+      const foundProduct = await productRepo.getProductById(productId)
+      if (!foundProduct) throw new ApiError(StatusCodes.BAD_REQUEST, 'Order failed')
 
-  const fullOrderProducts = await checkoutRepo.getfullOrderProductsByIds(
-    orderProducts
+      const { price, id, name, description, imageUrl } = foundProduct
+
+      return {
+        quantity,
+        product: { id, name, description, imageUrl, price },
+        totalAmount: quantity * price
+      }
+    })
   )
-  if (fullOrderProducts.includes(undefined))
-    throw new ApiError(StatusCodes.BAD_REQUEST, 'Order wrong')
 
+  const totalAmount = newOrderProducts.reduce((acc, orderProduct) => {
+    return acc + orderProduct.totalAmount
+  }, 0)
   return {
-    products: fullOrderProducts,
-    totalOrder
+    orderProducts: newOrderProducts,
+    totalAmount
   }
 }
 
@@ -85,8 +95,8 @@ const order = async ({
     const { price, id: productId, name, description, imageUrl } = foundProduct
     const newOrderProduct = {
       quantity,
-      totalAmount: quantity * price,
-      product: { id: productId, name, description, imageUrl, price }
+      product: { id: productId, name, description, imageUrl, price },
+      totalAmount: quantity * price
     }
     const foundOrderStatus = await orderStatusRepo.getOrderStatusById(newOrder.orderStatusId)
 
@@ -160,8 +170,8 @@ const orderFromCart = async ({
 
         return {
           quantity,
-          totalAmount: quantity * price,
-          product: { id, name, description, imageUrl, price }
+          product: { id, name, description, imageUrl, price },
+          totalAmount: quantity * price
         }
       })
     )
