@@ -41,10 +41,10 @@ const reduceQuantityProduct = asyncHandling(async (req, res) => {
   }).send(res)
 })
 
-const increaseQuantityProduct = asyncHandling(async (req, res) => {
+const updateQuantityProduct = asyncHandling(async (req, res) => {
   const userId = req?.user?.id || null
 
-  const cart = await cartService.increaseQuantityProduct({ ...req.body, userId })
+  const cart = await cartService.updateQuantityProduct({ ...req.body, userId })
 
   new SuccessResponse({
     statusCode: StatusCodes.CREATED,
@@ -85,7 +85,7 @@ module.exports = {
   getFullCartForCustomer,
   addProductToCart,
   reduceQuantityProduct,
-  increaseQuantityProduct,
+  updateQuantityProduct,
   deleteProductFromCart,
   deleteProductsFromCart
 }

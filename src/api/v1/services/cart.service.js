@@ -144,11 +144,9 @@ const reduceQuantityProduct = async ({ userId, cartId, productId, quantity }) =>
   await foundCartDetail.update({ quantity: restQuantity })
 }
 
-const increaseQuantityProduct = async({ userId, cartId, productId, quantity }) => {
-  if (quantity < 0) {
-    throw new ApiError(StatusCodes.BAD_REQUEST, ReasonPhrases.BAD_REQUEST)
-  }
-
+const updateQuantityProduct = async({ userId, cartId, productId, quantity }) => {
+  if (quantity < 0) throw new ApiError(StatusCodes.BAD_REQUEST, ReasonPhrases.BAD_REQUEST)
+  
   const foundCart = await getCart({ cartId, userId })
   if (!foundCart) throw new ApiError(StatusCodes.BAD_REQUEST, ReasonPhrases.BAD_REQUEST)
 
@@ -158,8 +156,7 @@ const increaseQuantityProduct = async({ userId, cartId, productId, quantity }) =
   const foundCartDetail = await getCartByCartIdProductId({ cartId, productId })
   if (!foundCartDetail) throw new ApiError(StatusCodes.BAD_REQUEST, ReasonPhrases.BAD_REQUEST)
 
-  const quantitAfterIncrease = foundCartDetail.quantity + quantity
-  await foundCartDetail.update({ quantity: quantitAfterIncrease })
+  await foundCartDetail.update({ quantity })
 }
 
 const deleteProductFromCart = async ({ cartId, userId, productId }) => {
@@ -203,7 +200,7 @@ module.exports = {
   getAllFullCarts,
   addProductToCart,
   reduceQuantityProduct,
-  increaseQuantityProduct,
+  updateQuantityProduct,
   deleteProductFromCart,
   deleteProductsFromCart
 }
