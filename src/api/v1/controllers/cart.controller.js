@@ -29,18 +29,6 @@ const addProductToCart = asyncHandling(async (req, res) => {
   }).send(res)
 })
 
-const reduceQuantityProduct = asyncHandling(async (req, res) => {
-  const userId = req?.user?.id || null
-
-  const cart = await cartService.reduceQuantityProduct({ ...req.body, userId })
-
-  new SuccessResponse({
-    statusCode: StatusCodes.CREATED,
-    message: 'Reduce quantity of product successfully',
-    metadata: { cart }
-  }).send(res)
-})
-
 const updateQuantityProduct = asyncHandling(async (req, res) => {
   const userId = req?.user?.id || null
 
@@ -84,7 +72,6 @@ const deleteProductsFromCart = asyncHandling(async (req, res) => {
 module.exports = {
   getFullCartForCustomer,
   addProductToCart,
-  reduceQuantityProduct,
   updateQuantityProduct,
   deleteProductFromCart,
   deleteProductsFromCart

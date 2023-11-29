@@ -4,7 +4,6 @@ const express = require('express')
 const {
   addProductToCart,
   getFullCartForCustomer,
-  reduceQuantityProduct,
   updateQuantityProduct,
   deleteProductFromCart,
   deleteProductsFromCart
@@ -15,7 +14,6 @@ const router = express.Router()
 
 router.get('/get-my-cart', queryStringMiddleware, getFullCartForCustomer)
 router.post('/add-to-cart', addProductToCart)
-router.patch('/reduce-quantity-product', reduceQuantityProduct)
 router.patch('/update-quantity-product', updateQuantityProduct)
 router.delete('/delete-product-from-cart', deleteProductFromCart)
 router.delete('/delete-products-from-cart', deleteProductsFromCart)

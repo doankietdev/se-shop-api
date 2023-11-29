@@ -122,31 +122,9 @@ const addProductToCart = async ({ userId, cartId, productId, quantity }) => {
   }
 }
 
-const reduceQuantityProduct = async ({ userId, cartId, productId, quantity }) => {
-  if (quantity < 0) throw new ApiError(StatusCodes.BAD_REQUEST, ReasonPhrases.BAD_REQUEST)
-  const foundCart = await getCart({ cartId, userId })
-  if (!foundCart) throw new ApiError(StatusCodes.BAD_REQUEST, ReasonPhrases.BAD_REQUEST)
-
-  const foundProduct = await getProductById(productId)
-  if (!foundProduct) throw new ApiError(StatusCodes.BAD_REQUEST, ReasonPhrases.BAD_REQUEST)
-
-  const foundCartDetail = await getCartByCartIdProductId({ cartId, productId })
-  if (!foundCartDetail) throw new ApiError(StatusCodes.BAD_REQUEST, ReasonPhrases.BAD_REQUEST)
-
-  const restQuantity = foundCartDetail.quantity - quantity
-  if (restQuantity < 0) {
-    throw new ApiError(StatusCodes.BAD_REQUEST, 'Exceeded reduction quantity')
-  }
-  if (restQuantity === 0) {
-    await deleteCartDetail({ cartId, productId })
-    return
-  }
-  await foundCartDetail.update({ quantity: restQuantity })
-}
-
 const updateQuantityProduct = async({ userId, cartId, productId, quantity }) => {
   if (quantity < 0) throw new ApiError(StatusCodes.BAD_REQUEST, ReasonPhrases.BAD_REQUEST)
-  
+
   const foundCart = await getCart({ cartId, userId })
   if (!foundCart) throw new ApiError(StatusCodes.BAD_REQUEST, ReasonPhrases.BAD_REQUEST)
 
@@ -199,7 +177,6 @@ module.exports = {
   getFullCartByUserId,
   getAllFullCarts,
   addProductToCart,
-  reduceQuantityProduct,
   updateQuantityProduct,
   deleteProductFromCart,
   deleteProductsFromCart
