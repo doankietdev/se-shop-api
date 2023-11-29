@@ -1,6 +1,5 @@
 'use strict'
 
-const { Op } = require('sequelize')
 const bcrypt = require('bcrypt')
 const { app: { saltRounds, protocol, host, port, secretKeyAdmin } } = require('~/config/environment.config')
 const ApiError = require('~/core/api.error')
@@ -26,18 +25,23 @@ const signUp = async ({
   const activeStatus = await userStatusRepo.getUserStatusByName('active')
   if (!activeStatus) throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR)
 
-  return await userService.createUser({
-    roleId: customerRole.id,
-    genderId: genderId,
-    userStatusId: activeStatus.id,
-    lastName,
-    firstName,
-    phoneNumber,
-    email,
-    address,
-    username,
-    password
-  })
+  try {
+    const newUser = await userService.createUser({
+      roleId: customerRole.id,
+      genderId: genderId,
+      userStatusId: activeStatus.id,
+      lastName,
+      firstName,
+      phoneNumber,
+      email,
+      address,
+      username,
+      password
+    })
+    await cartService.createCart({ userId: newUser.id })
+  } catch (error) {
+    throw new ApiError('Sign up failed')
+  }
 }
 
 const signUpAdmin = async ({
@@ -52,18 +56,22 @@ const signUpAdmin = async ({
   const activeStatus = await userStatusRepo.getUserStatusByName('active')
   if (!activeStatus) throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR)
 
-  return await userService.createUser({
-    roleId: adminRole.id,
-    genderId: genderId,
-    userStatusId: activeStatus.id,
-    lastName,
-    firstName,
-    phoneNumber,
-    email,
-    address,
-    username,
-    password
-  })
+  try {
+    return await userService.createUser({
+      roleId: adminRole.id,
+      genderId: genderId,
+      userStatusId: activeStatus.id,
+      lastName,
+      firstName,
+      phoneNumber,
+      email,
+      address,
+      username,
+      password
+    })
+  } catch (error) {
+    throw new ApiError('Sign up for admin failed')
+  }
 }
 
 const signIn = async ({ username, password }) => {
