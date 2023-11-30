@@ -25,19 +25,23 @@ const signUp = async ({
   const activeStatus = await userStatusRepo.getUserStatusByName('active')
   if (!activeStatus) throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR)
 
-  const newUser = await userService.createUser({
-    roleId: customerRole.id,
-    genderId: genderId,
-    userStatusId: activeStatus.id,
-    lastName,
-    firstName,
-    phoneNumber,
-    email,
-    address,
-    username,
-    password
-  })
-  await cartService.createCart({ userId: newUser.id })
+  try {
+    const newUser = await userService.createUser({
+      roleId: customerRole.id,
+      genderId: genderId,
+      userStatusId: activeStatus.id,
+      lastName,
+      firstName,
+      phoneNumber,
+      email,
+      address,
+      username,
+      password
+    })
+    await cartService.createCart({ userId: newUser.id })
+  } catch (error) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, 'Sign up failed')
+  }
 }
 
 const signUpAdmin = async ({
