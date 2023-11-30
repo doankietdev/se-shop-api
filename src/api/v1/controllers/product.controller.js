@@ -18,8 +18,8 @@ const createProduct = asyncHandling(async (req, res) => {
 const getAllProducts = asyncHandling(async (req, res) => {
   const { filter, selector, pagination, sorter } = req
 
+  const allProductPromise = productService.getAllProducts({ filter })
   const productsPromise = productService.getAllProducts({ filter, selector, pagination, sorter })
-  const allProductPromise = productService.getAllProducts({})
   const [allProducts, products] = await Promise.all([allProductPromise, productsPromise])
   const total = allProducts.length
   const limit = pagination?.limit

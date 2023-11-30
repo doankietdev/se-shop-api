@@ -24,7 +24,7 @@ const convertToQueryLikeObject = (object = {}) => {
       return
     }
     object[key] = {
-      [Op.like]: object[key]
+      [Op.like]: `%${object[key]}%`
     }
   })
 }
