@@ -32,8 +32,8 @@ const getProductsByCategoryId = asyncHandling(async (req, res) => {
   const { id } = req.query
   const { filter, selector, pagination, sorter } = req
 
+  const allProductPromise = categoryService.getProductsByCategoryId({ categoryId: id, filter })
   const productsPromise = categoryService.getProductsByCategoryId({ categoryId: id, filter, selector, pagination, sorter })
-  const allProductPromise = categoryService.getProductsByCategoryId({ categoryId: id })
   const [allProducts, products] = await Promise.all([allProductPromise, productsPromise])
   const total = allProducts?.products.length
   const limit = pagination?.limit
