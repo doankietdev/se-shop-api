@@ -14,7 +14,7 @@ const queryStringMiddleware = asyncHandling(async (req, res, next) => {
   const sorter = createSorter(req.query)
   const selector = select ? select.split(',') : null
 
-  req.filter = filter
+  req.filter = Object.keys(filter).length === 0 ? null : filter
   req.selector = selector
   req.pagination = pagination
   req.sorter = sorter
