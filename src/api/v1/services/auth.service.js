@@ -9,6 +9,7 @@ const userService = require('~/api/v1/services/user.service')
 const tokenService = require('~/api/v1/services/token.service')
 const refreshTokenUsedService = require('~/api/v1/services/refresh.token.used.sevice')
 const resetTokenService = require('~/api/v1/services/reset.token.service')
+const wishListService = require('~/api/v1/services/wish.list.service')
 const roleRepo = require('~/api/v1/repositories/role.repo')
 const userRepo = require('~/api/v1/repositories/user.repo')
 const userStatusRepo = require('~/api/v1/repositories/user.status.repo')
@@ -39,6 +40,7 @@ const signUp = async ({
       password
     })
     await cartService.createCart({ userId: newUser.id })
+    await wishListService.createWishList(newUser.id)
   } catch (error) {
     throw new ApiError(StatusCodes.BAD_REQUEST, 'Sign up failed')
   }

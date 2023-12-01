@@ -20,11 +20,11 @@ const createFilter = (queryObject = {}) => {
 }
 
 const createPagination = (queryObject = {}) => {
-  const { _page = 1, _limit = 50 } = queryObject
+  const { _page, _limit } = queryObject
   const skip = (Number(_page) - 1) * Number(_limit)
   return {
-    skip,
-    limit: Number(_limit)
+    skip: skip || null,
+    limit: Number(_limit) || null
   }
 }
 

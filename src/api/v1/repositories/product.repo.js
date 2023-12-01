@@ -4,10 +4,17 @@ const { StatusCodes } = require('http-status-codes')
 const { Product } = require('~/api/v1/models')
 const ApiError = require('~/core/api.error')
 
-const getProductById = async (id) => {
-  return await Product.findOne({
-    where: { id }
-  })
+const getProductById = async (id = null) => {
+  try {
+    const foundProduct = await Product.findOne({
+      where: { id }
+    })
+    if (!foundProduct) throw new ApiError(StatusCodes.NOT_FOUND, 'Product not found')
+    return foundProduct
+  } catch (error) {
+    if (!error.statusCode) throw new ApiError(StatusCodes.BAD_REQUEST, 'Get product failed')
+    throw error
+  }
 }
 
 const getProductsByIds = async (ids = []) => {

@@ -6,11 +6,13 @@ module.exports = {
     await queryInterface.createTable('WishList', {
       id: {
         type: Sequelize.INTEGER.UNSIGNED,
-        primaryKey: true
+        primaryKey: true,
+        autoIncrement: true
       },
       userId: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
+        unique: true,
         references: {
           model: 'User',
           key: 'id'

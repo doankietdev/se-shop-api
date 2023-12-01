@@ -84,7 +84,12 @@ const pay = asyncHandling(async (req, res) => {
     req.connection.socket.remoteAddress
 
   const paymentUrl = await checkoutService.createPaymentUrl({ userId, bankCode, orderId, ipAddr })
-  res.redirect(paymentUrl)
+  // res.redirect(paymentUrl)
+  new SuccessResponse({
+    message: 'Create payurl paySuccessUrl',
+    metadata: { paymentUrl }
+  }).send(res)
+
 })
 
 const checkPay = asyncHandling(async (req, res) => {

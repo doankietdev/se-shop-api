@@ -71,6 +71,11 @@ User.hasMany(RolePermission, {
   sourceKey: 'id',
   as: 'accessControlList'
 })
+User.hasOne(WishList, {
+  foreignKey: 'userId',
+  sourceKey: 'id',
+  as: 'wishList'
+})
 
 Permission.hasMany(RolePermission, {
   foreignKey: 'permissionId',
@@ -191,21 +196,15 @@ WishList.belongsTo(User, {
   targetKey: 'id',
   as: 'user'
 })
-WishList.belongsTo(Product, {
-  foreignKey: 'productId',
-  targetKey: 'id',
-  as: 'product'
-})
 WishList.hasMany(WishListDetail, {
   foreignKey: 'wishListId',
   sourceKey: 'id',
   as: 'products'
 })
-
-User.hasOne(WishList, {
-  foreignKey: 'userId',
-  sourceKey: 'id',
-  as: 'wishList'
+WishListDetail.hasOne(Product, {
+  foreignKey: 'id',
+  sourceKey: 'productId',
+  as: 'product'
 })
 
 module.exports = {

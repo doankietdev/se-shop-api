@@ -15,6 +15,7 @@ const checkoutRouter = require('./checkout')
 const paymentFormRouter = require('./payment.form')
 const orderStatusRouter = require('./order.status')
 const orderRouter = require('./order')
+const wishlistRouter = require('./wishlist')
 const { authenticate, authorize } = require('~/api/v1/middlewares/auth.middleware')
 
 const router = express.Router()
@@ -36,5 +37,6 @@ router.use('/checkout', checkoutRouter)
 router.use('/payment-forms', paymentFormRouter)
 router.use('/order-statuses', orderStatusRouter)
 router.use('/orders', orderRouter)
+router.use('/wishlist', wishlistRouter)
 
 module.exports = router
