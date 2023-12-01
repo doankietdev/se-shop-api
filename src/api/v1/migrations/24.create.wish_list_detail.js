@@ -4,12 +4,12 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('WishListDetail', {
-      userId: {
+      wishListId: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
         primaryKey: true,
         references: {
-          model: 'User',
+          model: 'WishList',
           key: 'id'
         }
       },

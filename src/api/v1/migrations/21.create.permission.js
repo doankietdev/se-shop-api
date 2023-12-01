@@ -49,7 +49,11 @@ module.exports = {
       },
       versionId: {
         type: Sequelize.TINYINT.UNSIGNED,
-        allowNull: false
+        allowNull: false,
+        references: {
+          model: 'Version',
+          key: 'id'
+        }
       },
       createdAt: {
         type: 'TIMESTAMP',
