@@ -51,11 +51,17 @@ const deleteOrder = asyncHandling( async (req, res) => {
 const getAllOrders = asyncHandling( async (req, res) => {
   const { filter, selector, pagination, sorter } = req
 
-  const orders = await orderService.getAllOrders({ filter, selector, pagination, sorter })
+  const allOrdersPromise = orderService.getAllOrders({filter})
+  const ordersPromise = orderService.getAllOrders({ filter, selector, pagination, sorter })
+  const [allOrders, orders] = await Promise.all([allOrdersPromise, ordersPromise])
+
+  const total = allOrders.length
+  const limit = pagination?.limit
+  const totalPage = limit <= total ? Math.ceil(total / limit) : 1
 
   new SuccessResponse({
     message: 'Get all orders successfully',
-    metadata: { orders }
+    metadata: { page: pagination.skip / pagination.limit + 1, total, totalPage, orders }
   }).send(res)
 })
 
