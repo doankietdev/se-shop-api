@@ -23,6 +23,7 @@ const Order = require('./order.model')
 const OrderDetail = require('./order.detail.model')
 const WishList = require('./wish.list.model')
 const WishListDetail = require('./wish.list.detail.model')
+const Version = require('./version.model')
 
 Permission.belongsTo(PermissionType, {
   foreignKey: 'permissionTypeId',
@@ -81,6 +82,12 @@ Permission.hasMany(RolePermission, {
   foreignKey: 'permissionId',
   sourceKey: 'id',
   as: 'accessControlList'
+})
+
+Permission.belongsTo(Version, {
+  foreignKey: 'versionId',
+  targetKey: 'id',
+  as: 'version'
 })
 
 Resource.hasMany(Permission, {
@@ -212,6 +219,7 @@ module.exports = {
   Role,
   Resource,
   PermissionType,
+  Version,
   Permission,
   RolePermission,
   UserStatus,

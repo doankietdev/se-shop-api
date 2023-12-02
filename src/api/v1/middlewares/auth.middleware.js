@@ -13,29 +13,29 @@ const { verifyToken } = require('~/api/v1/utils/auth.util')
 const authenticate = asyncHandling(async (req, res, next) => {
   const reqApi = req.baseUrl + req.path
   const reqMethod = req.method
+  const reqVersion = req.headers[REQUEST_HEADER_KEYS.apiVersion]
 
-  // check public or private api
-  const foundPermission = await permissionRepo.getPermissionWithQuery({
-    where: { api: reqApi, method: reqMethod }
-  })
-  if (!foundPermission) {
-    throw new ApiError(StatusCodes.NOT_FOUND, ReasonPhrases.NOT_FOUND)
-  }
-  if (!foundPermission?.isPrivate) {
-    req.isPrivateApi = false
-    return next()
-  }
-
-  // authenticate access token
-  const userId = req.headers[REQUEST_HEADER_KEYS.userId]
-  if (!userId) new ApiError(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED)
-  const { accessToken } = req.cookies
-  if (!accessToken) throw new ApiError(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED)
-  const foundToken = await tokenRepo.getTokenByAccessToken({ accessToken })
-  if (!foundToken) throw new ApiError(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED)
-  const foundUser = await userRepo.getUserById(userId)
-  if (!foundUser) throw new ApiError(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED)
   try {
+    // check public or private api
+    const foundPermission = await permissionRepo.getPermissionByApiMethodVersion({
+      api: reqApi,
+      method: reqMethod,
+      version: reqVersion
+    })
+    if (!foundPermission?.isPrivate) {
+      req.isPrivateApi = false
+      return next()
+    }
+
+    // authenticate access token
+    const userId = req.headers[REQUEST_HEADER_KEYS.userId]
+    if (!userId) new ApiError(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED)
+    const { accessToken } = req.cookies
+    if (!accessToken) throw new ApiError(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED)
+    const foundToken = await tokenRepo.getTokenByAccessToken({ accessToken })
+    if (!foundToken) throw new ApiError(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED)
+    const foundUser = await userRepo.getUserById(userId)
+    if (!foundUser) throw new ApiError(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED)
     const decoded = verifyToken({ token: accessToken, publicKey: foundUser.publicKey })
     if (decoded.userId != userId) throw new ApiError(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED)
     req.user = foundUser
@@ -44,6 +44,9 @@ const authenticate = asyncHandling(async (req, res, next) => {
     req.reqMethod = reqMethod
     next()
   } catch (error) {
+    if (error.statusCode === StatusCodes.NOT_FOUND) {
+      throw new ApiError(StatusCodes.NOT_FOUND, ReasonPhrases.NOT_FOUND)
+    }
     if (error.name === 'TokenExpiredError') {
       throw new ApiError(StatusCodes.UNAUTHORIZED, 'Access token expired')
     }
