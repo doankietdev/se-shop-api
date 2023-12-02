@@ -9,22 +9,22 @@ const cloudinaryProvider = require('~/api/v1/providers/cloudinary.provider')
 const productSchema = Joi.object({
   name: Joi.string().max(200).required(),
   description: Joi.string().max(1000),
-  image: Joi.string().required(),
+  image: Joi.binary().required(),
   screen: Joi.string().max(200),
   operatingSystem: Joi.string().max(50),
   processor: Joi.string().max(50),
-  ram: Joi.number().min(1),
-  storageCapacity: Joi.number().min(1),
+  ram: Joi.string(),
+  storageCapacity: Joi.string(),
   dimensions: Joi.string().max(50),
-  weight: Joi.number().min(1),
-  batteryCapacity: Joi.number().min(1),
+  weight: Joi.string(),
+  batteryCapacity: Joi.string(),
   frontCameraResolution: Joi.string().max(50),
   rearCameraResolution: Joi.string().max(50),
   connectivity: Joi.string().max(200),
   color: Joi.string().max(50),
-  price: Joi.number().min(1).required(),
-  stockQuantity: Joi.number().min(0).required(),
-  categoryId: Joi.number().required()
+  price: Joi.string().required(),
+  stockQuantity: Joi.string().min(0).required(),
+  categoryId: Joi.string().required()
 })
 
 const validateCreateProduct = asyncHandling(async (req, res, next) => {

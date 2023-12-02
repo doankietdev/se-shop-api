@@ -8,8 +8,15 @@ const { StatusCodes, ReasonPhrases } = require('http-status-codes')
 
 const createProduct = async (reqBody = {}) => {
   try {
+    const keys = Object.keys(reqBody)
+    keys.forEach(key => {
+      if (reqBody[key] === 'undefined') {
+        reqBody[key] = null
+      }
+    })
     return await Product.create(reqBody)
   } catch (error) {
+    console.log(error);
     throw new ApiError(StatusCodes.BAD_REQUEST, ReasonPhrases.BAD_REQUEST)
   }
 }

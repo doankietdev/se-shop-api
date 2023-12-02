@@ -69,7 +69,7 @@ const updateCategoryById = asyncHandling( async (req, res) => {
 })
 
 const deleteCategoryById = asyncHandling(async (req, res) => {
-  const { id } = req.params
+  const { id } = req.query
 
   const categories = await categoryService.deleteCategoryById({ id })
 

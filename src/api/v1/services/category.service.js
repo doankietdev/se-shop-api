@@ -72,12 +72,16 @@ const updateCategoryById = async ({ id, name, description }) => {
 }
 
 const deleteCategoryById = async ({ id }) => {
-  const category = await Category.findOne({
-    where: { id }
-  })
-  if (!category) throw new ApiError(StatusCodes.NOT_FOUND, 'Item not found')
-  const { dataValues } = await category.destroy()
-  if (!dataValues) throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR)
+  try {
+    const category = await Category.findOne({
+      where: { id }
+    })
+    if (!category) throw new ApiError(StatusCodes.NOT_FOUND, 'Item not found')
+    return await category.destroy()
+  } catch (error) {
+    console.log(error);
+    throw new ApiError(StatusCodes.BAD_REQUEST, 'Delete category failed')
+  }
 }
 
 const deleteCategoryByIds = async ({ ids }) => {
