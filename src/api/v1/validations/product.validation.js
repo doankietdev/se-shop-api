@@ -9,13 +9,7 @@ const cloudinaryProvider = require('~/api/v1/providers/cloudinary.provider')
 const productSchema = Joi.object({
   name: Joi.string().max(200).required(),
   description: Joi.string().max(1000),
-  image: Joi.object({
-    fieldname: Joi.string().required(),
-    originalname: Joi.string().required(),
-    encoding: Joi.string().required(),
-    mimetype: Joi.string().required(),
-    size: Joi.number().required()
-  }).required(),
+  image: Joi.string().required(),
   screen: Joi.string().max(200),
   operatingSystem: Joi.string().max(50),
   processor: Joi.string().max(50),
@@ -28,8 +22,8 @@ const productSchema = Joi.object({
   rearCameraResolution: Joi.string().max(50),
   connectivity: Joi.string().max(200),
   color: Joi.string().max(50),
-  price: Joi.number().min(1),
-  stockQuantity: Joi.number().min(0),
+  price: Joi.number().min(1).required(),
+  stockQuantity: Joi.number().min(0).required(),
   categoryId: Joi.number().required()
 })
 
