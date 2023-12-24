@@ -4,11 +4,11 @@ const exitHook = require('async-exit-hook')
 const environmentConfig = require('./src/config/environment.config')
 const app = require('./src/app')
 
-const { protocol, port, host } = environmentConfig.app
+const { port } = environmentConfig.app
 
-const server = app.listen(port, host, () => {
+const server = app.listen(port, () => {
   // eslint-disable-next-line no-console
-  console.log(`Server is running at: ${protocol}://${host}:${port}`)
+  console.log(`Server is running at: ${port}`)
 })
 
 exitHook(() => {
