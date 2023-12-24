@@ -1,0 +1,3388 @@
+{
+	"info": {
+		"_postman_id": "4fc4641f-c358-4f72-abc2-7abffaf999dd",
+		"name": "SE Shop",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "30826748"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Sign up",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"lastName\": \"ClientClient1\",\r\n    \"firstName\": \"ClientClient1\",\r\n    \"phoneNumber\": \"0834480243\",\r\n    \"email\": \"clien2@gmail.com\",\r\n    \"address\": \"121212122\",\r\n    \"username\": \"clientclient1\",\r\n    \"password\": \"123456\",\r\n    \"genderId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/auth/sign-up"
+					},
+					"response": []
+				},
+				{
+					"name": "Sign up for admin",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"lastName\": \"Admin\",\r\n    \"firstName\": \"Admin\",\r\n    \"phoneNumber\": \"44444444441\",\r\n    \"email\": \"admin3@gmail.com\",\r\n    \"address\": \"Q. 1, TP. Hồ Chí Minh\",\r\n    \"username\": \"admin3\",\r\n    \"password\": \"123456\",\r\n    \"secretKey\": \"W7VyCmE69Q6fkBQIKwJQmtQF0Lrqq3Nt\",\r\n    \"genderId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/auth/sign-up-admin"
+					},
+					"response": []
+				},
+				{
+					"name": "Sign in",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"customer\",\r\n    \"password\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/auth/sign-in"
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh token",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "3",
+								"type": "text"
+							}
+						],
+						"url": "{{base_url}}/api/auth/refresh-token"
+					},
+					"response": []
+				},
+				{
+					"name": "Sign out",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": "{{base_url}}/api/auth/sign-out"
+					},
+					"response": []
+				},
+				{
+					"name": "Forgot password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"doananhkiet886@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/auth/forgot-password"
+					},
+					"response": []
+				},
+				{
+					"name": "Reset password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\": \"654321\",\r\n    \"resetToken\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsInVzZXJuYW1lIjoiZG9hbmFuaGtpZXQ4ODYiLCJpYXQiOjE2OTk0NDM5NzksImV4cCI6MTY5OTQ0NDU3OX0.HGEOfFTLGnRuEy4HatEhc1NlegXq8yk65nxBXixgQB3DXkUAzOeJYZdUShr2nBItucVaTPnAOZqXsO7klRKyHu_V8NSvnTmffzH0N_H4mnyWaxX2gmTQKe_h_8frUjXJUrLqvYlBvykXc_dJhVjLcIb9U--yCWEJZezpLT-VhXekjclH1Hv22wxb2Sr9ACzkTn4L9NgDj-OvWfwOepDFp4piE7xLGPx1e2YAVhb2cT_FgOg12OaBtYQUBws6aGKXWbPy75d1nvGKdjrExsLTTqZzZ0IyjxyxLu_ivlCuyeJrwUqViszl3EFhr9sFK6w8jBE7E6ipsbzEyw5BuCIdYgdk1qBNCbCA61-apt05HC29_v3k2t3MtNXlqQOMD0hyXqxQH8wq-UdRwd3-uD9dNO89ValtuRsnFfkf1amVQbdKjdQAJL4ocpSzJZDWTx_AufWjwUPDe3V-VlqOPE9Id48_OuU7_GWa_rSSrsWOrCm6eP1D8Tz8yHB4nxPS8L2imZw10hxKe0GvzD0dz-jZXMIwL2shj6E5sAGKlViqJO1PapuyZCdKsXPNlYf4z9g-w_SOFk0Six03kJ47m77verXZtfnzAJTKCNO25REi30_ZY0yluYdgeCpmQlBY7g9iPOU1GTHa1Vp0PE1KKFU2DH9sXPIZ7SjZhLQT-jvaH24\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/auth/reset-password"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Role",
+			"item": [
+				{
+					"name": "Get all roles",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/roles?_select=id,name&_sortBy=name&_order=desc",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"roles"
+							],
+							"query": [
+								{
+									"key": "_select",
+									"value": "id,name"
+								},
+								{
+									"key": "_sortBy",
+									"value": "name"
+								},
+								{
+									"key": "_order",
+									"value": "desc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get role by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/roles/get-role?id=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"roles",
+								"get-role"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create role",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 3,\r\n    \"name\": \"Customer\",\r\n    \"description\": \"Potential customers of the system\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/roles/create"
+					},
+					"response": []
+				},
+				{
+					"name": "Update role by id",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"aj\",\r\n    \"description\": \"aj\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/roles/update-role?id=6",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"roles",
+								"update-role"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "6"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete role by id",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/roles/delete-role?id=5",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"roles",
+								"delete-role"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete roles by ids",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ids\": [\r\n        6,\r\n        8,\r\n        10\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/roles/delete-roles"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Permission",
+			"item": [
+				{
+					"name": "Get all permissions",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/permissions?_limit=100&name=delete product from",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"permissions"
+							],
+							"query": [
+								{
+									"key": "_limit",
+									"value": "100"
+								},
+								{
+									"key": "name",
+									"value": "delete product from"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get permission by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/permissions/get-permission?id=1&x-user-id=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"permissions",
+								"get-permission"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								},
+								{
+									"key": "x-user-id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create permission",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Delete product from wish list\",\r\n    \"api\": \"/api/wishlist/delete-product\",\r\n    \"method\": \"DELETE\",\r\n    \"isPrivate\": true,\r\n    \"versionId\": 1,\r\n    \"permissionTypeId\": 1,\r\n    \"resourceId\": 15\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/permissions/create"
+					},
+					"response": []
+				},
+				{
+					"name": "Update permission by id",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"method\": \"GET\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/permissions/update-permission?id=3",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"permissions",
+								"update-permission"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete permission by id",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/permissions/delete-permission?id=3",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"permissions",
+								"delete-permission"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete permissions by ids",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ids\": [\r\n        4,\r\n        14\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/permissions/delete-permissions"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Access Control List",
+			"item": [
+				{
+					"name": "Get access control list",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/acl?permissionId=42",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"acl"
+							],
+							"query": [
+								{
+									"key": "permissionId",
+									"value": "42"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get access control by role id & permission id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/acl/get-by-role-id-permission-id?roleId=3&permissionId=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"acl",
+								"get-by-role-id-permission-id"
+							],
+							"query": [
+								{
+									"key": "roleId",
+									"value": "3"
+								},
+								{
+									"key": "permissionId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get access control list by role id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/acl/get-by-role-id?roleId=3",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"acl",
+								"get-by-role-id"
+							],
+							"query": [
+								{
+									"key": "roleId",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get access control list by permission id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/acl/get-by-permission-id?permissionId=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"acl",
+								"get-by-permission-id"
+							],
+							"query": [
+								{
+									"key": "permissionId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get access control list by assigner id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/acl/get-by-assigner-id?assignerId=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"acl",
+								"get-by-assigner-id"
+							],
+							"query": [
+								{
+									"key": "assignerId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Assign permission",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"roleId\": 3,\r\n    \"permissionId\": 105\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/acl/assign-permission"
+					},
+					"response": []
+				},
+				{
+					"name": "Update access control",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"roleId\": 1,\r\n    \"permissionId\": 76\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/acl/update-by-role-id-permission-id?roleId=3&permissionId=3",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"acl",
+								"update-by-role-id-permission-id"
+							],
+							"query": [
+								{
+									"key": "roleId",
+									"value": "3"
+								},
+								{
+									"key": "permissionId",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unassign permission",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/acl/unassign-permission?roleId=1&permissionId=81",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"acl",
+								"unassign-permission"
+							],
+							"query": [
+								{
+									"key": "roleId",
+									"value": "1"
+								},
+								{
+									"key": "permissionId",
+									"value": "81"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unassign permissions by ids",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ids\": [\r\n        { \"roleId\": 3, \"permissionId\": 1 },\r\n        { \"roleId\": 2, \"permissionId\": 1 },\r\n        { \"roleId\": 1, \"permissionId\": 1 }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/acl/unassign-permissions"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Gender",
+			"item": [
+				{
+					"name": "Get all genders",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/genders?name=male&_select=name&_sortBy=name&_order=desc&_page=1&_limit=2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"genders"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "male"
+								},
+								{
+									"key": "_select",
+									"value": "name"
+								},
+								{
+									"key": "_sortBy",
+									"value": "name"
+								},
+								{
+									"key": "_order",
+									"value": "desc"
+								},
+								{
+									"key": "_page",
+									"value": "1"
+								},
+								{
+									"key": "_limit",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get gender by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/genders/get-gender?id=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"genders",
+								"get-gender"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create gender",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Female\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/genders/create"
+					},
+					"response": []
+				},
+				{
+					"name": "Update gender by id",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/genders/update-gender?id=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"genders",
+								"update-gender"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete gender by id",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/genders/delete-gender?id=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"genders",
+								"delete-gender"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete gender by ids",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ids\": [\r\n        1,\r\n        2,\r\n        3\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/genders/delete-genders"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Order Status",
+			"item": [
+				{
+					"name": "Get all order statuses",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": "{{base_url}}/api/order-statuses"
+					},
+					"response": []
+				},
+				{
+					"name": "Get order status by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/order-statuses/get-order-status?id=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"order-statuses",
+								"get-order-status"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create order status",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 4,\r\n    \"name\": \"Delivered\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/order-statuses/create"
+					},
+					"response": []
+				},
+				{
+					"name": "Update order status by id",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/order-statuses/update-order-status?id=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"order-statuses",
+								"update-order-status"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete order status by id",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/order-statuses/delete-order-status?id=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"order-statuses",
+								"delete-order-status"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete order statuses by ids",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ids\": [\r\n        6,\r\n        8\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/order-statuses/delete-order-statuses"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Payment form",
+			"item": [
+				{
+					"name": "Get all payment forms",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/payment-forms?",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"payment-forms"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get payment form by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/payment-forms/get-payment-form?id=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"payment-forms",
+								"get-payment-form"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create payment form",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Cash\",\r\n    \"description\": \"Pay directly at the shop\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/payment-forms/create"
+					},
+					"response": []
+				},
+				{
+					"name": "Update payment form by id",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"2\",\r\n    \"description\": \"2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/payment-forms/update-payment-form?id=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"payment-forms",
+								"update-payment-form"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete payment form by id",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/payment-forms/delete-payment-form?id=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"payment-forms",
+								"delete-payment-form"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete payment form by ids",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ids\": [\r\n        4,\r\n        5,\r\n        6\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/payment-forms/delete-payment-forms"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User status",
+			"item": [
+				{
+					"name": "Get all user statuses",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/user-statuses?_select=name",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"user-statuses"
+							],
+							"query": [
+								{
+									"key": "_select",
+									"value": "name"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user status by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/user-statuses/get-user-status?id=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"user-statuses",
+								"get-user-status"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create user status",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 2,\r\n    \"name\": \"Disabled\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/user-statuses/create"
+					},
+					"response": []
+				},
+				{
+					"name": "Update user status by id",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Male\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/user-statuses/update-user-status?id=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"user-statuses",
+								"update-user-status"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete user status by id",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/user-statuses/delete-user-status?id=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"user-statuses",
+								"delete-user-status"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete user statuses by ids",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ids\": [\r\n        1,\r\n        2,\r\n        3\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/user-statuses/delete-user-statuses"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Category",
+			"item": [
+				{
+					"name": "Get all categories",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": "{{base_url}}/api/categories"
+					},
+					"response": []
+				},
+				{
+					"name": "Get category by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/categories/get-category?id=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"categories",
+								"get-category"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get products by category id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/categories/get-products?id=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"categories",
+								"get-products"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create category",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Accessory\",\r\n    \"description\": \"Accessory\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/categories/create"
+					},
+					"response": []
+				},
+				{
+					"name": "Update category by id",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Smartphone\",\r\n    \"description\": \"Smartphone\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/categories/update-category?id=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"categories",
+								"update-category"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete category by id",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/categories/delete-category?id=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"categories",
+								"delete-category"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete category by ids",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ids\": [\r\n        2,\r\n        2,\r\n        3\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/categories/delete-categories"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Product",
+			"item": [
+				{
+					"name": "Get all products",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/products?",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"products"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get product by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/products/get-product?id=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"products",
+								"get-product"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create product",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "IPhone XS",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "IPhone XS",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": []
+								},
+								{
+									"key": "displayDetails",
+									"value": "FullHD | IPS",
+									"type": "text"
+								},
+								{
+									"key": "operatingSystem",
+									"value": "Android",
+									"type": "text"
+								},
+								{
+									"key": "processor",
+									"value": "Snap gragon",
+									"type": "text"
+								},
+								{
+									"key": "ram",
+									"value": "4",
+									"type": "text"
+								},
+								{
+									"key": "storage",
+									"value": "64",
+									"type": "text"
+								},
+								{
+									"key": "dimensions",
+									"value": "12x43",
+									"type": "text"
+								},
+								{
+									"key": "weight",
+									"value": "1.2",
+									"type": "text"
+								},
+								{
+									"key": "batteryCapacity",
+									"value": "5000",
+									"type": "text"
+								},
+								{
+									"key": "frontCameraResolution",
+									"value": "1024x2321",
+									"type": "text"
+								},
+								{
+									"key": "rearCameraResolution",
+									"value": "1024x2321",
+									"type": "text"
+								},
+								{
+									"key": "connectivity",
+									"value": "Wifi 5.0 | Bluetooth 3.0",
+									"type": "text"
+								},
+								{
+									"key": "color",
+									"value": "Blue",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "12300000",
+									"type": "text"
+								},
+								{
+									"key": "stockQuantity",
+									"value": "61",
+									"type": "text"
+								},
+								{
+									"key": "categoryId",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{base_url}}/api/products/create"
+					},
+					"response": []
+				},
+				{
+					"name": "Update product by id",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Redmi note 8 pro\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/products/update-product?id=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"products",
+								"update-product"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Increase stock quantity",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"quantity\": 10\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/products/increase-stock-quantity?id=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"products",
+								"increase-stock-quantity"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Decrease stock quantity",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"quantity\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/products/decrease-stock-quantity?id=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"products",
+								"decrease-stock-quantity"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete product by id",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/products/delete-product?id=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"products",
+								"delete-product"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete product by ids",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ids\": [\r\n        1,\r\n        2,\r\n        3\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/products/delete-products"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Get all users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "7",
+								"type": "text"
+							}
+						],
+						"url": "{{base_url}}/api/users"
+					},
+					"response": []
+				},
+				{
+					"name": "Get user by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users/get-user?id=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"get-user"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user info",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": "{{base_url}}/api/users/get-info"
+					},
+					"response": []
+				},
+				{
+					"name": "Create user",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"lastName\": \"Customer\",\r\n    \"firstName\": \"Customer\",\r\n    \"phoneNumber\": \"3333333339\",\r\n    \"email\": \"customer9@gmail.com\",\r\n    \"address\": \"Q. 1, TP. Hồ Chí Minh\",\r\n    \"username\": \"customer9\",\r\n    \"password\": \"123456\",\r\n    \"genderId\": 1,\r\n    \"userStatusId\": 1,\r\n    \"roleId\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/users/create"
+					},
+					"response": []
+				},
+				{
+					"name": "Update user",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/D:/personal/photos/nui_ba_ra.jpg"
+								},
+								{
+									"key": "firstName",
+									"value": "Kiệt",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{base_url}}/api/users/update-profile"
+					},
+					"response": []
+				},
+				{
+					"name": "Update user status",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userStatusId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/update-status?id=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"update-status"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete user by id",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users/delete-user?id=5",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"delete-user"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete users by ids",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ids\": [6, 7, 8]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/users/delete-users"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cart",
+			"item": [
+				{
+					"name": "Get my cart",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "3",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/carts/get-my-cart?_select=id,name,imageUrl&_page=1&_limit=3",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"carts",
+								"get-my-cart"
+							],
+							"query": [
+								{
+									"key": "_select",
+									"value": "id,name,imageUrl"
+								},
+								{
+									"key": "_page",
+									"value": "1"
+								},
+								{
+									"key": "_limit",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add to cart",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "3",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cartId\": 3,\r\n    \"productId\": 3,\r\n    \"quantity\": 5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/carts/add-to-cart"
+					},
+					"response": []
+				},
+				{
+					"name": "Increase quantity of product",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cartId\": 1,\r\n    \"productId\": 2,\r\n    \"quantity\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/carts/update-quantity-product"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete product from cart",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "5",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/carts/delete-product-from-cart?cartId=5&productId=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"carts",
+								"delete-product-from-cart"
+							],
+							"query": [
+								{
+									"key": "cartId",
+									"value": "5"
+								},
+								{
+									"key": "productId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete products from cart",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "5",
+								"type": "text"
+							}
+						],
+						"url": "{{base_url}}/api/carts/delete-products-from-cart"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Checkout",
+			"item": [
+				{
+					"name": "Get all orders",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "3",
+								"type": "text"
+							}
+						],
+						"url": "{{base_url}}/api/checkout/get-all-orders"
+					},
+					"response": []
+				},
+				{
+					"name": "Get order",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/checkout/get-order?orderId=3",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"checkout",
+								"get-order"
+							],
+							"query": [
+								{
+									"key": "orderId",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Review",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "3",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orderProducts\": [\r\n        {\r\n            \"productId\": 1,\r\n            \"quantity\": 3\r\n        },\r\n         {\r\n            \"productId\": 2,\r\n            \"quantity\": 4\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/checkout/review"
+					},
+					"response": []
+				},
+				{
+					"name": "Order now",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "3",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"shipAddress\": \"Q. Tân Bình, TP. Hồ Chí Minh\",\r\n    \"phoneNumber\": \"0988437477\",\r\n    \"paymentFormId\": 1,\r\n    \"orderProduct\": {\r\n        \"productId\": 2,\r\n        \"quantity\": 3\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/checkout/order"
+					},
+					"response": []
+				},
+				{
+					"name": "Order from cart",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "3",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cartId\": 3,\r\n    \"shipAddress\": \"Q. Tân Bình, TP. Hồ Chí Minh\",\r\n    \"phoneNumber\": \"0988437477\",\r\n    \"paymentFormId\": 1,\r\n    \"orderProducts\": [\r\n        {\r\n            \"productId\": 2,\r\n            \"quantity\": 1\r\n        },\r\n        {\r\n            \"productId\": 3,\r\n            \"quantity\": 5\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/checkout/order-from-cart"
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel order",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/checkout/cancel-order?orderId=4",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"checkout",
+								"cancel-order"
+							],
+							"query": [
+								{
+									"key": "orderId",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pay",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "3",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orderId\": 1,\r\n    \"bankCode\": \"VNBANK\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/checkout/pay"
+					},
+					"response": []
+				},
+				{
+					"name": "Check pay",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orderId\": 9,\r\n    \"bankCode\": \"VNBANK\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3055/api/checkout/check-pay?vnp_Amount=8610000000&vnp_BankCode=NCB&vnp_BankTranNo=VNP14178973&vnp_CardType=ATM&vnp_OrderInfo=Thanh+toan+cho%3A%3A%3A+Ma+DH%3A+9+-+Ma+KH%3A+1&vnp_PayDate=20231113173908&vnp_ResponseCode=00&vnp_TmnCode=K40VH4HX&vnp_TransactionNo=14178973&vnp_TransactionStatus=00&vnp_TxnRef=9&vnp_SecureHash=7dd8511ae8f100d3e124f2b7978f62644258cdea24e4c586af5f09b1fec1b1f7ea3fbbb99f2cc2be6d1642349b84517efac491c8a54107110c76aa83c903be44",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3055",
+							"path": [
+								"api",
+								"checkout",
+								"check-pay"
+							],
+							"query": [
+								{
+									"key": "vnp_Amount",
+									"value": "8610000000"
+								},
+								{
+									"key": "vnp_BankCode",
+									"value": "NCB"
+								},
+								{
+									"key": "vnp_BankTranNo",
+									"value": "VNP14178973"
+								},
+								{
+									"key": "vnp_CardType",
+									"value": "ATM"
+								},
+								{
+									"key": "vnp_OrderInfo",
+									"value": "Thanh+toan+cho%3A%3A%3A+Ma+DH%3A+9+-+Ma+KH%3A+1"
+								},
+								{
+									"key": "vnp_PayDate",
+									"value": "20231113173908"
+								},
+								{
+									"key": "vnp_ResponseCode",
+									"value": "00"
+								},
+								{
+									"key": "vnp_TmnCode",
+									"value": "K40VH4HX"
+								},
+								{
+									"key": "vnp_TransactionNo",
+									"value": "14178973"
+								},
+								{
+									"key": "vnp_TransactionStatus",
+									"value": "00"
+								},
+								{
+									"key": "vnp_TxnRef",
+									"value": "9"
+								},
+								{
+									"key": "vnp_SecureHash",
+									"value": "7dd8511ae8f100d3e124f2b7978f62644258cdea24e4c586af5f09b1fec1b1f7ea3fbbb99f2cc2be6d1642349b84517efac491c8a54107110c76aa83c903be44"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Order",
+			"item": [
+				{
+					"name": "Get all orders",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "3",
+								"type": "text"
+							}
+						],
+						"url": "{{base_url}}/api/orders"
+					},
+					"response": []
+				},
+				{
+					"name": "Get order",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/orders/get-order?orderId=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"orders",
+								"get-order"
+							],
+							"query": [
+								{
+									"key": "orderId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update order status",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orderStatusId\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/orders/update-order-status?id=3",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"orders",
+								"update-order-status"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete order",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/orders/delete-order?id=3",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"orders",
+								"delete-order"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Wish list",
+			"item": [
+				{
+					"name": "Get my wish list",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "3",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/wishlist/get-my-wishlist?_select=-name,description",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"wishlist",
+								"get-my-wishlist"
+							],
+							"query": [
+								{
+									"key": "_select",
+									"value": "-name,description"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add product to my wishlist",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "3",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"productId\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/wishlist/add-product"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete product from wishlist",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-api-version",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "3",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/wishlist/delete-product?productId=2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"wishlist",
+								"delete-product"
+							],
+							"query": [
+								{
+									"key": "productId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

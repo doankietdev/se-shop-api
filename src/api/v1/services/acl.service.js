@@ -17,6 +17,7 @@ const assignPermission = async ({ roleId, permissionId, assignerId }) => {
   try {
     return await RolePermission.create({ roleId, permissionId, assignerId })
   } catch (error) {
+    console.log({ error });
     throw new ApiError(StatusCodes.BAD_REQUEST, 'Assign permission failed')
   }
 }

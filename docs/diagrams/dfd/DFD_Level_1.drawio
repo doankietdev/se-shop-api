@@ -1,0 +1,75 @@
+<mxfile host="Electron" modified="2023-10-21T06:55:43.032Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.0.2 Chrome/114.0.5735.289 Electron/25.8.4 Safari/537.36" etag="JtQkb55BtHG6UQRQkgSJ" version="22.0.2" type="device">
+  <diagram name="Page-1" id="DwpDbY0yAFwULguiLzjH">
+    <mxGraphModel dx="2960" dy="1731" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2336" pageHeight="1654" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="umID6LrwFl-bvA3IuTGB-5" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontFamily=Helvetica;fontSize=30;fontColor=default;exitX=0.5;exitY=0;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="umID6LrwFl-bvA3IuTGB-1" target="umID6LrwFl-bvA3IuTGB-3">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="526" y="656.5" as="sourcePoint" />
+            <mxPoint x="1140.5" y="637" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="534" y="676" />
+              <mxPoint x="526" y="676" />
+              <mxPoint x="526" y="633" />
+              <mxPoint x="1084" y="633" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="umID6LrwFl-bvA3IuTGB-18" value="Sản phẩm" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=30;fontFamily=Helvetica;fontColor=default;" vertex="1" connectable="0" parent="umID6LrwFl-bvA3IuTGB-5">
+          <mxGeometry x="0.0621" y="5" relative="1" as="geometry">
+            <mxPoint x="-1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="umID6LrwFl-bvA3IuTGB-1" value="Khách hàng" style="html=1;dashed=0;whiteSpace=wrap;fontSize=30;strokeWidth=3;" vertex="1" parent="1">
+          <mxGeometry x="438" y="673" width="192" height="102" as="geometry" />
+        </mxCell>
+        <mxCell id="umID6LrwFl-bvA3IuTGB-2" value="Nhân viên" style="html=1;dashed=0;whiteSpace=wrap;fontSize=30;strokeWidth=3;" vertex="1" parent="1">
+          <mxGeometry x="1676" y="676" width="192" height="102" as="geometry" />
+        </mxCell>
+        <mxCell id="umID6LrwFl-bvA3IuTGB-7" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontFamily=Helvetica;fontSize=30;fontColor=default;edgeStyle=orthogonalEdgeStyle;exitX=0.666;exitY=-0.005;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="umID6LrwFl-bvA3IuTGB-3" target="umID6LrwFl-bvA3IuTGB-2">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1191" y="637" />
+              <mxPoint x="1772" y="637" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="umID6LrwFl-bvA3IuTGB-17" value="Đơn hàng" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=30;fontFamily=Helvetica;fontColor=default;" vertex="1" connectable="0" parent="umID6LrwFl-bvA3IuTGB-7">
+          <mxGeometry x="-0.0455" y="2" relative="1" as="geometry">
+            <mxPoint x="1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="umID6LrwFl-bvA3IuTGB-3" value="Quản Lý bán hàng" style="shape=ellipse;html=1;dashed=0;whiteSpace=wrap;perimeter=ellipsePerimeter;strokeColor=default;strokeWidth=3;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=30;fontColor=default;fillColor=default;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="656.5" width="287" height="141" as="geometry" />
+        </mxCell>
+        <mxCell id="umID6LrwFl-bvA3IuTGB-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.71;entryY=0.984;entryDx=0;entryDy=0;entryPerimeter=0;fontFamily=Helvetica;fontSize=30;fontColor=default;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="umID6LrwFl-bvA3IuTGB-2" target="umID6LrwFl-bvA3IuTGB-3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1772" y="827" />
+              <mxPoint x="1204" y="827" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="umID6LrwFl-bvA3IuTGB-15" value="Thông tin phản hồi đồng ý/ từ chối" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=30;fontFamily=Helvetica;fontColor=default;" vertex="1" connectable="0" parent="umID6LrwFl-bvA3IuTGB-13">
+          <mxGeometry x="0.0378" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="umID6LrwFl-bvA3IuTGB-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.44;entryY=0.997;entryDx=0;entryDy=0;entryPerimeter=0;fontFamily=Helvetica;fontSize=30;fontColor=default;" edge="1" parent="1" source="umID6LrwFl-bvA3IuTGB-3" target="umID6LrwFl-bvA3IuTGB-1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1084" y="827" />
+              <mxPoint x="523" y="827" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="umID6LrwFl-bvA3IuTGB-22" value="Trạng thái đơn hàng" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=30;fontFamily=Helvetica;fontColor=default;" vertex="1" connectable="0" parent="umID6LrwFl-bvA3IuTGB-21">
+          <mxGeometry x="0.1796" y="-1" relative="1" as="geometry">
+            <mxPoint x="62" y="-1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
