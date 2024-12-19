@@ -58,7 +58,9 @@ const {
   CLOUDINARY_NAME,
   CLOUDINARY_API_KEY,
   CLOUDINARY_API_SECRET,
-  SECRET_KEY_ADMIN
+  SECRET_KEY_ADMIN,
+  ONLINE_PAYMENT_ID,
+  CASH_PAYMENT_ID
 } = process.env
 
 const development = {
@@ -101,6 +103,10 @@ const development = {
       apiKey: CLOUDINARY_API_KEY || '',
       apiSecret: CLOUDINARY_API_SECRET || ''
     }
+  },
+  paymentMethodIds: {
+    onlinePaymentId: ONLINE_PAYMENT_ID,
+    cashPaymentId: CASH_PAYMENT_ID
   }
 }
 
@@ -144,6 +150,10 @@ const production = {
       apiKey: CLOUDINARY_API_KEY || '',
       apiSecret: CLOUDINARY_API_SECRET || ''
     }
+  },
+  paymentMethodIds: {
+    onlinePaymentId: ONLINE_PAYMENT_ID,
+    cashPaymentId: CASH_PAYMENT_ID
   }
 }
 

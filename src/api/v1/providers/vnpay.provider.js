@@ -12,7 +12,7 @@ const createPaymentUrl = ({ ipAddr, bankCode, orderId, amount, orderInfo }) => {
   vnp_Params['vnp_TmnCode'] = payments.vnpay.tmnCode
   vnp_Params['vnp_TxnRef'] = orderId
   vnp_Params['vnp_OrderInfo'] = orderInfo
-  vnp_Params['vnp_Amount'] = amount * 100,
+  vnp_Params['vnp_Amount'] = amount * 100
   vnp_Params['vnp_ReturnUrl'] = payments.vnpay.returnUrl
   vnp_Params['vnp_IpAddr'] = ipAddr
   vnp_Params['vnp_BankCode'] = bankCode
@@ -41,7 +41,10 @@ const generateVnPaySignature = (data, secretKey) => {
 }
 
 const checkPay = (vnpParams) => {
-  const isValidSignature = validateVnPaySignature({ vnpParams, expectedHash: vnpParams.vnp_SecureHash })
+  const isValidSignature = validateVnPaySignature({
+    vnpParams,
+    expectedHash: vnpParams.vnp_SecureHash
+  })
   if (!isValidSignature) return 0
 
   const responseCode = vnpParams['vnp_ResponseCode']

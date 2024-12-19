@@ -9,21 +9,14 @@ const orderStatusRepo = require('~/api/v1/repositories/order.status.repo')
 const orderRepo = require('~/api/v1/repositories/order.repo')
 const cartRepo = require('~/api/v1/repositories/cart.repo')
 const orderDetailRepo = require('~/api/v1/repositories/order.detail.repo')
-const {
-  OrderStatus,
-  OrderDetail,
-  Product,
-  PaymentForm
-} = require('~/api/v1/models')
+const orderHistoryRepo = require('~/api/v1/repositories/order.history.repo')
+const { OrderStatus, OrderDetail, Product, PaymentForm } = require('~/api/v1/models')
 const vnpayProvider = require('~/api/v1/providers/vnpay.provider')
 // const { app: { paySuccessUrl, payFailUrl } } = require('~/config/environment.config')
 
 const review = async ({ orderProducts = [] }) => {
-  const checkedProducts = await checkoutRepo.checkProductsAvailable(
-    orderProducts
-  )
-  if (checkedProducts.includes(null))
-    throw new ApiError(StatusCodes.BAD_REQUEST, 'Order wrong')
+  const checkedProducts = await checkoutRepo.checkProductsAvailable(orderProducts)
+  if (checkedProducts.includes(null)) throw new ApiError(StatusCodes.BAD_REQUEST, 'Order wrong')
 
   const newOrderProducts = await Promise.all(
     orderProducts.map(async (orderProduct) => {
@@ -51,13 +44,7 @@ const review = async ({ orderProducts = [] }) => {
   }
 }
 
-const order = async ({
-  userId,
-  shipAddress,
-  phoneNumber,
-  paymentFormId,
-  orderProduct = {}
-}) => {
+const order = async ({ userId, shipAddress, phoneNumber, paymentFormId, orderProduct = {} }) => {
   const checkedProducts = await checkoutRepo.checkProductsAvailable([orderProduct])
   if (checkedProducts.includes(null)) {
     throw new ApiError(StatusCodes.BAD_REQUEST, 'Order failed')
@@ -71,6 +58,8 @@ const order = async ({
       paymentFormId,
       orderStatusId: 1
     })
+
+    await orderHistoryRepo.createOrderStatusHistory({ orderId: newOrder.id, statusId: 1 })
 
     // to get price of product in db
     const foundProduct = await productRepo.getProductById(orderProduct.productId)
@@ -142,12 +131,12 @@ const orderFromCart = async ({
       orderStatusId: 1
     })
 
+    await orderHistoryRepo.createOrderStatusHistory({ orderId: newOrder.id, statusId: 1 })
+
     const newOrderProducts = await Promise.all(
       orderProducts.map(async (orderProduct) => {
         // to get product price in db
-        const foundProduct = await productRepo.getProductById(
-          orderProduct.productId
-        )
+        const foundProduct = await productRepo.getProductById(orderProduct.productId)
         if (!foundProduct) {
           await newOrder.destroy()
           throw new ApiError(StatusCodes.BAD_REQUEST, 'Order failed')
@@ -274,11 +263,8 @@ const getOrder = async ({ userId, orderId }) => {
 const createPaymentUrl = async ({ userId, ipAddr, bankCode, orderId }) => {
   const fullOrder = await getOrder({ userId, orderId })
 
-  const isPayable =
-    fullOrder.orderStatus.name === 'Pending' &&
-    fullOrder.paymentForm.name === 'Online'
-  if (!isPayable)
-    throw new ApiError(StatusCodes.BAD_REQUEST, 'The order cannot be paid')
+  const paidStatus = await orderHistoryRepo.getOrderHistoryByStatus({ orderId, statusId: 5 })
+  if (paidStatus) throw new ApiError(StatusCodes.BAD_REQUEST, 'Order has been paid')
 
   const amount = fullOrder.products.reduce((acc, product) => {
     return acc + product.quantity * product.price
@@ -289,7 +275,7 @@ const createPaymentUrl = async ({ userId, ipAddr, bankCode, orderId }) => {
     bankCode,
     orderId,
     amount,
-    orderInfo: `Thanh toan cho::: Ma DH: ${orderId} - Ma KH: ${userId}`,
+    orderInfo: `Thanh toan cho::: Ma DH: ${orderId} - Ma KH: ${userId}`
   })
   return paymentUrl
 }
@@ -303,10 +289,12 @@ const checkPay = async (paramsObject) => {
   const foundOrder = await orderRepo.getOrderWithQuery({
     where: { id: orderId }
   })
-  if (!foundOrder) throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR)
+  if (!foundOrder)
+    throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR)
 
   const foundOrderStatus = await orderStatusRepo.getOrderStatusByName('Paid')
-  if (!foundOrderStatus) throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR)
+  if (!foundOrderStatus)
+    throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR)
 
   await foundOrder.update({ orderStatusId: foundOrderStatus.id })
 

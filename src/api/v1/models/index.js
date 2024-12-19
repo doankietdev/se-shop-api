@@ -24,6 +24,7 @@ const OrderDetail = require('./order.detail.model')
 const WishList = require('./wish.list.model')
 const WishListDetail = require('./wish.list.detail.model')
 const Version = require('./version.model')
+const OrderHistory = require('./order.history.model')
 
 Permission.belongsTo(PermissionType, {
   foreignKey: 'permissionTypeId',
@@ -214,6 +215,22 @@ WishListDetail.hasOne(Product, {
   as: 'product'
 })
 
+OrderHistory.belongsTo(Order, {
+  foreignKey: 'orderId',
+  targetKey: 'id',
+  as: 'order'
+})
+OrderHistory.belongsTo(OrderStatus, {
+  foreignKey: 'statusId',
+  sourceKey: 'id',
+  as: 'orderStatus'
+})
+Order.hasMany(OrderStatus, {
+  foreignKey: 'statusId',
+  sourceKey: 'id',
+  as: 'orderStatuses'
+})
+
 module.exports = {
   CorsDomain,
   Role,
@@ -238,5 +255,6 @@ module.exports = {
   Order,
   OrderDetail,
   WishList,
-  WishListDetail
+  WishListDetail,
+  OrderHistory
 }
